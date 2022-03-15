@@ -1,3 +1,177 @@
-* {
-	margin: 0;
+/*FONTS IMPORTS*/
+@import url('https://fonts.googleapis.com/css2?family=Rock+3D&family=Signika:wght@300&display=swap');
+/*CSS IMPORTS*/
+@import url('./min.css');
+
+
+/*MAIN FONT*/
+body {
+	font-family: 'Signika', sans-serif;
+
+}
+
+/*ANIMATIONS*/
+@keyframes left-to-right {
+	from {
+		left: -350px;
+	}
+	to {
+		left: 0
+	}
+}
+
+@keyframes right-to-left {
+	from {
+		right: -350px;
+	}
+	to {
+		right: 0
+	}
+}
+
+/* HIDE*/
+.hide {
+	display: none;
+}
+
+/*START PAGE*/
+
+.start-page {
+	position: relative;
+	background-color: #5447FF;
+	overflow: hidden;
+	height: 100vh;
+}
+
+.start-page:before {
+	position: absolute;
+	content: url('../svg/waveEl.svg');
+	bottom: -100px;
+	max-width: 100vh;
+}
+
+
+/*START PAGE : TITLE*/
+.start-page__title {
+	font-family: 'Rock 3D', cursive;
+	font-size: 64px;
+	color: #fff;
+	text-align: center;
+	margin-top: 20px;
+}
+
+
+/*START PAGE : WINDOW*/
+.start-page__window {
+	margin-top: 100px;
+}
+
+/*START PAGE : START GAME TITLE*/
+.start-page__enter-your-name-title {
+	color: white;
+	margin-bottom: 60px;
+	font-size: 36px;
+	font-weight: bold;
+	text-align: center;
+	padding: 20px
+}
+
+
+.input-group {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.start-page__input {
+	padding: 20px;
+}
+
+/*START PAGE : ASIDE - FASTEST REACTION*/
+
+.start-page__aside-fastest-reaction {
+	position: absolute;
+	top: 0;
+	left: -100px;
+	background-color: rgba(0, 0, 0, 0.8);
+	height: 100vh;
+	animation-name: left-to-right;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+/*START PAGE : ASIDE - FASTEST REACTION + PREVIOUS GAMES - TITLE*/
+.start-page__aside-fastest-reaction-title, .start-page__aside-previous-games-title {
+	font-size: 40px;
+	font-weight: bold;
+	padding: 20px;
+	text-align: center;
+	color: #fff;
+}
+
+/*START PAGE : ASIDE - FASTEST REACTION - LIST EL*/
+.start-page__aside-fastest-reaction-list-el {
+	color: #fff;
+	font-size: 30px;
+	padding: 10px 20px;
+}
+
+/*START PAGE : ASIDE - PREVIOUS GAMES*/
+.start-page__aside-previous-games {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	height: 100vh;
+	animation-name: right-to-left;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+
+
+/*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - TITLE*/
+.start-page__aside-previous-games-live-title, .start-page__aside-previous-games-completed-title {
+	font-size: 16px;
+	padding: 10px;
+	color: #fff
+}
+
+/*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - PLAYERS*/
+.start-page__aside-previous-games-live-players, .start-page__aside-previous-games-completed-players {
+	font-size: 16px;
+	padding-bottom: 10px;
+	color: #fff
+}
+
+/*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - SCORE*/
+.start-page__aside-previous-games-live-score, .start-page__aside-previous-games-completed-score {
+	font-size: 16px;
+	color: #fff
+}
+
+/*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED*/
+.start-page__aside-previous-games-live, .start-page__aside-previous-games-completed {
+	background-color: #5447FF;
+	padding: 10px;
+	margin: 10px;
+}
+
+/*START PAGE : ASIDE - PREVIOUS GAMES WINNER / LOOSER */
+
+.winner {
+	background-color: #00BE5F;
+}
+
+.looser {
+	background-color: #BE3900;
+}
+
+.previous-games__btn, .fastest-reaction__btn {
+	width: 800px;
+	background-color: #353D44;
+	padding: 24px;
+	border: none;
+}
+
+.previous-games__btn:hover, .fastest-reaction__btn:hover {
+	background-color: #292f34;
 }
