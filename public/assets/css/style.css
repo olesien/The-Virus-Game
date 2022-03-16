@@ -177,70 +177,69 @@ body {
 }
 
 #app {
-    height:100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    background-color: rgb(77, 75, 75);
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	background-color: #292f34;
 }
 
-.container {
 
-}
-
-.gameboard-wrapper {
-    margin-right: 10px;
-}
 
 #gameboard-title {
-    padding:10px;
-    background-color: rgb(41 120 95);
-    color: white;
-    text-align: center;
-    margin: 0;
+	padding: 10px;
+	background-color: #00BE5F;
+	color: white;
+	text-align: center;
+	margin: 0;
 }
 
 .gameboard {
-    display: grid;
-    height: 75vh;
-    width: 100%;
-    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
-    grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+	display: grid;
+	height: 95vh;
+	grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% ;
+	grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% ;
 }
 
 .grid-box {
-    height: 100%;
-    background-color: rgb(150, 190, 178);
+	height: 100%;
+	background-color:  #292f34;
 }
 
 #virus {
-    background: url(/public/assets/icons/SARS-CoV-2_without_background.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: rgb(150, 190, 178);
+	background: url(/public/assets/icons/SARS-CoV-2_without_background.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color:  #292f34;
 }
 
-.scoreboard-wrapper {  
-    min-height: 100%;
-    background-color: rgb(150, 190, 178);
+.scoreboard-wrapper {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	bottom: 10px;
+	width: 15%;
+	max-width: 100%;
+	background-color: rgba(0, 0, 0, 0.46);
+	border-radius: 10px;
 }
 
 #scoreboard-title {
-    padding:10px;
-    background-color: rgb(41 120 95);
-    color: white;
-    text-align: center;
+	padding: 10px;
+	background-color:  #00BE5F;
+	color: white;
+	text-align: center;
 }
 
 #scoreboard-list {
-    list-style-type: none;
-    padding:0;
-    text-align: center;
-    ;
+	list-style-type: none;
+	padding: 0;
+	text-align: center;;
 }
 
 .score-item {
-    padding: 5px 0;
-    font-size: 20px;
+	padding: 5px 0;
+	font-size: 20px;
+	color: white;
 }
