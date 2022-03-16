@@ -1,13 +1,11 @@
 /*FONTS IMPORTS*/
-@import url('https://fonts.googleapis.com/css2?family=Rock+3D&family=Signika:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rock+3D&family=Signika:wght@300&display=swap");
 /*CSS IMPORTS*/
-@import url('./min.css');
-
+@import url("./min.css");
 
 /*MAIN FONT*/
 body {
-	font-family: 'Signika', sans-serif;
-
+	font-family: "Signika", sans-serif;
 }
 
 /*ANIMATIONS*/
@@ -16,7 +14,7 @@ body {
 		left: -350px;
 	}
 	to {
-		left: 0
+		left: 0;
 	}
 }
 
@@ -25,7 +23,7 @@ body {
 		right: -350px;
 	}
 	to {
-		right: 0
+		right: 0;
 	}
 }
 
@@ -38,28 +36,26 @@ body {
 
 .start-page {
 	position: relative;
-	background-color: #5447FF;
+	background-color: #5447ff;
 	overflow: hidden;
 	height: 100vh;
 }
 
 .start-page:before {
 	position: absolute;
-	content: url('../svg/waveEl.svg');
+	content: url("../svg/waveEl.svg");
 	bottom: -100px;
 	max-width: 100vh;
 }
 
-
 /*START PAGE : TITLE*/
 .start-page__title {
-	font-family: 'Rock 3D', cursive;
+	font-family: "Rock 3D", cursive;
 	font-size: 64px;
 	color: #fff;
 	text-align: center;
 	margin-top: 20px;
 }
-
 
 /*START PAGE : WINDOW*/
 .start-page__window {
@@ -73,9 +69,8 @@ body {
 	font-size: 36px;
 	font-weight: bold;
 	text-align: center;
-	padding: 20px
+	padding: 20px;
 }
-
 
 .input-group {
 	width: 800px;
@@ -100,7 +95,8 @@ body {
 }
 
 /*START PAGE : ASIDE - FASTEST REACTION + PREVIOUS GAMES - TITLE*/
-.start-page__aside-fastest-reaction-title, .start-page__aside-previous-games-title {
+.start-page__aside-fastest-reaction-title,
+.start-page__aside-previous-games-title {
 	font-size: 40px;
 	font-weight: bold;
 	padding: 20px;
@@ -127,30 +123,33 @@ body {
 	animation-fill-mode: forwards;
 }
 
-
 /*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - TITLE*/
-.start-page__aside-previous-games-live-title, .start-page__aside-previous-games-completed-title {
+.start-page__aside-previous-games-live-title,
+.start-page__aside-previous-games-completed-title {
 	font-size: 16px;
 	padding: 10px;
-	color: #fff
+	color: #fff;
 }
 
 /*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - PLAYERS*/
-.start-page__aside-previous-games-live-players, .start-page__aside-previous-games-completed-players {
+.start-page__aside-previous-games-live-players,
+.start-page__aside-previous-games-completed-players {
 	font-size: 16px;
 	padding-bottom: 10px;
-	color: #fff
+	color: #fff;
 }
 
 /*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED - SCORE*/
-.start-page__aside-previous-games-live-score, .start-page__aside-previous-games-completed-score {
+.start-page__aside-previous-games-live-score,
+.start-page__aside-previous-games-completed-score {
 	font-size: 16px;
-	color: #fff
+	color: #fff;
 }
 
 /*START PAGE : ASIDE - PREVIOUS GAMES - LIVE + COMPLETED*/
-.start-page__aside-previous-games-live, .start-page__aside-previous-games-completed {
-	background-color: #5447FF;
+.start-page__aside-previous-games-live,
+.start-page__aside-previous-games-completed {
+	background-color: #5447ff;
 	padding: 10px;
 	margin: 10px;
 }
@@ -158,89 +157,89 @@ body {
 /*START PAGE : ASIDE - PREVIOUS GAMES WINNER / LOOSER */
 
 .winner {
-	background-color: #00BE5F;
+	background-color: #00be5f;
 }
 
 .looser {
-	background-color: #BE3900;
+	background-color: #be3900;
 }
 
-.previous-games__btn, .fastest-reaction__btn {
+.previous-games__btn,
+.fastest-reaction__btn {
 	width: 800px;
-	background-color: #353D44;
+	background-color: #353d44;
 	padding: 24px;
 	border: none;
 }
 
-.previous-games__btn:hover, .fastest-reaction__btn:hover {
+.previous-games__btn:hover,
+.fastest-reaction__btn:hover {
 	background-color: #292f34;
 }
 
-#app {
-    height:100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    background-color: rgb(77, 75, 75);
+.app {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	background-color: rgb(77, 75, 75);
 }
 
 .container {
-
 }
 
 .gameboard-wrapper {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 #gameboard-title {
-    padding:10px;
-    background-color: rgb(41 120 95);
-    color: white;
-    text-align: center;
-    margin: 0;
+	padding: 10px;
+	background-color: rgb(41 120 95);
+	color: white;
+	text-align: center;
+	margin: 0;
 }
 
 .gameboard {
-    display: grid;
-    height: 75vh;
-    width: 100%;
-    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
-    grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+	display: grid;
+	height: 75vh;
+	width: 100%;
+	grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+	grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
 }
 
 .grid-box {
-    height: 100%;
-    background-color: rgb(150, 190, 178);
+	height: 100%;
+	background-color: rgb(150, 190, 178);
 }
 
 #virus {
-    background: url(/public/assets/icons/SARS-CoV-2_without_background.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: rgb(150, 190, 178);
+	background: url(/public/assets/icons/SARS-CoV-2_without_background.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: rgb(150, 190, 178);
 }
 
-.scoreboard-wrapper {  
-    min-height: 100%;
-    background-color: rgb(150, 190, 178);
+.scoreboard-wrapper {
+	min-height: 100%;
+	background-color: rgb(150, 190, 178);
 }
 
 #scoreboard-title {
-    padding:10px;
-    background-color: rgb(41 120 95);
-    color: white;
-    text-align: center;
+	padding: 10px;
+	background-color: rgb(41 120 95);
+	color: white;
+	text-align: center;
 }
 
 #scoreboard-list {
-    list-style-type: none;
-    padding:0;
-    text-align: center;
-    ;
+	list-style-type: none;
+	padding: 0;
+	text-align: center;
 }
 
 .score-item {
-    padding: 5px 0;
-    font-size: 20px;
+	padding: 5px 0;
+	font-size: 20px;
 }
