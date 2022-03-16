@@ -225,21 +225,25 @@ body {
 	border-radius: 10px;
 }
 
-#scoreboard-title {
+.scoreboard-title {
+	border-radius: 5px 5px 0 0;
 	padding: 10px;
-	background-color:  #00BE5F;
+	background-color: #5447FF;
 	color: white;
 	text-align: center;
 }
 
 #scoreboard-list {
+
 	list-style-type: none;
 	padding: 0;
 	text-align: center;;
 }
 
 .score-item {
-	padding: 5px 0;
+	border-radius: 5px;
+	margin-top: 20px;
+	padding: 16px 0;
 	font-size: 20px;
 	color: white;
 }
