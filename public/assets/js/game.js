@@ -1,1 +1,27 @@
 const socket = io();
+const messageForm = document.querySelector("#message-form"); //username form
+
+// get username and room from form and emit `user:joined` and then show chat
+messageForm.addEventListener("submit", (e) => {
+	e.preventDefault();
+
+	username = messageForm.message.value;
+
+	console.log(`User ${username} wants to connect`);
+
+	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
+	socket.emit("user:joined", username, (status) => {
+		// we've received acknowledgement from the server
+		console.log("Server acknowledged that user joined", status);
+
+		if (status.success) {
+			// hide start view
+			startEl.classList.add("hide");
+
+			// show chat view
+			chatWrapperEl.classList.remove("hide");
+
+			console.log("SUCCESS");
+		}
+	});
+});
