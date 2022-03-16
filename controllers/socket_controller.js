@@ -26,8 +26,10 @@ const handleUserJoined = async function (username, callback) {
 		//Check so other person is still in
 		io.to(partner.userId).emit("user:foundmatch", partner);
 
-		//Join the room
+		//Join the room and remove from array, needs to check if partner is still there in the future
 		this.join("game-" + partner.room);
+		lookingForMatch.shift();
+
 		// , (status) => {
 		// 	if (status.success) {
 		// 		debug("match successful");
