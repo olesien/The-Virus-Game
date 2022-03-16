@@ -2,9 +2,23 @@ const socket = io();
 const messageForm = document.querySelector("#message-form"); //username form
 const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
+const gridBoxes = document.querySelectorAll(".grid-box");
 
 let activeRoom = null;
 let username = null;
+
+// get random number between 1-64
+const getRandomNumber = () => {
+	return Math.ceil( Math.random() * 64 );
+}
+
+// add virus to random grid box
+const addVirus = () => {
+    let randomNumber = getRandomNumber();
+    gridBoxes[randomNumber].classList.add('virus');
+} 
+
+addVirus();
 
 const startGame = (username) => {
 	console.log(username);
@@ -13,6 +27,9 @@ const startGame = (username) => {
 
 	// show chat view
 	appEl.classList.remove("hide");
+
+    // add virus to gamestart later
+    // addVirus();
 };
 
 socket.on("user:foundmatch", (partner) => {

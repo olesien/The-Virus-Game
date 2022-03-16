@@ -209,8 +209,8 @@ body {
 	background-color:  #292f34;
 }
 
-#virus {
-	background: url("./public/assets/icons/SARS-CoV-2_without_background.png");
+.virus {
+	background: url("/assets/icons/SARS-CoV-2_without_background.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
