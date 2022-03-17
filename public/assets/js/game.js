@@ -75,21 +75,19 @@ messageForm.addEventListener("submit", (e) => {
 					hours,
 					total = 0;
 
-
 				// timer logic + adding to page
 				const setTime = () => {
-					++total;
-					seconds = getZero(totalSeconds % 60);
-					minuts = getZero(parseInt(totalSeconds / 60));
-					hours = getZero(parseInt(totalSeconds / 60 / 60));
+					total++;
+					seconds = getZero(total % 60);
+					minuts = getZero(parseInt(total / 60));
+					hours = getZero(parseInt(total / 60 / 60));
 					startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`
 				}
-
 				// call function every seconds
 				setInterval(setTime, 1000);
 
 				// get zero if number 9 or less
-				const getZero = (num) =>{
+				const getZero = (num) => {
 					if (num >= 0 && num < 10) return '0' + num;
 					else return num;
 				}
