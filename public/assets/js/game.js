@@ -14,6 +14,19 @@ const addVirus = (randomNumber) => {
 	gridBoxes[randomNumber].classList.add("virus");
 };
 
+const startGame = (match, friend, foe) => {
+	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
+
+	// hide start view
+	startPageEl.classList.add("hide");
+
+	// show chat view
+	appEl.classList.remove("hide");
+
+	// add virus to gamestart later
+	// addVirus();
+};
+
 //Game now has the match info including opponent etc, and will start setting up all required details
 socket.on("game:start", (match) => {
 	//console.log(match);
