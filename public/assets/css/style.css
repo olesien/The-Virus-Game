@@ -76,6 +76,15 @@ body {
 	padding: 20px
 }
 
+/*START PAGE : START GAME LOBBY TIMER*/
+.start-page__lobby-timer {
+	color: white;
+	margin-bottom: 60px;
+	font-size: 32px;
+	font-weight: bold;
+	text-align: center;
+	padding: 20px;
+}
 
 .input-group {
 	width: 800px;
@@ -185,7 +194,6 @@ body {
 }
 
 
-
 #gameboard-title {
 	padding: 10px;
 	background-color: #00BE5F;
@@ -199,14 +207,14 @@ body {
 	border-bottom: 1px solid;
 	display: grid;
 	height: 95vh;
-	grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% ;
-	grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% ;
+	grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+	grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
 }
 
 .grid-box {
 
 	height: 100%;
-	background-color:  #292f34;
+	background-color: #292f34;
 }
 
 .virus {
@@ -214,7 +222,7 @@ body {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-color:  #292f34;
+	background-color: #292f34;
 }
 
 .scoreboard-wrapper {

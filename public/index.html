@@ -18,7 +18,7 @@
 
 <body>
 
-<section class="hide" id="app" >
+<section class="hide" id="app">
 	<div class="app ">
 		<div class="container">
 			<div class="row">
@@ -116,7 +116,7 @@
 	<div class="start-page__window container">
 		<!--START PAGE : START GAME TITLE-->
 		<h2 class="start-page__enter-your-name-title">Enter your Name to play</h2>
-
+		<p class="start-page__lobby-timer">00:00:00</p>
 
 		<!--START PAGE : FORM-->
 		<form id="message-form">
@@ -124,7 +124,10 @@
 				<!--START PAGE : FORM - INPUT-->
 				<input type="text" id="message" class="form-control start-page__input" placeholder="Username...">
 				<!--START PAGE : FORM - BTN-->
-				<button type="submit" class="btn btn-success">Start searching</button>
+				<button type="submit" class="btn btn-success d-flex align-items-center">
+					<div class="mr-3 btn-search">Start Searching</div>
+				</button>
+
 			</div>
 		</form>
 

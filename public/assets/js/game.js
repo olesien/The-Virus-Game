@@ -64,17 +64,59 @@ messageForm.addEventListener("submit", (e) => {
 	socket.emit("user:joined", username, (status) => {
 		// we've received acknowledgement from the server
 		console.log("Server acknowledged that user joined", status);
+
 		if (status.success) {
 			console.log(status);
 			activeRoom = status.partner ? status.partner?.room : null;
 			console.log("ACTIVE ROOM: --- " + activeRoom);
+
 			if (activeRoom) {
 				//Found match already, someone was waiting
 				//startGame(status.partner.username);  //Partially Replaced by game:start
 
 				console.log("active room: " + activeRoom);
 			} else {
-				//display spinner for loading for user
+				const createElImg = document.createElement("img"),
+					startSearching = document.querySelector(".btn-success"),
+					startPageLobbyTimer = document.querySelector(
+						".start-page__lobby-timer"
+					);
+
+				// timer props
+				let minuts,
+					seconds,
+					hours,
+					total = 0;
+
+				// timer logic + adding to page
+				const setTime = () => {
+					total++;
+					seconds = getZero(total % 60);
+					minuts = getZero(parseInt(total / 60));
+					hours = getZero(parseInt(total / 60 / 60));
+					startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`;
+				};
+				// call function every seconds
+				setInterval(setTime, 1000);
+
+				// get zero if number 9 or less
+				const getZero = (num) => {
+					if (num >= 0 && num < 10) return "0" + num;
+					else return num;
+				};
+
+				// Change  Text for Title and Button
+				document.querySelector(
+					".start-page__enter-your-name-title"
+				).textContent = "Lobby status 1/2";
+				document.querySelector(".btn-search").textContent =
+					"Please wait for second player";
+
+				// Loading spinner Proportions and apply to button
+				createElImg.src = "../assets/icons/spinner.gif";
+				createElImg.classList.add("d-block");
+				createElImg.width = 40;
+				startSearching.appendChild(createElImg);
 			}
 		}
 	});
