@@ -13,6 +13,26 @@ let opponent = "player2";
 const addVirus = (randomNumber) => {
 	gridBoxes[randomNumber].classList.add("virus");
 };
+const newRoundTimer = () => {
+	let timer = 1, // seconds
+		seconds,
+		gameBoardTitle = document.querySelector('#gameboard-title'),
+		inter = setInterval(() => {
+			seconds = parseInt(timer % 60, 10);
+			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
+			if (timer-- < 0) {
+				gameBoardTitle.textContent = 'Virus can appear at any moment, be ready!';
+				clearInterval(inter);
+				//New round received, start new round with new virus!
+				socket.on("game:newround", (randomNumber) => {
+					addVirus(randomNumber);
+					console.log("Started new round and added number");
+				});
+
+
+			}
+		}, 1000);
+}
 
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
@@ -23,15 +43,14 @@ const startGame = (match, friend, foe) => {
 	// show chat view
 	appEl.classList.remove("hide");
 
+	// Round Timer
+	newRoundTimer()
 	// add virus to gamestart later
 	// addVirus();
+
+
 };
 
-//New round received, start new round with new virus!
-socket.on("game:newround", (randomNumber) => {
-	addVirus(randomNumber);
-	console.log("Started new round and added number");
-});
 
 //Game now has the match info including opponent etc, and will start setting up all required details
 socket.on("game:start", (match) => {
