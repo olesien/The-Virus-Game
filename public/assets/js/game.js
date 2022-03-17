@@ -9,14 +9,14 @@ let username = null;
 
 // get random number between 1-64
 const getRandomNumber = () => {
-	return Math.ceil( Math.random() * 64 );
+	return Math.ceil(Math.random() * 64);
 }
 
 // add virus to random grid box
 const addVirus = () => {
-    let randomNumber = getRandomNumber();
-    gridBoxes[randomNumber].classList.add('virus');
-} 
+	let randomNumber = getRandomNumber();
+	gridBoxes[randomNumber].classList.add('virus');
+}
 
 addVirus();
 
@@ -28,8 +28,8 @@ const startGame = (username) => {
 	// show chat view
 	appEl.classList.remove("hide");
 
-    // add virus to gamestart later
-    // addVirus();
+	// add virus to gamestart later
+	// addVirus();
 };
 
 socket.on("user:foundmatch", (partner) => {
@@ -54,17 +54,32 @@ messageForm.addEventListener("submit", (e) => {
 	socket.emit("user:joined", username, (status) => {
 		// we've received acknowledgement from the server
 		console.log("Server acknowledged that user joined", status);
+
 		if (status.success) {
 			console.log(status);
 			activeRoom = status.partner ? status.partner?.room : null;
 			console.log("ACTIVE ROOM: --- " + activeRoom);
+
 			if (activeRoom) {
 				//Found match already, someone was waiting
 				startGame(status.partner.username);
-
 				console.log("active room: " + activeRoom);
 			} else {
-				//display spinner for loading for user
+				const createElImg = document.createElement('img'),
+					startSearching = document.querySelector('.btn-success');
+				const timer = setTimeout(() => {
+
+				},1000)
+				// Change  Text for Title and Button
+				document.querySelector('.start-page__enter-your-name-title').textContent = 'Lobby status 1/2';
+				document.querySelector('.btn-search').textContent = 'Please wait for second player';
+
+
+				// Loading spinner Proportions and apply to button
+				createElImg.src = '../assets/icons/spinner.gif';
+				createElImg.classList.add('d-block')
+				createElImg.width = 40;
+				startSearching.appendChild(createElImg)
 			}
 		}
 	});
