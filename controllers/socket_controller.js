@@ -6,9 +6,68 @@ const debug = require("debug")("game:socket_controller");
 
 let io = null; // socket.io server instance
 
+// {
+//     username: "somename",
+//     userId: "23414122131",
+//     room: "game-23414122131",
+// }
 let lookingForMatch = [];
 
+// "game-2341412213": {
+//     player1: {
+//         name: "somename",
+//         id: "23414122131",
+//         wins: 1,
+//         fastestTime: 1
+//     },
+//     player2: {
+//         name: "othername",
+//         id: "424214114",
+//         wins: 2,
+//         fastestTime: 0.9
+//     },
+//     rounds: [
+//         {
+//             winner: "player1",
+//             winnerTime: 1.2,
+//             loser: "player2",
+//             loserTime: 1.3,
+//         },
+//         {
+//             winner: "player1",
+//             winnerTime: 1.3,
+//             loser: "player2",
+//             loserTime: 1.5,
+//         }
+//     ]
+// }
 let activeMatches = {};
+
+const startGame = async (room, player1, player2) => {
+	//debug(room, player1, player2);
+	activeMatches[room] = {
+		player1: {
+			...player1,
+			wins: 0,
+			fastestTime: -1,
+		},
+		player2: {
+			...player2,
+			wins: 0,
+			fastestTime: -1,
+		},
+		rounds: [],
+	};
+
+	debug(activeMatches);
+	io.to(room).emit("game:start", activeMatches[room]);
+	debug("Sent to room", room);
+	setTimeout(() => {
+		//Stage 1 of game - send all info
+		// io.to(room).emit("game:start", activeMatches[room]);
+		// debug("Sent to room", room);
+	}, 1000);
+};
 
 // Handle when a user entered name and started to matchamke
 const handleUserJoined = async function (username, callback) {
@@ -24,11 +83,23 @@ const handleUserJoined = async function (username, callback) {
 		const partner = lookingForMatch[0];
 
 		//Check so other person is still in
-		io.to(partner.userId).emit("user:foundmatch", partner);
+		io.to(partner.userId).emit("user:foundmatch", partner); //<- Partially Replaced by game:start
 
 		//Join the room and remove from array, needs to check if partner is still there in the future
-		this.join("game-" + partner.room);
+		debug("User " + username + " joined " + "game-" + partner.room);
+		this.join(partner.room);
 		lookingForMatch.shift();
+
+		const player1 = {
+			name: username,
+			id: this.id,
+		};
+
+		const player2 = {
+			name: partner.username,
+			id: partner.userId,
+		};
+		startGame(partner.room, player1, player2);
 
 		// , (status) => {
 		// 	if (status.success) {
@@ -43,7 +114,10 @@ const handleUserJoined = async function (username, callback) {
 	} else {
 		//Set up new game!
 		// join room
-		this.join("game-" + username);
+
+		this.join("game-" + this.id);
+		debug("User " + username + " joined " + "game-" + "userId");
+
 		lookingForMatch.push({
 			username,
 			userId: this.id,

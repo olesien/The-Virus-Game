@@ -7,39 +7,30 @@ const gridBoxes = document.querySelectorAll(".grid-box");
 let activeRoom = null;
 let username = null;
 
-// get random number between 1-64
-const getRandomNumber = () => {
-	return Math.ceil( Math.random() * 64 );
-}
+let opponent = "player2";
 
 // add virus to random grid box
-const addVirus = () => {
-    let randomNumber = getRandomNumber();
-    gridBoxes[randomNumber].classList.add('virus');
-} 
-
-addVirus();
-
-const startGame = (username) => {
-	console.log(username);
-	// hide start view
-	startPageEl.classList.add("hide");
-
-	// show chat view
-	appEl.classList.remove("hide");
-
-    // add virus to gamestart later
-    // addVirus();
+const addVirus = (randomNumber) => {
+	gridBoxes[randomNumber].classList.add("virus");
 };
 
+//Game now has the match info including opponent etc, and will start setting up all required details
+socket.on("game:start", (match) => {
+	//console.log(match);
+	console.log("Foe: " + match[opponent].name + " You: " + username);
+
+	//Move to start game function to set up scoreboard and unhide the game
+	startGame(match, username, match[opponent].name);
+
+	//alert("Game started ooo");
+});
+
+//This is just to set the room and opponent for later use
 socket.on("user:foundmatch", (partner) => {
-	console.log(partner);
+	//console.log(partner);
 	activeRoom = partner.room;
+	opponent = "player1";
 	console.log("active room: " + activeRoom);
-	startGame(partner.username);
-	// callback({
-	// 	success: true,
-	// });
 });
 
 // get username and room from form and emit `user:joined` and then show chat
@@ -60,7 +51,7 @@ messageForm.addEventListener("submit", (e) => {
 			console.log("ACTIVE ROOM: --- " + activeRoom);
 			if (activeRoom) {
 				//Found match already, someone was waiting
-				startGame(status.partner.username);
+				//startGame(status.partner.username);  //Partially Replaced by game:start
 
 				console.log("active room: " + activeRoom);
 			} else {
