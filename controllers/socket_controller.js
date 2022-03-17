@@ -43,7 +43,7 @@ let lookingForMatch = [];
 // }
 let activeMatches = {};
 
-// get random number between 1-64
+// get random number
 const getRandomNumber = (num) => {
 	return Math.ceil(Math.random() * num);
 };
