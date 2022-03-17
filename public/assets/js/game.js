@@ -14,11 +14,11 @@ const addVirus = (randomNumber) => {
 	gridBoxes[randomNumber].classList.add("virus");
 };
 const newRoundTimer = () => {
-	let timer = 9, // seconds
+	let timer = 4, // seconds
 		seconds,
 		gameBoardTitle = document.querySelector("#gameboard-title"),
 		inter = setInterval(() => {
-			seconds = parseInt(timer % 60, 5);
+			seconds = parseInt(timer % 60, 10);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
 			if (timer-- < 1) {
 				gameBoardTitle.textContent =
