@@ -11,6 +11,5 @@ const toogleFun = (elem, btn) => {
 		elem.classList.toggle('hide');
 	})
 };
-
 toogleFun(startPageAsidePreviousGames, previousGamesButton);
-toogleFun(tartPageAsideFastestReaction, fastestReactionButton)
+toogleFun(tartPageAsideFastestReaction, fastestReactionButton);

@@ -66,10 +66,34 @@ messageForm.addEventListener("submit", (e) => {
 				console.log("active room: " + activeRoom);
 			} else {
 				const createElImg = document.createElement('img'),
-					startSearching = document.querySelector('.btn-success');
-				const timer = setTimeout(() => {
+					startSearching = document.querySelector('.btn-success'),
+					startPageLobbyTimer = document.querySelector('.start-page__lobby-timer');
 
-				},1000)
+				// timer props
+				let minuts,
+					seconds,
+					hours,
+					total = 0;
+
+
+				// timer logic + adding to page
+				const setTime = () => {
+					++total;
+					seconds = getZero(totalSeconds % 60);
+					minuts = getZero(parseInt(totalSeconds / 60));
+					hours = getZero(parseInt(totalSeconds / 60 / 60));
+					startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`
+				}
+
+				// call function every seconds
+				setInterval(setTime, 1000);
+
+				// get zero if number 9 or less
+				const getZero = (num) =>{
+					if (num >= 0 && num < 10) return '0' + num;
+					else return num;
+				}
+
 				// Change  Text for Title and Button
 				document.querySelector('.start-page__enter-your-name-title').textContent = 'Lobby status 1/2';
 				document.querySelector('.btn-search').textContent = 'Please wait for second player';
