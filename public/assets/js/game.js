@@ -16,16 +16,17 @@ const addVirus = (randomNumber) => {
 const newRoundTimer = () => {
 	let timer = 9, // seconds
 		seconds,
-		gameBoardTitle = document.querySelector('#gameboard-title'),
+		gameBoardTitle = document.querySelector("#gameboard-title"),
 		inter = setInterval(() => {
-			seconds = parseInt(timer % 60, 10);
+			seconds = parseInt(timer % 60, 5);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
 			if (timer-- < 1) {
-				gameBoardTitle.textContent = 'Virus can appear at any moment, be ready!';
+				gameBoardTitle.textContent =
+					"Virus can appear at any moment, be ready!";
 				clearInterval(inter);
 			}
 		}, 1000);
-}
+};
 
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
@@ -37,11 +38,9 @@ const startGame = (match, friend, foe) => {
 	appEl.classList.remove("hide");
 
 	// Round Timer
-	newRoundTimer()
+	newRoundTimer();
 	// add virus to gamestart later
 	// addVirus();
-
-
 };
 
 //New round received, start new round with new virus!
