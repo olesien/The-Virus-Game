@@ -27,6 +27,12 @@ const startGame = (match, friend, foe) => {
 	// addVirus();
 };
 
+//New round received, start new round with new virus!
+socket.on("game:newround", (randomNumber) => {
+	addVirus(randomNumber);
+	console.log("Started new round and added number");
+});
+
 //Game now has the match info including opponent etc, and will start setting up all required details
 socket.on("game:start", (match) => {
 	//console.log(match);
