@@ -44,8 +44,8 @@ let lookingForMatch = [];
 let activeMatches = {};
 
 // get random number between 1-64
-const getRandomNumber = () => {
-	return Math.ceil(Math.random() * 64);
+const getRandomNumber = (num) => {
+	return Math.ceil(Math.random() * num);
 };
 
 const startGame = async (room, player1, player2) => {
@@ -70,8 +70,8 @@ const startGame = async (room, player1, player2) => {
 	debug("Sent to room", room);
 	setTimeout(() => {
 		//start first round
-		io.to(room).emit("game:newround", getRandomNumber());
-	}, 5000);
+		io.to(room).emit("game:newround", getRandomNumber(64));
+	}, getRandomNumber(10) * 1000 + 5000);
 };
 
 // Handle when a user entered name and started to matchamke
