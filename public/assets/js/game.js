@@ -11,7 +11,20 @@ let opponent = "player2";
 
 // add virus to random grid box
 const addVirus = (randomNumber) => {
-	gridBoxes[randomNumber].classList.add("virus");
+	const virusEl = gridBoxes[randomNumber];
+	virusEl.classList.add("virus");
+	virusEl.addEventListener("click", () => {
+		//alert("clicked virus");
+		virusEl.classList.remove("virus");
+		console.log("ACTIVE ROOM: ", activeRoom);
+		socket.emit("game:clicked-virus", activeRoom, (status) => {
+			// we've received acknowledgement from the server
+
+			if (status.success) {
+				console.log(status);
+			}
+		});
+	});
 };
 const newRoundTimer = () => {
 	let timer = 4, // seconds
