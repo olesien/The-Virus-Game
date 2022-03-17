@@ -43,7 +43,7 @@ let lookingForMatch = [];
 // }
 let activeMatches = {};
 
-// get random number between 1-64
+// get random number
 const getRandomNumber = (num) => {
 	return Math.ceil(Math.random() * num);
 };
@@ -141,6 +141,16 @@ const handleUserJoined = async function (username, callback) {
 	//this.broadcast.to(room.id).emit("user:list", room.users);
 };
 
+const handleDisconnect = function () {
+	debug(`Client ${this.id} disconnected :(`);
+	lookingForMatch.forEach((person, index) => {
+		if (person.userId == this.id) {
+			//remove this index
+			lookingForMatch.splice(index, 1);
+		}
+	});
+};
+
 module.exports = function (socket, _io) {
 	io = _io;
 	//Log when user connects
@@ -148,4 +158,7 @@ module.exports = function (socket, _io) {
 
 	// handle user joined
 	socket.on("user:joined", handleUserJoined);
+
+	// handle user disconnect
+	socket.on("disconnect", handleDisconnect);
 };
