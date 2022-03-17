@@ -82,10 +82,6 @@ const startGame = async (room, player1, player2) => {
 
 // Handle when a user clicks virus!
 const handleClickedVirus = async function (room, callback) {
-	//let activeMatch = activeMatches[room];
-	debug(activeMatches);
-	debug(room);
-	debug("active match: ", activeMatches[room]);
 	//Set the player who clicked this to either player1 or player2 in activeMatch object
 	let player =
 		activeMatches[room].player1.id === this.id ? "player1" : "player2";
@@ -94,29 +90,15 @@ const handleClickedVirus = async function (room, callback) {
 		activeMatches[room].player1.id === this.id ? "player2" : "player1";
 
 	//Get time passed
-
 	const currentTime = Date.now();
-	// debug(
-	// 	"Time at start: " +
-	// 		activeMatches[room].startRoundTime +
-	// 		" Current Time: " +
-	// 		currentTime
-	// );
 
-	// debug(Number(currentTime));
-	// debug(activeMatches[room]);
-	// debug(activeMatches[room].startRoundTime);
-	// debug(Number(activeMatches[room].startRoundTime));
-
+	//Get time passed, current time - time when round started
 	const timePassed =
 		Number(currentTime) - Number(activeMatches[room].startRoundTime);
-	// debug(activeMatches[room][player]);
-	// debug(activeMatches[room][opponent]);
-	// debug(timePassed);
 
 	//Set player time passed..
 	activeMatches[room][player].latestTime = timePassed;
-	debug("Time passed: " + activeMatches[room][player].latestTime);
+	//Did the player win?
 	let won;
 
 	if (activeMatches[room][opponent].latestTime <= 0) {
@@ -131,6 +113,14 @@ const handleClickedVirus = async function (room, callback) {
 		//Reset clock
 		activeMatches[room].startRoundtime = 0;
 		won = false;
+		//Add to score, as the one who lost will be the one with all the data
+		activeMatches[room].rounds.push({
+			winner: opponent,
+			winnerTime: activeMatches[room][opponent].latestTime,
+			loser: player,
+			loserTime: activeMatches[room][player].latestTime,
+		});
+		//Send this information to both sides through game:roundresult
 	}
 
 	//Fastest reaction thus far?
@@ -139,8 +129,6 @@ const handleClickedVirus = async function (room, callback) {
 		//push fastest time!
 		activeMatches[room][player].fastestTime = timePassed;
 	}
-
-	//Add to score
 
 	//Next round
 
