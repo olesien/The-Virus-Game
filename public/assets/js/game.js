@@ -14,13 +14,13 @@ const addVirus = (randomNumber) => {
 	gridBoxes[randomNumber].classList.add("virus");
 };
 const newRoundTimer = () => {
-	let timer = 1, // seconds
+	let timer = 9, // seconds
 		seconds,
 		gameBoardTitle = document.querySelector('#gameboard-title'),
 		inter = setInterval(() => {
 			seconds = parseInt(timer % 60, 10);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
-			if (timer-- < 0) {
+			if (timer-- < 1) {
 				gameBoardTitle.textContent = 'Virus can appear at any moment, be ready!';
 				clearInterval(inter);
 				//New round received, start new round with new virus!
@@ -28,7 +28,6 @@ const newRoundTimer = () => {
 					addVirus(randomNumber);
 					console.log("Started new round and added number");
 				});
-
 
 			}
 		}, 1000);
