@@ -59,7 +59,7 @@ const startGame = (match, friend, foe) => {
     // hide start view
 	startPageEl.classList.add("hide");
 
-	// show chat view
+	// show game view
 	appEl.classList.remove("hide");
 
     // increment rounds
@@ -93,8 +93,18 @@ socket.on("game:roundresult", (game) => {
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
+    game.rounds.length++;
+
+    roundsEl.innerHTML = "Round: " + game.rounds.length + "/10";
+
+    const liEls = document.querySelector('.scoreinfo');
+    liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
+
+    console.log(game.player1.wins);
+    console.log(game);
+
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
-	console.log(game.rounds);
+	// console.log(game);
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
