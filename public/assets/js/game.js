@@ -13,19 +13,24 @@ let opponent = "player2";
 const addVirus = (randomNumber) => {
 	const virusEl = gridBoxes[randomNumber];
 	virusEl.classList.add("virus");
+	let clicked = false;
 	virusEl.addEventListener("click", () => {
 		//alert("clicked virus");
 		virusEl.classList.remove("virus");
 
 		//Send click event to server
-		socket.emit("game:clicked-virus", activeRoom, (status) => {
-			// we've received acknowledgement from the server
+		if (!clicked) {
+			socket.emit("game:clicked-virus", activeRoom, (status) => {
+				// we've received acknowledgement from the server
 
-			if (!status.success) {
-				console.log(status.error);
-				alert("Something went wrong. Check console for details");
-			}
-		});
+				if (!status.success) {
+					console.log(status.error);
+					alert("Something went wrong. Check console for details");
+				}
+				clicked = true;
+				console.log("You have clicked the virus");
+			});
+		}
 	});
 };
 const newRoundTimer = () => {

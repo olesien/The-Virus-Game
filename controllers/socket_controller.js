@@ -49,6 +49,15 @@ const getRandomNumber = (num) => {
 	return Math.ceil(Math.random() * num);
 };
 
+//New round
+const newRound = async (room, max, offset) => {
+	setTimeout(() => {
+		debug("SENDING TO NEW ROUND");
+		io.to(room).emit("game:newround", getRandomNumber(64));
+		activeMatches[room].startRoundTime = Date.now();
+	}, getRandomNumber(max) * 1000 + offset * 1000);
+};
+
 const startGame = async (room, player1, player2) => {
 	//debug(room, player1, player2);
 	activeMatches[room] = {
@@ -72,16 +81,13 @@ const startGame = async (room, player1, player2) => {
 	//Stage 1 of game - send all info
 	io.to(room).emit("game:start", activeMatches[room]);
 	debug("Sent to room", room);
-	setTimeout(() => {
-		//start first round
-
-		io.to(room).emit("game:newround", getRandomNumber(64));
-		activeMatches[room].startRoundTime = Date.now();
-	}, getRandomNumber(10) * 1000 + 5000);
+	//start first round
+	newRound(room, 10, 5);
 };
 
 // Handle when a user clicks virus!
 const handleClickedVirus = async function (room, callback) {
+	debug("HANDLING VIRUS CLICKED");
 	//Handle errors
 	try {
 		//Set the player who clicked this to either player1 or player2 in activeMatch object
@@ -103,6 +109,12 @@ const handleClickedVirus = async function (room, callback) {
 		//Did the player win?
 		let won;
 
+		//Fastest reaction thus far?
+		const fastestTime = Number(activeMatches[room][player].fastestTime);
+		if (fastestTime <= 0 || timePassed < fastestTime) {
+			//push fastest time!
+			activeMatches[room][player].fastestTime = timePassed;
+		}
 		if (activeMatches[room][opponent].latestTime <= 0) {
 			//player was first!
 			debug(activeMatches[room][player].name + " was first! (hero)");
@@ -128,13 +140,9 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Start new round here
-		}
-
-		//Fastest reaction thus far?
-		const fastestTime = Number(activeMatches[room][player].fastestTime);
-		if (fastestTime <= 0 || timePassed < fastestTime) {
-			//push fastest time!
-			activeMatches[room][player].fastestTime = timePassed;
+			activeMatches[room][player].latestTime = -1;
+			activeMatches[room][opponent].latestTime = -1;
+			newRound(room, 10, 5);
 		}
 
 		//Next round
