@@ -251,10 +251,19 @@ body {
 	text-align: center;;
 }
 
-.score-item {
-	border-radius: 5px;
-	margin-top: 20px;
-	padding: 16px 0;
-	font-size: 20px;
-	color: white;
+#rounds {
+    display: table;
+    margin: 10px auto 20px auto;
+    font-size: 18px;
+    color:#00BE5F;
+}
+
+.scoreinfo {
+    padding: 5px 0; 
+}
+
+#friend,
+#foe {
+    color: white;
+    font-size: 16px;
 }
