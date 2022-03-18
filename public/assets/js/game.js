@@ -25,10 +25,13 @@ const addVirus = (randomNumber) => {
 
 				if (!status.success) {
 					console.log(status.error);
+
 					alert("Something went wrong. Check console for details");
+				} else {
+					console.log("Won: " + status.won);
+					clicked = true;
+					console.log("You have clicked the virus");
 				}
-				clicked = true;
-				console.log("You have clicked the virus");
 			});
 		}
 	});

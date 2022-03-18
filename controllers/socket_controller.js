@@ -150,6 +150,7 @@ const handleClickedVirus = async function (room, callback) {
 		// confirm success
 		callback({
 			success: true,
+			won,
 		});
 	} catch (error) {
 		debug(error);
