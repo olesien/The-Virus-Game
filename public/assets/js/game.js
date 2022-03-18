@@ -3,6 +3,7 @@ const messageForm = document.querySelector("#message-form"); //username form
 const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
+const gameBoardTitle = document.querySelector("#gameboard-title");
 const roundsEl = document.querySelector('#rounds');
 const scoreboardEl = document.querySelector('#scoreboard-list');
 
@@ -41,7 +42,6 @@ const addVirus = (randomNumber) => {
 const newRoundTimer = () => {
 	let timer = 4, // seconds
 		seconds,
-		gameBoardTitle = document.querySelector("#gameboard-title"),
 		inter = setInterval(() => {
 			seconds = parseInt(timer % 60, 10);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
@@ -104,7 +104,21 @@ socket.on("game:roundresult", (game) => {
     console.log(game);
 
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
-	// console.log(game);
+	console.log(game.rounds);
+
+
+	// time spent on cllick
+	const player_you = game[player].fastestTime,
+		player_opponent = game[opponent].fastestTime;
+
+	// check which person won and lose
+	if (game.rounds[game.rounds.length - 1].winner === player) {
+		gameBoardTitle.textContent = `Win: ${Math.floor(player_opponent - player_you) / 1000} Seconds`;
+		setTimeout(newRoundTimer, 800);
+	} else if (game.rounds[game.rounds.length - 1].loser === player) {
+		gameBoardTitle.textContent = `Lose: ${Math.floor(player_you - player_opponent) / 1000} Seconds`;
+		setTimeout(newRoundTimer, 800);
+	}
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
