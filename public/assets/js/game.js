@@ -16,12 +16,14 @@ const addVirus = (randomNumber) => {
 	virusEl.addEventListener("click", () => {
 		//alert("clicked virus");
 		virusEl.classList.remove("virus");
-		console.log("ACTIVE ROOM: ", activeRoom);
+
+		//Send click event to server
 		socket.emit("game:clicked-virus", activeRoom, (status) => {
 			// we've received acknowledgement from the server
 
-			if (status.success) {
-				console.log(status);
+			if (!status.success) {
+				console.log(status.error);
+				alert("Something went wrong. Check console for details");
 			}
 		});
 	});
@@ -60,6 +62,11 @@ const startGame = (match, friend, foe) => {
 socket.on("game:newround", (randomNumber) => {
 	addVirus(randomNumber);
 	console.log("Started new round and added number");
+});
+
+//See how the round went!
+socket.on("game:roundresult", (game) => {
+	console.log(game.rounds);
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details

@@ -82,64 +82,74 @@ const startGame = async (room, player1, player2) => {
 
 // Handle when a user clicks virus!
 const handleClickedVirus = async function (room, callback) {
-	//Set the player who clicked this to either player1 or player2 in activeMatch object
-	let player =
-		activeMatches[room].player1.id === this.id ? "player1" : "player2";
-	//same as above but.. opposite
-	let opponent =
-		activeMatches[room].player1.id === this.id ? "player2" : "player1";
+	//Handle errors
+	try {
+		//Set the player who clicked this to either player1 or player2 in activeMatch object
+		let player =
+			activeMatches[room].player1.id === this.id ? "player1" : "player2";
+		//same as above but.. opposite
+		let opponent =
+			activeMatches[room].player1.id === this.id ? "player2" : "player1";
 
-	//Get time passed
-	const currentTime = Date.now();
+		//Get time passed
+		const currentTime = Date.now();
 
-	//Get time passed, current time - time when round started
-	const timePassed =
-		Number(currentTime) - Number(activeMatches[room].startRoundTime);
+		//Get time passed, current time - time when round started
+		const timePassed =
+			Number(currentTime) - Number(activeMatches[room].startRoundTime);
 
-	//Set player time passed..
-	activeMatches[room][player].latestTime = timePassed;
-	//Did the player win?
-	let won;
+		//Set player time passed..
+		activeMatches[room][player].latestTime = timePassed;
+		//Did the player win?
+		let won;
 
-	if (activeMatches[room][opponent].latestTime <= 0) {
-		//player was first!
-		debug(activeMatches[room][player].name + " was first! (hero)");
-		activeMatches[room][player].wins += 1;
+		if (activeMatches[room][opponent].latestTime <= 0) {
+			//player was first!
+			debug(activeMatches[room][player].name + " was first! (hero)");
+			activeMatches[room][player].wins += 1;
 
-		won = true;
-	} else {
-		//enemy was first
-		debug(activeMatches[room][opponent].name + " was first! (villain)");
-		//Reset clock
-		activeMatches[room].startRoundtime = 0;
-		won = false;
-		//Add to score, as the one who lost will be the one with all the data
-		activeMatches[room].rounds.push({
-			winner: opponent,
-			winnerTime: activeMatches[room][opponent].latestTime,
-			loser: player,
-			loserTime: activeMatches[room][player].latestTime,
+			won = true;
+		} else {
+			//enemy was first
+			debug(activeMatches[room][opponent].name + " was first! (villain)");
+			//Reset clock
+			activeMatches[room].startRoundtime = 0;
+			won = false;
+			//Add to score, as the one who lost will be the one with all the data
+			activeMatches[room].rounds.push({
+				winner: opponent,
+				winnerTime: activeMatches[room][opponent].latestTime,
+				loser: player,
+				loserTime: activeMatches[room][player].latestTime,
+			});
+
+			//Send this information of all rounds to both sides through game:roundresult
+			debug("Sending round result to room: " + room);
+			io.to(room).emit("game:roundresult", activeMatches[room]);
+
+			//Start new round here
+		}
+
+		//Fastest reaction thus far?
+		const fastestTime = Number(activeMatches[room][player].fastestTime);
+		if (fastestTime <= 0 || timePassed < fastestTime) {
+			//push fastest time!
+			activeMatches[room][player].fastestTime = timePassed;
+		}
+
+		//Next round
+
+		// confirm success
+		callback({
+			success: true,
 		});
-		//Send this information to both sides through game:roundresult
+	} catch (error) {
+		debug(error);
+		callback({
+			success: false,
+			error,
+		});
 	}
-
-	//Fastest reaction thus far?
-	const fastestTime = Number(activeMatches[room][player].fastestTime);
-	if (fastestTime <= 0 || timePassed < fastestTime) {
-		//push fastest time!
-		activeMatches[room][player].fastestTime = timePassed;
-	}
-
-	//Next round
-
-	// confirm success
-	callback({
-		success: true,
-		data: { won, match: activeMatches[room] },
-	});
-
-	// broadcast list of users in room to all connected sockets EXCEPT ourselves
-	//this.broadcast.to(room.id).emit("user:list", room.users);
 };
 
 // Handle when a user entered name and started to matchamke
