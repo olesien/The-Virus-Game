@@ -140,7 +140,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd
-			if (activeMatches[room].rounds.length < 9) {
+			if (activeMatches[room].rounds.length < 10) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -148,6 +148,7 @@ const handleClickedVirus = async function (room, callback) {
 			} else {
 				//This is round 10 or somehow round 11+
 				//Send match results, and allow the players to retry or return to home screen
+				io.to(room).emit("game:end", activeMatches[room]);
 			}
 		}
 
@@ -198,16 +199,6 @@ const handleUserJoined = async function (username, callback) {
 			id: partner.userId,
 		};
 		startGame(partner.room, player1, player2);
-
-		// , (status) => {
-		// 	if (status.success) {
-		// 		debug("match successful");
-
-		// 		lookingForMatch.shift();
-		// 	} else {
-		// 		//next id?
-		// 	}
-		// }
 		friend = partner;
 	} else {
 		//Set up new game!

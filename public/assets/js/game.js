@@ -4,8 +4,8 @@ const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector("#gameboard-title");
-const roundsEl = document.querySelector('#rounds');
-const scoreboardEl = document.querySelector('#scoreboard-list');
+const roundsEl = document.querySelector("#rounds");
+const scoreboardEl = document.querySelector("#scoreboard-list");
 
 let activeRoom = null;
 let username = null;
@@ -55,32 +55,33 @@ const newRoundTimer = () => {
 
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
-    
-    // hide start view
+
+	// hide start view
 	startPageEl.classList.add("hide");
 
 	// show game view
 	appEl.classList.remove("hide");
 
-    // increment rounds
-    match.rounds++;
+	// increment rounds
+	match.rounds++;
 
-    // create new li element
-    const liEl = document.createElement('li');
-    
-    // add class of scoreinfo to li
-    liEl.classList.add('scoreinfo');
+	// create new li element
+	const liEl = document.createElement("li");
 
-    // set content of li 
-    liEl.innerHTML = `<span id="friend">${friend + "(0)" + " - "}</span><span id="foe">${foe + "(0)"}</span>`;
+	// add class of scoreinfo to li
+	liEl.classList.add("scoreinfo");
 
-    // append li to ul
-    scoreboardEl.appendChild(liEl);
+	// set content of li
+	liEl.innerHTML = `<span id="friend">${
+		friend + "(0)" + " - "
+	}</span><span id="foe">${foe + "(0)"}</span>`;
+
+	// append li to ul
+	scoreboardEl.appendChild(liEl);
 
 	// Round Timer
 	newRoundTimer();
 };
-
 
 //New round received, start new round with new virus!
 socket.on("game:newround", (randomNumber) => {
@@ -93,19 +94,20 @@ socket.on("game:roundresult", (game) => {
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
-    game.rounds.length++;
+	if (game.rounds.length < 10) {
+		game.rounds.length++;
+	}
 
-    roundsEl.innerHTML = "Round: " + game.rounds.length + "/10";
+	roundsEl.innerHTML = "Round: " + game.rounds.length + "/10";
 
-    const liEls = document.querySelector('.scoreinfo');
-    liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
+	const liEls = document.querySelector(".scoreinfo");
+	liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
 
-    console.log(game.player1.wins);
-    console.log(game);
+	console.log(game.player1.wins);
+	console.log(game);
 
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 	console.log(game.rounds);
-
 
 	// time spent on cllick
 	const player_you = game[player].fastestTime,
@@ -113,12 +115,22 @@ socket.on("game:roundresult", (game) => {
 
 	// check which person won and lose
 	if (game.rounds[game.rounds.length - 1].winner === player) {
-		gameBoardTitle.textContent = `Win: ${Math.floor(player_opponent - player_you) / 1000} Seconds`;
+		gameBoardTitle.textContent = `Win: ${
+			Math.floor(player_opponent - player_you) / 1000
+		} Seconds`;
 		setTimeout(newRoundTimer, 800);
 	} else if (game.rounds[game.rounds.length - 1].loser === player) {
-		gameBoardTitle.textContent = `Lose: ${Math.floor(player_you - player_opponent) / 1000} Seconds`;
+		gameBoardTitle.textContent = `Lose: ${
+			Math.floor(player_you - player_opponent) / 1000
+		} Seconds`;
 		setTimeout(newRoundTimer, 800);
 	}
+});
+
+//All 10 rounds done, end game
+socket.on("game:end", (game) => {
+	alert("Game ended!");
+	console.log(game);
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
