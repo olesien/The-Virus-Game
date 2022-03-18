@@ -79,7 +79,9 @@ const startGame = (match, friend, foe) => {
 	liEl.classList.add("scoreinfo", 'scoreboard-list');
 
 	// set content of li
-	liEl.innerHTML = `<span id="friend">${friend + "(0)" + " - "}</span><span id="foe">${foe + "(0)"}</span>`;
+	liEl.innerHTML = `<span id="friend">${
+		friend + "(0)" + " - "
+	}</span><span id="foe">${foe + "(0)"}</span>`;
 
 	// append li to ul
 	scoreboardEl.appendChild(liEl);
