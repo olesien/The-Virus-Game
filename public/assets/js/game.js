@@ -4,6 +4,8 @@ const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector("#gameboard-title");
+const roundsEl = document.querySelector('#rounds');
+const scoreboardEl = document.querySelector('#scoreboard-list');
 
 let activeRoom = null;
 let username = null;
@@ -53,18 +55,32 @@ const newRoundTimer = () => {
 
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
-
-	// hide start view
+    
+    // hide start view
 	startPageEl.classList.add("hide");
 
 	// show chat view
 	appEl.classList.remove("hide");
 
+    // increment rounds
+    match.rounds++;
+
+    // create new li element
+    const liEl = document.createElement('li');
+    
+    // add class of scoreinfo to li
+    liEl.classList.add('scoreinfo');
+
+    // set content of li 
+    liEl.innerHTML = `<span id="friend">${friend + "(0)" + " - "}</span><span id="foe">${foe + "(0)"}</span>`;
+
+    // append li to ul
+    scoreboardEl.appendChild(liEl);
+
 	// Round Timer
 	newRoundTimer();
-	// add virus to gamestart later
-	// addVirus();
 };
+
 
 //New round received, start new round with new virus!
 socket.on("game:newround", (randomNumber) => {

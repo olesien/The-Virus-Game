@@ -139,10 +139,16 @@ const handleClickedVirus = async function (room, callback) {
 			debug("Sending round result to room: " + room);
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
-			//Start new round here
-			activeMatches[room][player].latestTime = -1;
-			activeMatches[room][opponent].latestTime = -1;
-			newRound(room, 10, 5);
+			//Is it NOT round 10 or above? If so issue a new rounnd
+			if (activeMatches[room].rounds.length < 9) {
+				//Start new round here
+				activeMatches[room][player].latestTime = -1;
+				activeMatches[room][opponent].latestTime = -1;
+				newRound(room, 10, 5);
+			} else {
+				//This is round 10 or somehow round 11+
+				//Send match results, and allow the players to retry or return to home screen
+			}
 		}
 
 		//Next round
