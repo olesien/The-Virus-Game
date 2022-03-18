@@ -66,6 +66,10 @@ socket.on("game:newround", (randomNumber) => {
 
 //See how the round went!
 socket.on("game:roundresult", (game) => {
+	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
+	const player = opponent === "player1" ? "player2" : "player1";
+
+	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 	console.log(game.rounds);
 });
 
