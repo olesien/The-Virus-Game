@@ -91,14 +91,12 @@ socket.on("game:newround", (randomNumber) => {
 
 //See how the round went!
 socket.on("game:roundresult", (game) => {
+	const rounds =
+		game.rounds.length < 10 ? game.rounds.length + 1 : game.rounds.length;
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
-	if (game.rounds.length < 10) {
-		game.rounds.length++;
-	}
-
-	roundsEl.innerHTML = "Round: " + game.rounds.length + "/10";
+	roundsEl.innerHTML = "Round: " + rounds + "/10";
 
 	const liEls = document.querySelector(".scoreinfo");
 	liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
@@ -107,7 +105,6 @@ socket.on("game:roundresult", (game) => {
 	console.log(game);
 
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
-	console.log(game.rounds);
 
 	// time spent on cllick
 	const player_you = game[player].fastestTime,
