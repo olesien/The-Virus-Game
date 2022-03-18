@@ -128,6 +128,19 @@ socket.on("game:roundresult", (game) => {
 socket.on("game:end", (game) => {
 	alert("Game ended!");
 	console.log(game);
+
+    const rematchEl = document.createElement('button');
+    const lobbyEl = document.createElement('button');
+
+    rematchEl.classList.add('rematch');
+    lobbyEl.classList.add('lobby');
+    
+    rematchEl.innerHTML = "Rematch"
+    lobbyEl.innerHTML = "Go To Lobby"
+
+    scoreboardWrapperEl.append(rematchEl);
+    scoreboardWrapperEl.append(lobbyEl);
+
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
