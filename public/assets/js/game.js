@@ -3,9 +3,9 @@ const messageForm = document.querySelector("#message-form"); //username form
 const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
-const gameBoardTitle = document.querySelector("#gameboard-title");
+const gameBoardTitle = document.querySelector(".main-window__bar-link");
 const roundsEl = document.querySelector("#rounds");
-const scoreboardEl = document.querySelector("#scoreboard-list");
+const scoreboardEl = document.querySelector('.scoreboard-list');
 
 let activeRoom = null;
 let username = null;
@@ -40,6 +40,8 @@ const addVirus = (randomNumber) => {
 	});
 };
 const newRoundTimer = () => {
+	gameBoardTitle.style.textAlign = 'center';
+	gameBoardTitle.textContent = 'Time Until Game Starts 5 Seconds';
 	let timer = 4, // seconds
 		seconds,
 		inter = setInterval(() => {
@@ -53,9 +55,14 @@ const newRoundTimer = () => {
 		}, 1000);
 };
 
+
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
 
+	// round view
+	roundsEl.classList.toggle('hide');
+	//	scoreboard view
+	scoreboardEl.classList.toggle('hide');
 	// hide start view
 	startPageEl.classList.add("hide");
 
@@ -66,15 +73,13 @@ const startGame = (match, friend, foe) => {
 	match.rounds++;
 
 	// create new li element
-	const liEl = document.createElement("li");
+	const liEl = document.createElement("div");
 
 	// add class of scoreinfo to li
-	liEl.classList.add("scoreinfo");
+	liEl.classList.add("scoreinfo", 'scoreboard-list');
 
 	// set content of li
-	liEl.innerHTML = `<span id="friend">${
-		friend + "(0)" + " - "
-	}</span><span id="foe">${foe + "(0)"}</span>`;
+	liEl.innerHTML = `<span id="friend">${friend + "(0)" + " - "}</span><span id="foe">${foe + "(0)"}</span>`;
 
 	// append li to ul
 	scoreboardEl.appendChild(liEl);
@@ -129,17 +134,17 @@ socket.on("game:end", (game) => {
 	alert("Game ended!");
 	console.log(game);
 
-    const rematchEl = document.createElement('button');
-    const lobbyEl = document.createElement('button');
+	const rematchEl = document.createElement('button');
+	const lobbyEl = document.createElement('button');
 
-    rematchEl.classList.add('rematch');
-    lobbyEl.classList.add('lobby');
-    
-    rematchEl.innerHTML = "Rematch"
-    lobbyEl.innerHTML = "Go To Lobby"
+	rematchEl.classList.add('rematch');
+	lobbyEl.classList.add('lobby');
 
-    scoreboardWrapperEl.append(rematchEl);
-    scoreboardWrapperEl.append(lobbyEl);
+	rematchEl.innerHTML = "Rematch"
+	lobbyEl.innerHTML = "Go To Lobby"
+
+	scoreboardWrapperEl.append(rematchEl);
+	scoreboardWrapperEl.append(lobbyEl);
 
 });
 
@@ -187,10 +192,9 @@ messageForm.addEventListener("submit", (e) => {
 				console.log("active room: " + activeRoom);
 			} else {
 				const createElImg = document.createElement("img"),
-					startSearching = document.querySelector(".btn-success"),
-					startPageLobbyTimer = document.querySelector(
-						".start-page__lobby-timer"
-					);
+					startSearching = document.querySelector(".start-page__input-btn"),
+					startPageLobbyTimer = document.querySelector(".start-page__lobby-timer");
+
 
 				// timer props
 				let minuts,
@@ -216,16 +220,15 @@ messageForm.addEventListener("submit", (e) => {
 				};
 
 				// Change  Text for Title and Button
-				document.querySelector(
-					".start-page__enter-your-name-title"
-				).textContent = "Lobby status 1/2";
-				document.querySelector(".btn-search").textContent =
+				document.querySelector(".start-page__title").textContent = "Lobby status 1/2";
+				document.querySelector(".start-page__input-btn").textContent =
 					"Please wait for second player";
 
 				// Loading spinner Proportions and apply to button
 				createElImg.src = "../assets/icons/spinner.gif";
 				createElImg.classList.add("d-block");
-				createElImg.width = 40;
+				createElImg.style.marginLeft = "10px"
+				createElImg.width = 24;
 				startSearching.appendChild(createElImg);
 			}
 		}

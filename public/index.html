@@ -18,14 +18,36 @@
 
 <body>
 
-<section class="hide" id="app">
-	<div class="app ">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-9">
+
+<!--Header-->
+<header>
+	<h1 class="game_name mb-5">the virus game</h1>
+</header>
+
+<!--Main-->
+<main class="main-window">
+	<!--Window HeadBar-->
+	<section class="main-window__bar d-flex align-items-center">
+		<span class="main-window__bar-circle-red"> </span>
+		<span class="main-window__bar-circle-yellow"> </span>
+		<span class="main-window__bar-circle-green"> </span>
+		<button class="main-window__back-button-1 hide">Back</button>
+		<button class="main-window__back-button-2 hide">Back</button>
+		<div class="main-window__bar-link-box">
+			<p class="main-window__bar-link">https://thevirusgame.com</p>
+		</div>
+		<p id="rounds" class="hide">Round:0/10</p>
+	</section>
+
+	<!--    Game App-->
+	<section class="hide" id="app">
+		<div class="app ">
+			<div class="container">
+				<div class="row">
 					<div class="gameboard-wrapper">
-						<h2 id="gameboard-title">Time Until Game Starts 5 Seconds</h2>
 						<div class="gameboard">
+							<div class="grid-box"></div>
+							<div class="grid-box"></div>
 							<div class="grid-box"></div>
 							<div class="grid-box"></div>
 							<div class="grid-box"></div>
@@ -93,91 +115,121 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
-                    <div class="scoreboard-wrapper">
-                        <h2 class="scoreboard-title">Scoreboard</h2>
-                        <span id="rounds">Round: 1/10</span>
-                        <ul id="scoreboard-list">
-                            <!--li of player names and score-->
-						</ul> 
-					</div>
+
+			</div>
+		</div><!-- /#app -->
+	</section>
+
+	<!--Previous Games Page-->
+	<section class="previous-games-page hide ">
+		<h2 class="previous-games-page-live-title">Live</h2>
+		<div class="d-flex flex-wrap">
+			<div class="previous-games-page-live-card">
+				<p class="previous-games-page-live-players">Linus - Maxim</p>
+				<p class="previous-games-page-live-score">1 - 2</p>
+			</div>
+		</div>
+		<h2 class="previous-games-page-completed-title">Completed</h2>
+		<div class="d-flex flex-wrap">
+			<div class="previous-games-page-completed-card winner">
+				<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
+				<p class="previous-games-page-live-score">2 - 1</p>
+			</div>
+			<div class="previous-games-page-completed-card loser">
+				<p class="previous-games-page-live-players">Linus - Maxim (winner)</p>
+				<p class="previous-games-page-live-score">1 - 2</p>
+			</div>
+			<div class="previous-games-page-completed-card winner">
+				<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
+				<p class="previous-games-page-live-score">2 - 1</p>
+			</div>
+			<div class="previous-games-page-completed-card winner">
+				<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
+				<p class="previous-games-page-live-score">2 - 1</p>
+			</div>
+			<div class="previous-games-page-completed-card winner">
+				<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
+				<p class="previous-games-page-live-score">2 - 1</p>
+			</div>
+			<div class="previous-games-page-completed-card winner">
+				<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
+				<p class="previous-games-page-live-score">2 - 1</p>
+			</div>
+		</div>
+	</section>
+	<!--Fastest Reaction-->
+	<section class="fastest-reaction-page hide ">
+		<h2 class="fastest-reaction-page-title">Leaderboard</h2>
+		<div class="d-flex flex-column align-items-center mt-2">
+			<div class="d-flex fastest-reaction-place-box align-items-center">
+				<!--Name-->
+				<div class="fastest-reaction-title-box">
+					<p class="fastest-reaction-title first__place">Linus</p>
+				</div>
+				<!--Seconds-->
+				<div class="fastest-reaction-seconds-box first__place">
+					<p class="fastest-reaction-seconds first__place">0.7s</p>
+				</div>
+			</div>
+			<div class="d-flex fastest-reaction-place-box  align-items-center">
+				<!--Name-->
+				<div class="fastest-reaction-title-box">
+					<p class="fastest-reaction-title second__place">Maxim</p>
+				</div>
+				<!--Seconds-->
+				<div class="fastest-reaction-seconds-box second__place">
+					<p class="fastest-reaction-seconds second__place">0.8s</p>
+				</div>
+			</div>
+			<div class="d-flex fastest-reaction-place-box  align-items-center">
+				<!--Name-->
+				<div class="fastest-reaction-title-box">
+					<p class="fastest-reaction-title third__place">Nikola</p>
+				</div>
+				<!--Seconds-->
+				<div class="fastest-reaction-seconds-box third__place">
+					<p class="fastest-reaction-seconds third__place">0.9s</p>
 				</div>
 			</div>
 		</div>
-	</div><!-- /#app -->
-</section>
-<!--START PAGE -->
-<section class="start-page ">
-	<!--START PAGE : TITLE -->
-	<h1 class="start-page__title">THE VIRUS GAME</h1>
-	<!--START PAGE : WINDOW-->
-	<div class="start-page__window container">
-		<!--START PAGE : START GAME TITLE-->
-		<h2 class="start-page__enter-your-name-title">Enter your Name to play</h2>
-		<p class="start-page__lobby-timer">00:00:00</p>
-
-		<!--START PAGE : FORM-->
+	</section>
+	<!--Start Page -->
+	<section class="start-page">
+		<!--Start Page : Title-->
+		<h2 class="start-page__title">Enter your Name to play</h2>
+		<p class="start-page__lobby-timer start-page__title">00:00:00</p>
+		<!--Start Page : FORM-->
 		<form id="message-form">
-			<div class="input-group">
-				<!--START PAGE : FORM - INPUT-->
-				<input type="text" id="message" class="form-control start-page__input" placeholder="Username...">
-				<!--START PAGE : FORM - BTN-->
-				<button type="submit" class="btn btn-success d-flex align-items-center">
-					<div class="mr-3 btn-search">Start Searching</div>
+			<div class="start-page__from-group">
+				<input type="text" id="message" class="start-page__input" placeholder="Username...">
+				<button type="submit" class="start-page__input-btn d-flex align-items-center">
+					<span class="mr-5">Start Searching</span>
 				</button>
-
 			</div>
 		</form>
 
-		<div class="d-flex justify-content-center mt-5 flex-column align-items-center">
-			<button class="fastest-reaction__btn btn btn-primary mb-2 ">Fastest reaction</button>
-			<button class="previous-games__btn  btn btn-primary ">previous games</button>
+		<!--        Start Page : Fastest Reaction + Previous Games  Buttons-->
+		<div class=" d-flex justify-content-between mt-5 start-page__btn-group">
+			<button class="start-page__btn-fastest-reaction">Fastest Reaction</button>
+			<button class="start-page__btn-previous-games">Previous Games</button>
 		</div>
+	</section>
+
+
+</main>
+
+<!--Scoreboard-->
+<aside class="hide">
+	<div class="scoreboard-list"></div>
+</aside>
+
+<!--footer-->
+<footer>
+	<!--wave-->
+	<div class="ocean">
+		<div class="wave"></div>
 	</div>
-
-	<!--START PAGE : ASIDE - FASTEST REACTION-->
-	<aside class="start-page__aside-fastest-reaction hide">
-		<!--START PAGE : ASIDE - FASTEST REACTION - TITLE-->
-		<h2 class="start-page__aside-fastest-reaction-title">Fastest reaction</h2>
-
-		<!--START PAGE : ASIDE - FASTEST REACTION - LIST-->
-		<ul>
-			<li class="start-page__aside-fastest-reaction-list-el">1st - Linus (0.7 seconds)</li>
-			<li class="start-page__aside-fastest-reaction-list-el">2nd - Maxim (1 second)</li>
-		</ul>
-	</aside>
-
-	<!--START PAGE : ASIDE - PREVIOUS GAMES-->
-	<aside class="start-page__aside-previous-games hide">
-		<!--START PAGE : ASIDE - PREVIOUS GAMES - TITLE-->
-		<h2 class="start-page__aside-previous-games-title">Previous games</h2>
-
-		<!--START PAGE : ASIDE - PREVIOUS GAMES - LIVE-->
-		<h2 class="start-page__aside-previous-games-live-title">Live</h2>
-		<div class="start-page__aside-previous-games-live">
-			<p class="start-page__aside-previous-games-live-players  ">Linus - Maxim</p>
-			<p class="start-page__aside-previous-games-live-score">1 - 2</p>
-		</div>
-
-
-		<!--START PAGE : ASIDE - PREVIOUS GAMES - COMPLETED -->
-		<h2 class="start-page__aside-previous-games-completed-title">Completed</h2>
-		<!--WINNER -->
-		<div class="start-page__aside-previous-games-completed winner">
-			<p class="start-page__aside-previous-games-completed-players">Linus (winner)- Maxim</p>
-			<p class="start-page__aside-previous-games-completed-score">4 - 2</p>
-		</div>
-		<!--Looser -->
-		<div class="start-page__aside-previous-games-completed looser">
-
-			<p class="start-page__aside-previous-games-completed-players">Linus - Maxim (winner)</p>
-			<p class="start-page__aside-previous-games-completed-score">2 - 4</p>
-
-		</div>
-		<!--START PAGE : ASIDE - PREVIOUS GAMES - COMPLETED - LOOSER -->
-
-	</aside>
-</section>
+</footer>
 
 <!-- Bootstrap 5 script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
