@@ -8,8 +8,13 @@ const roundsEl = document.querySelector(".rounds");
 const scoreboardEl = document.querySelector(".scoreboard-list");
 const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 
+const startSearchingEl = document.querySelector(".start-page__input-btn"),
+	startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
+
 let activeRoom = null;
 let username = null;
+
+let isSearching = false;
 
 let opponent = "player2";
 
@@ -41,8 +46,8 @@ const addVirus = (randomNumber) => {
 	});
 };
 const newRoundTimer = () => {
-	gameBoardTitle.style.textAlign = 'center';
-	gameBoardTitle.textContent = 'Time Until Game Starts 5 Seconds';
+	gameBoardTitle.style.textAlign = "center";
+	gameBoardTitle.textContent = "Time Until Game Starts 5 Seconds";
 	let timer = 4, // seconds
 		seconds,
 		inter = setInterval(() => {
@@ -56,14 +61,13 @@ const newRoundTimer = () => {
 		}, 1000);
 };
 
-
 const startGame = (match, friend, foe) => {
 	//match contains everything needed to set up scoreboard etc, use "opponent" as key for foe
 
 	// round view
-	roundsEl.classList.toggle('hide');
+	roundsEl.classList.toggle("hide");
 	//	scoreboard view
-	scoreboardEl.classList.toggle('hide');
+	scoreboardEl.classList.toggle("hide");
 	// hide start view
 	startPageEl.classList.add("hide");
 
@@ -77,11 +81,11 @@ const startGame = (match, friend, foe) => {
 	const liEl = document.createElement("div");
 
 	// add class of scoreinfo to li
-	liEl.classList.add("scoreinfo", 'scoreboard-list');
+	liEl.classList.add("scoreinfo", "scoreboard-list");
 
 	// set content of li
 	// liEl.innerHTML = `<span class="friend">${friend}</span>
-    // <span class="foe">${foe}</span>`;
+	// <span class="foe">${foe}</span>`;
 
 	// append li to ul
 	// scoreboardEl.appendChild(liEl);
@@ -105,39 +109,44 @@ socket.on("game:roundresult", (game) => {
 
 	// roundsEl.innerHTML = "Round: " + rounds + "/10";
 
-    // create new li element
-    const liEl = document.createElement('li');
-    // add class of scoreinfo to li
-    liEl.classList.add('scoreinfo');
+	// create new li element
+	const liEl = document.createElement("li");
+	// add class of scoreinfo to li
+	liEl.classList.add("scoreinfo");
 
-    if (game[player].latestTime < game[opponent].latestTime) {
-
-        liEl.innerHTML = `<div class="round-wrapper winner">
+	if (game[player].latestTime < game[opponent].latestTime) {
+		liEl.innerHTML = `<div class="round-wrapper winner">
         <p class="winner-title">Winner:
         <span class="winner-name">${game[player].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
-        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="player-time">${
+			Math.floor(game[player].latestTime) / 1000
+		}</span>
         <span class="opponent-name">${game[opponent].name}: </span>
-        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}</span>
+        <span class="opponent-time">${
+			Math.floor(game[opponent].latestTime) / 1000
+		}</span>
         </div>`;
 
-        scoreboardEl.appendChild(liEl);
-
-    } else if (game[opponent].latestTime < game[player].latestTime) {
-
-        liEl.innerHTML = `<div class="round-wrapper loser">
+		scoreboardEl.appendChild(liEl);
+	} else if (game[opponent].latestTime < game[player].latestTime) {
+		liEl.innerHTML = `<div class="round-wrapper loser">
         <p class="winner-title">Winner:
         <span class="winner-name">${game[opponent].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
-        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="player-time">${
+			Math.floor(game[player].latestTime) / 1000
+		}</span>
         <span class="opponent-name">${game[opponent].name}: </span>
-        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}s</span>
+        <span class="opponent-time">${
+			Math.floor(game[opponent].latestTime) / 1000
+		}s</span>
         </div>`;
 
-        scoreboardEl.appendChild(liEl);
-    }
+		scoreboardEl.appendChild(liEl);
+	}
 
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 
@@ -164,18 +173,20 @@ socket.on("game:end", (game) => {
 	alert("Game ended!");
 	console.log(game);
 
-	const rematchEl = document.createElement('button');
-	const lobbyEl = document.createElement('button');
+	const rematchEl = document.createElement("button");
+	const lobbyEl = document.createElement("button");
 
-	rematchEl.classList.add('rematch');
-	lobbyEl.classList.add('lobby');
+	rematchEl.classList.add("rematch");
+	lobbyEl.classList.add("lobby");
 
-	rematchEl.innerHTML = "Rematch"
-	lobbyEl.innerHTML = "Go To Lobby"
+	rematchEl.innerHTML = "Rematch";
+	lobbyEl.innerHTML = "Go To Lobby";
 
 	scoreboardWrapperEl.append(rematchEl);
 	scoreboardWrapperEl.append(lobbyEl);
 
+	scoreboardWrapperEl.append(rematchEl);
+	scoreboardWrapperEl.append(lobbyEl);
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
@@ -205,62 +216,82 @@ messageForm.addEventListener("submit", (e) => {
 
 	console.log(`User ${username} wants to connect`);
 
-	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
-	socket.emit("user:joined", username, (status) => {
-		// we've received acknowledgement from the server
-		console.log("Server acknowledged that user joined", status);
+	if (!isSearching) {
+		// emit `user:joined` event and when we get acknowledgement, THEN show the chat
+		socket.emit("user:findmatch", username, (status) => {
+			// we've received acknowledgement from the server
+			console.log("Server acknowledged that user joined", status);
 
-		if (status.success) {
-			console.log(status);
-			activeRoom = status.partner ? status.partner?.room : null;
-			console.log("ACTIVE ROOM: --- " + activeRoom);
+			if (status.success) {
+				isSearching = true;
+				console.log(status);
+				activeRoom = status.partner ? status.partner?.room : null;
+				console.log("ACTIVE ROOM: --- " + activeRoom);
 
-			if (activeRoom) {
-				//Found match already, someone was waiting
-				//startGame(status.partner.username);  //Partially Replaced by game:start
+				if (activeRoom) {
+					//Found match already, someone was waiting
+					//startGame(status.partner.username);  //Partially Replaced by game:start
 
-				console.log("active room: " + activeRoom);
-			} else {
-				const createElImg = document.createElement("img"),
-					startSearching = document.querySelector(".start-page__input-btn"),
-					startPageLobbyTimer = document.querySelector(".start-page__lobby-timer");
+					console.log("active room: " + activeRoom);
+				} else {
+					const createElImg = document.createElement("img");
 
+					// timer props
+					let minuts,
+						seconds,
+						hours,
+						total = 0;
 
-				// timer props
-				let minuts,
-					seconds,
-					hours,
-					total = 0;
+					// timer logic + adding to page
+					const setTime = () => {
+						total++;
+						seconds = getZero(total % 60);
+						minuts = getZero(parseInt(total / 60));
+						hours = getZero(parseInt(total / 60 / 60));
+						startPageLobbyTimerEl.textContent = `${hours}:${minuts}:${seconds}`;
+					};
+					// call function every seconds
+					setInterval(setTime, 1000);
 
-				// timer logic + adding to page
-				const setTime = () => {
-					total++;
-					seconds = getZero(total % 60);
-					minuts = getZero(parseInt(total / 60));
-					hours = getZero(parseInt(total / 60 / 60));
-					startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`;
-				};
-				// call function every seconds
-				setInterval(setTime, 1000);
+					// get zero if number 9 or less
+					const getZero = (num) => {
+						if (num >= 0 && num < 10) return "0" + num;
+						else return num;
+					};
 
-				// get zero if number 9 or less
-				const getZero = (num) => {
-					if (num >= 0 && num < 10) return "0" + num;
-					else return num;
-				};
+					// Change  Text for Title and Button
+					document.querySelector(".start-page__title").textContent =
+						"Lobby status 1/2";
+					document.querySelector(".mr-5").textContent =
+						"Please wait for second player";
 
-				// Change  Text for Title and Button
-				document.querySelector(".start-page__title").textContent = "Lobby status 1/2";
-				document.querySelector(".start-page__input-btn").textContent =
-					"Please wait for second player";
-
-				// Loading spinner Proportions and apply to button
-				createElImg.src = "../assets/icons/spinner.gif";
-				createElImg.classList.add("d-block");
-				createElImg.style.marginLeft = "10px"
-				createElImg.width = 24;
-				startSearching.appendChild(createElImg);
+					// Loading spinner Proportions and apply to button
+					createElImg.src = "../assets/icons/spinner.gif";
+					createElImg.classList.add("d-block");
+					createElImg.width = 40;
+					startSearchingEl.appendChild(createElImg);
+				}
 			}
-		}
-	});
+		});
+	} else {
+		//Is currently searching and wants to cancel matchmaking!
+
+		socket.emit("user:cancelmatching", (status) => {
+			//No errors and has been removed successfully
+			if (status.success && status.hasRemoved) {
+				//Update variable isSearching to false, for next time.
+				isSearching = false;
+				//Replace HTML to remove spinner etc
+				startSearchingEl.innerHTML =
+					'<div class="mr-3 btn-search">Start Searching</div>';
+				//clear timeout
+				const highestTimeoutId = setTimeout(";");
+				for (var i = 0; i < highestTimeoutId; i++) {
+					clearTimeout(i);
+				}
+				//Set timer to 0
+				startPageLobbyTimerEl.textContent = `00:00:00`;
+			}
+		});
+	}
 });
