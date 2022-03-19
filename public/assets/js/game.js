@@ -6,6 +6,7 @@ const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector("#gameboard-title");
 const roundsEl = document.querySelector("#rounds");
 const scoreboardEl = document.querySelector("#scoreboard-list");
+const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 
 let activeRoom = null;
 let username = null;
@@ -66,18 +67,17 @@ const startGame = (match, friend, foe) => {
 	match.rounds++;
 
 	// create new li element
-	const liEl = document.createElement("li");
+	// const liEl = document.createElement("li");
 
 	// add class of scoreinfo to li
-	liEl.classList.add("scoreinfo");
+	// liEl.classList.add("scoreinfo");
 
 	// set content of li
-	liEl.innerHTML = `<span id="friend">${
-		friend + "(0)" + " - "
-	}</span><span id="foe">${foe + "(0)"}</span>`;
+	// liEl.innerHTML = `<span class="friend">${friend}</span>
+    // <span class="foe">${foe}</span>`;
 
 	// append li to ul
-	scoreboardEl.appendChild(liEl);
+	// scoreboardEl.appendChild(liEl);
 
 	// Round Timer
 	newRoundTimer();
@@ -96,13 +96,41 @@ socket.on("game:roundresult", (game) => {
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
-	roundsEl.innerHTML = "Round: " + rounds + "/10";
+	// roundsEl.innerHTML = "Round: " + rounds + "/10";
 
-	const liEls = document.querySelector(".scoreinfo");
-	liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
+    // create new li element
+    const liEl = document.createElement('li');
+    // add class of scoreinfo to li
+    liEl.classList.add('scoreinfo');
 
-	console.log(game.player1.wins);
-	console.log(game);
+    if (game[player].latestTime < game[opponent].latestTime) {
+
+        liEl.innerHTML = `<div class="round-wrapper winner">
+        <p class="winner-title">Winner: 
+        <span class="winner-name">${game[player].name}</span><br>
+        <p class="reaction">Reaction times</p>
+        <span class="player-name">${game[player].name}: </span>
+        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="opponent-name">${game[opponent].name}: </span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}</span>
+        </div>`;
+        
+        scoreboardEl.appendChild(liEl);
+
+    } else if (game[opponent].latestTime < game[player].latestTime) {
+
+        liEl.innerHTML = `<div class="round-wrapper looser">
+        <p class="winner-title">Winner: 
+        <span class="winner-name">${game[opponent].name}</span><br>
+        <p class="reaction">Reaction times</p>
+        <span class="player-name">${game[player].name}: </span>
+        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="opponent-name">${game[opponent].name}: </span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}s</span>
+        </div>`;
+    
+        scoreboardEl.appendChild(liEl);
+    }
 
 	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 

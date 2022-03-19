@@ -171,7 +171,7 @@ body {
 }
 
 .looser {
-	background-color: #BE3900;
+	background-color: #f14343;
 }
 
 .previous-games__btn, .fastest-reaction__btn {
@@ -259,11 +259,11 @@ body {
 }
 
 .scoreinfo {
-    padding: 5px 0; 
+    padding: 15px 0 0 0; 
 }
 
-#friend,
-#foe {
+.friend,
+.foe {
     color: white;
     font-size: 16px;
 }
@@ -285,4 +285,36 @@ body {
 
 .rematch {
     bottom: 10px;
+}
+
+.round-wrapper {
+    /* background-color: #00BE5F; */
+    padding: 5px 0;
+    width: 90%;
+    margin:auto;
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.winner-title, 
+.winner-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.reaction {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    width: 50%;
+    margin:auto;
+}
+
+.player-time,
+.opponent-time,
+.player-name,
+.opponent-name {
+    font-size: 12px;
+    font-weight: bold;
 }
