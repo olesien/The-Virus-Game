@@ -283,7 +283,7 @@ messageForm.addEventListener("submit", (e) => {
 				isSearching = false;
 				//Replace HTML to remove spinner etc
 				startSearchingEl.innerHTML =
-					'<div class="mr-3 btn-search">Start Searching</div>';
+					'<div class="mr-5">Start Searching</div>';
 				//clear timeout
 				const highestTimeoutId = setTimeout(";");
 				for (var i = 0; i < highestTimeoutId; i++) {
