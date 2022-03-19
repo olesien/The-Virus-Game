@@ -7,6 +7,9 @@ const gameBoardTitle = document.querySelector("#gameboard-title");
 const roundsEl = document.querySelector("#rounds");
 const scoreboardEl = document.querySelector("#scoreboard-list");
 
+const startSearchingEl = document.querySelector(".btn-success"),
+	startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
+
 let activeRoom = null;
 let username = null;
 
@@ -173,7 +176,7 @@ messageForm.addEventListener("submit", (e) => {
 
 	if (!isSearching) {
 		// emit `user:joined` event and when we get acknowledgement, THEN show the chat
-		socket.emit("user:joined", username, (status) => {
+		socket.emit("user:findmatch", username, (status) => {
 			// we've received acknowledgement from the server
 			console.log("Server acknowledged that user joined", status);
 
@@ -189,11 +192,7 @@ messageForm.addEventListener("submit", (e) => {
 
 					console.log("active room: " + activeRoom);
 				} else {
-					const createElImg = document.createElement("img"),
-						startSearching = document.querySelector(".btn-success"),
-						startPageLobbyTimer = document.querySelector(
-							".start-page__lobby-timer"
-						);
+					const createElImg = document.createElement("img");
 
 					// timer props
 					let minuts,
@@ -207,7 +206,7 @@ messageForm.addEventListener("submit", (e) => {
 						seconds = getZero(total % 60);
 						minuts = getZero(parseInt(total / 60));
 						hours = getZero(parseInt(total / 60 / 60));
-						startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`;
+						startPageLobbyTimerEl.textContent = `${hours}:${minuts}:${seconds}`;
 					};
 					// call function every seconds
 					setInterval(setTime, 1000);
@@ -229,12 +228,29 @@ messageForm.addEventListener("submit", (e) => {
 					createElImg.src = "../assets/icons/spinner.gif";
 					createElImg.classList.add("d-block");
 					createElImg.width = 40;
-					startSearching.appendChild(createElImg);
+					startSearchingEl.appendChild(createElImg);
 				}
 			}
 		});
 	} else {
-		//Is currently searching
-		alert("You're already searching. Cancel");
+		//Is currently searching and wants to cancel matchmaking!
+
+		socket.emit("user:cancelmatching", (status) => {
+			//No errors and has been removed successfully
+			if (status.success && status.hasRemoved) {
+				//Update variable isSearching to false, for next time.
+				isSearching = false;
+				//Replace HTML to remove spinner etc
+				startSearchingEl.innerHTML =
+					'<div class="mr-3 btn-search">Start Searching</div>';
+				//clear timeout
+				const highestTimeoutId = setTimeout(";");
+				for (var i = 0; i < highestTimeoutId; i++) {
+					clearTimeout(i);
+				}
+				//Set timer to 0
+				startPageLobbyTimerEl.textContent = `00:00:00`;
+			}
+		});
 	}
 });
