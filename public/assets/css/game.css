@@ -56,20 +56,26 @@
 	color: white;
 	text-align: center;
 }
-
+.scoreinfo {
+	padding-top: 10px;
+}
 .scoreboard-list {
-	margin-top: 10px;
+	border: 10px solid  #353D44;
+	border-radius: 10px;
+	background-color: #2e343b;
+	height: 600px;
+	width: 300px;
+	margin-left: 40px;
+	margin-right: 40px;
 	padding: 0;
 	text-align: center;
+	display: inline-block;
 }
 .scoreboard-list > span{
 	color: white;
 	font-size: 36px;
 }
 
-.scoreinfo {
-	padding: 5px 0;
-}
 
 
 #scoreboard-list {
@@ -85,9 +91,6 @@
 	color:#00BE5F;
 }
 
-.scoreinfo {
-	padding: 15px 0 0 0;
-}
 
 .friend,
 .foe {
@@ -116,6 +119,7 @@
 
 .round-wrapper {
 	/* background-color: #00BE5F; */
+
 	padding: 5px 0;
 	width: 90%;
 	margin:auto;
@@ -147,5 +151,10 @@
 
 }
 
+.scoreboard-list-text {
+	color: white;
+	padding: 10px;
+	font-size: 16px;
+}
 
 

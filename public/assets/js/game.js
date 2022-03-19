@@ -6,7 +6,11 @@ const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector(".main-window__bar-link");
 const roundsEl = document.querySelector(".rounds");
 const scoreboardEl = document.querySelector(".scoreboard-list");
+const scoreboardEl1 = document.querySelector("#scoreboard-list-1");
+const scoreboardEl2 = document.querySelector("#scoreboard-list-2");
 const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
+const loadingIcon = document.querySelector('.loading');
+const inputBtn = document.querySelector(".start-page__input-btn");
 
 let activeRoom = null;
 let username = null;
@@ -93,7 +97,8 @@ const startGame = (match, friend, foe) => {
 	// round view
 	roundsEl.classList.toggle('hide');
 	//	scoreboard view
-	scoreboardEl.classList.toggle('hide');
+	scoreboardEl1.classList.toggle('hide');
+	scoreboardEl2.classList.toggle('hide');
 	// hide start view
 	startPageEl.classList.add("hide");
 
@@ -111,7 +116,7 @@ const startGame = (match, friend, foe) => {
 
 	// set content of li
 	// liEl.innerHTML = `<span class="friend">${friend}</span>
-    // <span class="foe">${foe}</span>`;
+	// <span class="foe">${foe}</span>`;
 
 	// append li to ul
 	// scoreboardEl.appendChild(liEl);
@@ -129,46 +134,51 @@ socket.on("game:newround", (randomNumber) => {
 //See how the round went!
 socket.on("game:roundresult", (game) => {
 
-	const rounds =
-		game.rounds.length < 10 ? game.rounds.length + 1 : game.rounds.length;
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
-	// roundsEl.innerHTML = "Round: " + rounds + "/10";
 
-    // create new li element
-    const liEl = document.createElement('li');
-    // add class of scoreinfo to li
-    liEl.classList.add('scoreinfo');
+	// create new li element
+	const liEl = document.createElement('div');
+	// add class of scoreinfo to li
+	liEl.classList.add('scoreinfo');
 
-    if (game[player].latestTime < game[opponent].latestTime) {
+	if (game[player].latestTime < game[opponent].latestTime) {
 
-        liEl.innerHTML = `<div class="round-wrapper winner">
+		liEl.innerHTML = `<div class="round-wrapper winner">
         <p class="winner-title">Winner:
         <span class="winner-name">${game[player].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
-        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="player-time">${Math.floor(game[player].latestTime) / 1000}</span>
         <span class="opponent-name">${game[opponent].name}: </span>
-        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}</span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime) / 1000}</span>
         </div>`;
+		if (roundCounter < 6) {
+			scoreboardEl1.appendChild(liEl);
+		} else {
+			scoreboardEl2.appendChild(liEl);
+		}
 
-        scoreboardEl.appendChild(liEl);
 
-    } else if (game[opponent].latestTime < game[player].latestTime) {
+	} else if (game[opponent].latestTime < game[player].latestTime) {
 
-        liEl.innerHTML = `<div class="round-wrapper loser">
+		liEl.innerHTML = `<div class="round-wrapper loser">
         <p class="winner-title">Winner:
         <span class="winner-name">${game[opponent].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
-        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="player-time">${Math.floor(game[player].latestTime) / 1000}</span>
         <span class="opponent-name">${game[opponent].name}: </span>
-        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}s</span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime) / 1000}s</span>
         </div>`;
 
-        scoreboardEl.appendChild(liEl);
-    }
+		if (roundCounter < 5) {
+			scoreboardEl1.appendChild(liEl);
+		} else {
+			scoreboardEl2.appendChild(liEl);
+		}
+	}
 
 
 	// time spent on cllick
@@ -206,6 +216,7 @@ socket.on("game:roundresult", (game) => {
 	const gameOverTimeRecordsBox2 = document.querySelector('.game-over__time-records-box-2');
 	const timeRecords = (speed, el) => {
 		roundCounter++;
+		roundsEl.textContent = `Round:${roundCounter}/10`
 		let gameOverPlayerStatsText = document.createElement('span');
 		gameOverPlayerStatsText.classList.add('game-over__player-stats-text');
 		gameOverPlayerStatsText.textContent = `Round ${roundCounter}: ${speed}`;
@@ -263,21 +274,32 @@ socket.on("game:end", (game) => {
 
 // Return to Lobby
 	gameOverBtnReturnToLobby.addEventListener('click', () => {
+		// Reset
 		game.player1.wins = 0;
 		game.player2.wins = 0;
 		roundCounter = 0;
+
 		// Styling
-		gameOver.classList.toggle('hide');
-		startPageEl.classList.toggle('hide');
+		gameOver.classList.add('hide');
+		startPageEl.classList.remove('hide');
+		roundsEl.classList.add('hide');
+		loadingIcon.classList.add('hide');
+		scoreboardEl1.classList.add('hide')
+		scoreboardEl2.classList.add('hide')
+
 		gameBoardTitle.style.display = 'block'
 		gameBoardTitle.textContent = 'https://thevirusgame.com';
+
 		document.querySelector(".start-page__input-btn").textContent = "Start Searching";
 		document.querySelector(".start-page__title").textContent = "Enter your Name to play";
-		loadingIcon.classList.add('hide');
-		inputBtn.appendChild(loadingIcon);
+
 		clock.resetTimerForLobby();
+
 		document.querySelectorAll('.game-over__round-breakdown-circle').forEach(e => e.remove())
 		document.querySelectorAll('.game-over__player-stats-text').forEach(e => e.remove())
+		document.querySelectorAll('.round-wrapper').forEach(e => e.remove())
+
+		inputBtn.appendChild(loadingIcon);
 	});
 	//	!TODO GO AGAIN BUTTON
 	gameOverBtnGoAgain.addEventListener('click', () => {

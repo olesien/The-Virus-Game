@@ -68,7 +68,6 @@ body:after {
 
 /*BROWSER LIKE WINDOW*/
 .main-window {
-	margin: auto;
 	background-color: #F3F4F5;
 	border-radius: 10px;
 	border: 10px solid #353D44;
