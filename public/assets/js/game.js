@@ -41,7 +41,7 @@ const addVirus = (randomNumber) => {
 	});
 };
 
-// Lobby Clock Function
+//  Count up/Countdown Clock
 const clock = {
 	totalSeconds: 0,
 	startTimerForLobby: function () {
@@ -71,14 +71,15 @@ const clock = {
 		gameBoardTitle.textContent = 'Time Until Game Starts 5 Seconds';
 		let timer = 4, // seconds
 			seconds;
-		let inter = setInterval(() => {
+		this.inter = setInterval(function () {
 			seconds = parseInt(timer % 60, 10);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
-			if (timer-- < 1) gameBoardTitle.textContent = "Virus can appear at any moment, be ready!";clearInterval(inter);
+			if (timer-- < 1) gameBoardTitle.textContent = "Virus can appear at any moment, be ready!";
 		}, 1000);
 	},
 	resetRoundTimer: function () {
-
+		clearInterval(this.inter);
+		delete this.inter;
 	}
 
 };
@@ -182,7 +183,7 @@ socket.on("game:end", (game) => {
 	//	show Game over screen
 	appEl.classList.toggle('hide');
 	gameOver.classList.toggle('hide');
-
+	clock.resetRoundTimer()
 
 	gameBoardTitle.textContent = 'https://thevirusgame.com'
 // Return to Lobby
@@ -196,6 +197,7 @@ socket.on("game:end", (game) => {
 		loadingIcon.classList.add('hide');
 		inputBtn.appendChild(loadingIcon);
 		clock.resetTimerForLobby();
+
 	});
 // Go Again
 	gameOverBtnGoAgain.addEventListener('click', () => {
