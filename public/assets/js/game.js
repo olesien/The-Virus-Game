@@ -4,8 +4,8 @@ const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector(".main-window__bar-link");
-const roundsEl = document.querySelector("#rounds");
-const scoreboardEl = document.querySelector("#scoreboard-list");
+const roundsEl = document.querySelector(".rounds");
+const scoreboardEl = document.querySelector(".scoreboard-list");
 const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 
 let activeRoom = null;
@@ -113,7 +113,7 @@ socket.on("game:roundresult", (game) => {
     if (game[player].latestTime < game[opponent].latestTime) {
 
         liEl.innerHTML = `<div class="round-wrapper winner">
-        <p class="winner-title">Winner: 
+        <p class="winner-title">Winner:
         <span class="winner-name">${game[player].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
@@ -121,13 +121,13 @@ socket.on("game:roundresult", (game) => {
         <span class="opponent-name">${game[opponent].name}: </span>
         <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}</span>
         </div>`;
-        
+
         scoreboardEl.appendChild(liEl);
 
     } else if (game[opponent].latestTime < game[player].latestTime) {
 
-        liEl.innerHTML = `<div class="round-wrapper looser">
-        <p class="winner-title">Winner: 
+        liEl.innerHTML = `<div class="round-wrapper loser">
+        <p class="winner-title">Winner:
         <span class="winner-name">${game[opponent].name}</span><br>
         <p class="reaction">Reaction times</p>
         <span class="player-name">${game[player].name}: </span>
@@ -135,7 +135,7 @@ socket.on("game:roundresult", (game) => {
         <span class="opponent-name">${game[opponent].name}: </span>
         <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}s</span>
         </div>`;
-    
+
         scoreboardEl.appendChild(liEl);
     }
 
