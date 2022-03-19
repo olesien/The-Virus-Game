@@ -8,7 +8,7 @@ const roundsEl = document.querySelector(".rounds");
 const scoreboardEl = document.querySelector(".scoreboard-list");
 const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 
-const startSearchingEl = document.querySelector(".btn-success"),
+const startSearchingEl = document.querySelector(".start-page__input-btn"),
 	startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
 
 let activeRoom = null;
@@ -260,10 +260,9 @@ messageForm.addEventListener("submit", (e) => {
 					};
 
 					// Change  Text for Title and Button
-					document.querySelector(
-						".start-page__enter-your-name-title"
-					).textContent = "Lobby status 1/2";
-					document.querySelector(".btn-search").textContent =
+					document.querySelector(".start-page__title").textContent =
+						"Lobby status 1/2";
+					document.querySelector(".mr-5").textContent =
 						"Please wait for second player";
 
 					// Loading spinner Proportions and apply to button
