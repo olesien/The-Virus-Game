@@ -196,16 +196,17 @@
 		</div>
 	</section>
 	<!--Start Page -->
-	<section class="start-page">
+	<section class="start-page ">
 		<!--Start Page : Title-->
 		<h2 class="start-page__title">Enter your Name to play</h2>
-		<p class="start-page__lobby-timer start-page__title">00:00:00</p>
+		<p class="start-page__lobby-timer start-page__title">00:00</p>
 		<!--Start Page : FORM-->
 		<form id="message-form">
 			<div class="start-page__from-group">
 				<input type="text" id="message" class="start-page__input" placeholder="Username...">
 				<button type="submit" class="start-page__input-btn d-flex align-items-center">
 					<span class="mr-5">Start Searching</span>
+					<img class='loading hide' src="./assets/icons/spinner.gif" alt="">
 				</button>
 			</div>
 		</form>
@@ -217,7 +218,36 @@
 		</div>
 	</section>
 
-
+	<!--Game Over Page-->
+	<section class="game-over hide">
+		<h2 class="game-over__title">Congrats on your Win</h2>
+		<div class="d-flex justify-content-around">
+			<div class="game-over__time-records-box">
+				<h3 class="game-over__player-stats-title">Time records:</h3>
+				<span class="game-over__player-stats-text">You: 100ms</span>
+				<span class="game-over__player-stats-text">Maxim: 150ms</span>
+			</div>
+			<div class="game-over__round-breakdown-box ">
+				<h3 class="game-over__round-breakdown-title">Round Breakdown</h3>
+				<div class="d-flex">
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle loser"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle loser"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+					<div class="game-over__round-breakdown-circle winner"></div>
+				</div>
+			</div>
+		</div>
+		<div class='d-flex mt-5 justify-content-evenly'>
+			<button class="game-over__btn-return-to-lobby">Return to lobby</button>
+			<button class="game-over__btn-go-again">Go Again</button>
+		</div>
+	</section>
 </main>
 
 <!--Scoreboard-->
