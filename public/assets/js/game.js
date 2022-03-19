@@ -10,6 +10,8 @@ const scoreboardEl = document.querySelector("#scoreboard-list");
 let activeRoom = null;
 let username = null;
 
+let isSearching = false;
+
 let opponent = "player2";
 
 // add virus to random grid box
@@ -129,18 +131,17 @@ socket.on("game:end", (game) => {
 	alert("Game ended!");
 	console.log(game);
 
-    const rematchEl = document.createElement('button');
-    const lobbyEl = document.createElement('button');
+	const rematchEl = document.createElement("button");
+	const lobbyEl = document.createElement("button");
 
-    rematchEl.classList.add('rematch');
-    lobbyEl.classList.add('lobby');
-    
-    rematchEl.innerHTML = "Rematch"
-    lobbyEl.innerHTML = "Go To Lobby"
+	rematchEl.classList.add("rematch");
+	lobbyEl.classList.add("lobby");
 
-    scoreboardWrapperEl.append(rematchEl);
-    scoreboardWrapperEl.append(lobbyEl);
+	rematchEl.innerHTML = "Rematch";
+	lobbyEl.innerHTML = "Go To Lobby";
 
+	scoreboardWrapperEl.append(rematchEl);
+	scoreboardWrapperEl.append(lobbyEl);
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
@@ -170,64 +171,70 @@ messageForm.addEventListener("submit", (e) => {
 
 	console.log(`User ${username} wants to connect`);
 
-	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
-	socket.emit("user:joined", username, (status) => {
-		// we've received acknowledgement from the server
-		console.log("Server acknowledged that user joined", status);
+	if (!isSearching) {
+		// emit `user:joined` event and when we get acknowledgement, THEN show the chat
+		socket.emit("user:joined", username, (status) => {
+			// we've received acknowledgement from the server
+			console.log("Server acknowledged that user joined", status);
 
-		if (status.success) {
-			console.log(status);
-			activeRoom = status.partner ? status.partner?.room : null;
-			console.log("ACTIVE ROOM: --- " + activeRoom);
+			if (status.success) {
+				isSearching = true;
+				console.log(status);
+				activeRoom = status.partner ? status.partner?.room : null;
+				console.log("ACTIVE ROOM: --- " + activeRoom);
 
-			if (activeRoom) {
-				//Found match already, someone was waiting
-				//startGame(status.partner.username);  //Partially Replaced by game:start
+				if (activeRoom) {
+					//Found match already, someone was waiting
+					//startGame(status.partner.username);  //Partially Replaced by game:start
 
-				console.log("active room: " + activeRoom);
-			} else {
-				const createElImg = document.createElement("img"),
-					startSearching = document.querySelector(".btn-success"),
-					startPageLobbyTimer = document.querySelector(
-						".start-page__lobby-timer"
-					);
+					console.log("active room: " + activeRoom);
+				} else {
+					const createElImg = document.createElement("img"),
+						startSearching = document.querySelector(".btn-success"),
+						startPageLobbyTimer = document.querySelector(
+							".start-page__lobby-timer"
+						);
 
-				// timer props
-				let minuts,
-					seconds,
-					hours,
-					total = 0;
+					// timer props
+					let minuts,
+						seconds,
+						hours,
+						total = 0;
 
-				// timer logic + adding to page
-				const setTime = () => {
-					total++;
-					seconds = getZero(total % 60);
-					minuts = getZero(parseInt(total / 60));
-					hours = getZero(parseInt(total / 60 / 60));
-					startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`;
-				};
-				// call function every seconds
-				setInterval(setTime, 1000);
+					// timer logic + adding to page
+					const setTime = () => {
+						total++;
+						seconds = getZero(total % 60);
+						minuts = getZero(parseInt(total / 60));
+						hours = getZero(parseInt(total / 60 / 60));
+						startPageLobbyTimer.textContent = `${hours}:${minuts}:${seconds}`;
+					};
+					// call function every seconds
+					setInterval(setTime, 1000);
 
-				// get zero if number 9 or less
-				const getZero = (num) => {
-					if (num >= 0 && num < 10) return "0" + num;
-					else return num;
-				};
+					// get zero if number 9 or less
+					const getZero = (num) => {
+						if (num >= 0 && num < 10) return "0" + num;
+						else return num;
+					};
 
-				// Change  Text for Title and Button
-				document.querySelector(
-					".start-page__enter-your-name-title"
-				).textContent = "Lobby status 1/2";
-				document.querySelector(".btn-search").textContent =
-					"Please wait for second player";
+					// Change  Text for Title and Button
+					document.querySelector(
+						".start-page__enter-your-name-title"
+					).textContent = "Lobby status 1/2";
+					document.querySelector(".btn-search").textContent =
+						"Please wait for second player";
 
-				// Loading spinner Proportions and apply to button
-				createElImg.src = "../assets/icons/spinner.gif";
-				createElImg.classList.add("d-block");
-				createElImg.width = 40;
-				startSearching.appendChild(createElImg);
+					// Loading spinner Proportions and apply to button
+					createElImg.src = "../assets/icons/spinner.gif";
+					createElImg.classList.add("d-block");
+					createElImg.width = 40;
+					startSearching.appendChild(createElImg);
+				}
 			}
-		}
-	});
+		});
+	} else {
+		//Is currently searching
+		alert("You're already searching. Cancel");
+	}
 });
