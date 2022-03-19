@@ -1,0 +1,61 @@
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 190, 95, 0.7);
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 190, 95, 0);
+	}
+
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(0, 190, 95, 0);
+	}
+}
+body {
+	overflow: hidden;
+}
+/*--------------------*/
+.ocean {
+
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: #443ACA;
+}
+
+.wave {
+	background: url('../svg/wave.svg') repeat-x;
+	position: absolute;
+	bottom: -80px;
+	width: 6400px;
+	height: 198px;
+	animation: wave 15s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite, swell 8s ease -1.25s infinite;;
+	transform: translate3d(0, 0, 0);
+}
+
+
+
+@keyframes wave {
+	0% {
+		margin-left: 0;
+	}
+	100% {
+		margin-left: -1600px;
+	}
+}
+@keyframes swell {
+	0%,
+	100% {
+		transform: translate3d(0, -40px, 0);
+	}
+	50% {
+		transform: translate3d(0, -10px, 0);
+	}
+}
+.endWave{
+	display:none;
+}
