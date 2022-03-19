@@ -115,6 +115,7 @@ body:after {
 	border-radius: 100px;
 	width: 780px;
 	background-color: #3F4952;
+	height: 36px;
 }
 
 .main-window__back-button-1, .main-window__back-button-2 {

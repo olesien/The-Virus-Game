@@ -22,14 +22,17 @@
 }
 
 .game-over__player-stats-text {
+
 	margin-bottom: 10px;
 	display: block;
-	font-size: 24px;
+	font-size: 20px;
+	margin-right: 10px;
 	color: white;
 }
 
 .game-over__player-stats-text:last-child {
 	margin-bottom: 0;
+	margin-right: 0;
 }
 
 
@@ -39,19 +42,25 @@
 	margin-bottom: 10px;
 }
 
-
+.game-over__round-breakdown-circle-box {
+	width: 200px;
+	margin: 0 auto;
+}
 .game-over__round-breakdown-circle {
 	width: 26px;
 	height: 26px;
 	border-radius: 100%;
 	margin-right: 10px;
+	margin-bottom: 10px;
 
 }
 
-.game-over__round-breakdown-circle:last-child {
+.game-over__round-breakdown-circle:last-child,.game-over__round-breakdown-circle:nth-child(5) {
 	margin-right: 0;
 }
+.game-over__round-breakdown-circle:nth-child(6){
 
+}
 /*Buttons*/
 
 .game-over__btn-return-to-lobby , .game-over__btn-go-again {

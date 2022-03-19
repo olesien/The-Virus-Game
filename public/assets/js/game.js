@@ -10,7 +10,7 @@ const loadingIcon = document.querySelector('.loading');
 const inputBtn = document.querySelector(".start-page__input-btn");
 let activeRoom = null;
 let username = null;
-
+let roundCounter = 0;
 let opponent = "player2";
 
 // add virus to random grid box
@@ -69,18 +69,21 @@ const clock = {
 	roundTimer: function () {
 		gameBoardTitle.style.textAlign = 'center';
 		gameBoardTitle.textContent = 'Time Until Game Starts 5 Seconds';
+
 		let timer = 4, // seconds
 			seconds;
-		this.inter = setInterval(function () {
+		const inter = setInterval(function () {
 			seconds = parseInt(timer % 60, 10);
 			gameBoardTitle.textContent = `Time Until Game Starts ${seconds} Seconds`;
-			if (timer-- < 1) gameBoardTitle.textContent = "Virus can appear at any moment, be ready!";
+			if (timer-- < 1) {
+				gameBoardTitle.textContent = "Virus can appear at any moment, be ready!";
+				clearInterval(inter);
+
+			}
 		}, 1000);
+
+
 	},
-	resetRoundTimer: function () {
-		clearInterval(this.inter);
-		delete this.inter;
-	}
 
 };
 
@@ -115,7 +118,7 @@ const startGame = (match, friend, foe) => {
 	scoreboardEl.appendChild(liEl);
 
 	// Round Timer
-	clock.roundTimer()
+	clock.roundTimer();
 };
 
 //New round received, start new round with new virus!
@@ -126,6 +129,7 @@ socket.on("game:newround", (randomNumber) => {
 
 //See how the round went!
 socket.on("game:roundresult", (game) => {
+
 	const rounds =
 		game.rounds.length < 10 ? game.rounds.length + 1 : game.rounds.length;
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
@@ -135,11 +139,10 @@ socket.on("game:roundresult", (game) => {
 
 	const liEls = document.querySelector(".scoreinfo");
 	liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
-
+//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 	console.log(game.player1.wins);
 	console.log(game);
 
-	//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
 
 	// time spent on cllick
 	const player_you = game[player].fastestTime,
@@ -147,13 +150,58 @@ socket.on("game:roundresult", (game) => {
 
 	// check which person won and lose
 	if (game.rounds[game.rounds.length - 1].winner === player) {
-		gameBoardTitle.textContent = `Win: ${Math.floor(player_opponent - player_you) / 1000} Seconds`;
-		setTimeout(clock.roundTimer, 800);
-		clock.roundTimer()
+		gameBoardTitle.style.color = '#00BE5F';
+		gameBoardTitle.textContent = `Win: +${Math.floor(player_opponent - player_you) / 1000} Seconds`;
+		setTimeout(() => {
+			gameBoardTitle.style.color = 'white';
+			clock.roundTimer();
+		}, 900)
+
+
 	} else if (game.rounds[game.rounds.length - 1].loser === player) {
-		gameBoardTitle.textContent = `Lose: ${Math.floor(player_you - player_opponent) / 1000} Seconds`;
-		setTimeout(clock.roundTimer, 800);
+		gameBoardTitle.style.color = '#BE3900';
+		gameBoardTitle.textContent = `Lose: -${Math.floor(player_you - player_opponent) / 1000} Seconds`;
+		setTimeout(() => {
+			gameBoardTitle.style.color = 'white';
+			clock.roundTimer();
+		}, 900);
+
 	}
+
+
+	// Game Over screen Statistic
+	const gameOverRoundBreakdownCircleBox = document.querySelector('.game-over__round-breakdown-circle-box'),
+		gameOverRoundBreakdownCircle = document.createElement('div'),
+		gameOverTitle = document.querySelector('.game-over__title');
+	gameOverRoundBreakdownCircle.classList.add('game-over__round-breakdown-circle');
+
+	const gameOverTimeRecordsBox1 = document.querySelector('.game-over__time-records-box-1');
+	const gameOverTimeRecordsBox2 = document.querySelector('.game-over__time-records-box-2');
+	const timeRecords = (speed, el) => {
+		roundCounter++;
+		let gameOverPlayerStatsText = document.createElement('span');
+		gameOverPlayerStatsText.classList.add('game-over__player-stats-text');
+		gameOverPlayerStatsText.textContent = `Round ${roundCounter}: ${speed}`;
+		el.appendChild(gameOverPlayerStatsText)
+	}
+
+
+	if (game[player].latestTime < game[opponent].latestTime) {
+		gameOverRoundBreakdownCircle.classList.add('winner');
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		gameOverTitle.textContent = 'Congrats on your Win';
+		if (roundCounter < 5) timeRecords(Math.floor(game[player].latestTime) / 1000, gameOverTimeRecordsBox1)
+		else timeRecords(Math.floor(game[player].latestTime) / 1000, gameOverTimeRecordsBox2)
+
+	} else if (game[opponent].latestTime < game[player].latestTime) {
+		gameOverRoundBreakdownCircle.classList.add('loser');
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		gameOverTitle.textContent = 'Try better next time';
+		if (roundCounter < 5) timeRecords(Math.floor(game[player].latestTime) / 1000, gameOverTimeRecordsBox1);
+		else timeRecords(Math.floor(game[player].latestTime) / 1000, gameOverTimeRecordsBox2);
+	}
+
+	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = 'TIE';
 });
 
 //All 10 rounds done, end game
@@ -177,33 +225,35 @@ socket.on("game:end", (game) => {
 
 	const gameOver = document.querySelector('.game-over'),
 		gameOverBtnReturnToLobby = document.querySelector('.game-over__btn-return-to-lobby'),
-		gameOverBtnGoAgain = document.querySelector('.game-over__btn-go-again')
+		gameOverBtnGoAgain = document.querySelector('.game-over__btn-go-again');
 
 
 	//	show Game over screen
 	appEl.classList.toggle('hide');
 	gameOver.classList.toggle('hide');
-	clock.resetRoundTimer()
+	gameBoardTitle.style.display = 'none'
+	gameBoardTitle.style.color = 'white'
 
-	gameBoardTitle.textContent = 'https://thevirusgame.com'
 // Return to Lobby
 	gameOverBtnReturnToLobby.addEventListener('click', () => {
+		game.player1.wins = 0;
+		game.player2.wins = 0;
+		roundCounter = 0;
+		// Styling
 		gameOver.classList.toggle('hide');
 		startPageEl.classList.toggle('hide');
+		gameBoardTitle.style.display = 'block'
 		gameBoardTitle.textContent = 'https://thevirusgame.com';
-		gameBoardTitle.style.textAlign = 'left';
 		document.querySelector(".start-page__input-btn").textContent = "Start Searching";
 		document.querySelector(".start-page__title").textContent = "Enter your Name to play";
 		loadingIcon.classList.add('hide');
 		inputBtn.appendChild(loadingIcon);
 		clock.resetTimerForLobby();
-
+		document.querySelectorAll('.game-over__round-breakdown-circle').forEach(e => e.remove())
+		document.querySelectorAll('.game-over__player-stats-text').forEach(e => e.remove())
 	});
-// Go Again
+	//	!TODO GO AGAIN BUTTON
 	gameOverBtnGoAgain.addEventListener('click', () => {
-		gameOver.classList.toggle('hide');
-		appEl.classList.toggle('hide');
-
 
 	})
 });
