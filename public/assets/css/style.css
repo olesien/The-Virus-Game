@@ -42,8 +42,8 @@ body:after {
 }
 
 .second__place {
-	color: #8B939C;
-	border: 1px solid #8B939C
+	color: #c0cad0;
+	border: 1px solid #c0cad0
 }
 
 .third__place {
@@ -72,8 +72,8 @@ body:after {
 	background-color: #F3F4F5;
 	border-radius: 10px;
 	border: 10px solid #353D44;
-	width: 900px;
-	height: 500px;
+	width: 1000px;
+	height: 600px;
 	position: relative;
 	box-shadow: 0 4px 4px 0 #00000040;
 }
@@ -113,7 +113,7 @@ body:after {
 .main-window__bar-link-box {
 	margin: 6px;
 	border-radius: 100px;
-	width: 680px;
+	width: 780px;
 	background-color: #3F4952;
 }
 
