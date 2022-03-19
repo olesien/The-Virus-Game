@@ -154,11 +154,9 @@ socket.on("game:roundresult", (game) => {
         <span class="opponent-name">${game[opponent].name}: </span>
         <span class="opponent-time">${Math.floor(game[opponent].latestTime) / 1000}</span>
         </div>`;
-		if (roundCounter < 6) {
-			scoreboardEl1.appendChild(liEl);
-		} else {
-			scoreboardEl2.appendChild(liEl);
-		}
+		if (roundCounter < 5) scoreboardEl1.appendChild(liEl);
+		else scoreboardEl2.appendChild(liEl);
+
 
 
 	} else if (game[opponent].latestTime < game[player].latestTime) {
@@ -173,11 +171,9 @@ socket.on("game:roundresult", (game) => {
         <span class="opponent-time">${Math.floor(game[opponent].latestTime) / 1000}s</span>
         </div>`;
 
-		if (roundCounter < 5) {
-			scoreboardEl1.appendChild(liEl);
-		} else {
-			scoreboardEl2.appendChild(liEl);
-		}
+		if (roundCounter < 5) scoreboardEl1.appendChild(liEl);
+		else scoreboardEl2.appendChild(liEl);
+
 	}
 
 
