@@ -4,10 +4,10 @@ const startPageEl = document.querySelector(".start-page");
 const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector(".main-window__bar-link");
-const roundsEl = document.querySelector("#rounds");
-const scoreboardEl = document.querySelector('.scoreboard-list');
-const loadingIcon = document.querySelector('.loading');
-const inputBtn = document.querySelector(".start-page__input-btn");
+const roundsEl = document.querySelector(".rounds");
+const scoreboardEl = document.querySelector(".scoreboard-list");
+const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
+
 let activeRoom = null;
 let username = null;
 let roundCounter = 0;
@@ -110,12 +110,11 @@ const startGame = (match, friend, foe) => {
 	liEl.classList.add("scoreinfo", 'scoreboard-list');
 
 	// set content of li
-	liEl.innerHTML = `<span id="friend">${
-		friend + "(0)" + " - "
-	}</span><span id="foe">${foe + "(0)"}</span>`;
+	// liEl.innerHTML = `<span class="friend">${friend}</span>
+    // <span class="foe">${foe}</span>`;
 
 	// append li to ul
-	scoreboardEl.appendChild(liEl);
+	// scoreboardEl.appendChild(liEl);
 
 	// Round Timer
 	clock.roundTimer();
@@ -135,13 +134,41 @@ socket.on("game:roundresult", (game) => {
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
 
-	roundsEl.innerHTML = "Round: " + rounds + "/10";
+	// roundsEl.innerHTML = "Round: " + rounds + "/10";
 
-	const liEls = document.querySelector(".scoreinfo");
-	liEls.innerHTML = `<span id="friend">${game.player1.name}(${game.player1.wins}) - </span><span id="foe">${game.player2.name}(${game.player2.wins})</span>`;
-//Game rounds contains a list of who the player is in each round (player1 or player2), who lost, and the time on each
-	console.log(game.player1.wins);
-	console.log(game);
+    // create new li element
+    const liEl = document.createElement('li');
+    // add class of scoreinfo to li
+    liEl.classList.add('scoreinfo');
+
+    if (game[player].latestTime < game[opponent].latestTime) {
+
+        liEl.innerHTML = `<div class="round-wrapper winner">
+        <p class="winner-title">Winner:
+        <span class="winner-name">${game[player].name}</span><br>
+        <p class="reaction">Reaction times</p>
+        <span class="player-name">${game[player].name}: </span>
+        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="opponent-name">${game[opponent].name}: </span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}</span>
+        </div>`;
+
+        scoreboardEl.appendChild(liEl);
+
+    } else if (game[opponent].latestTime < game[player].latestTime) {
+
+        liEl.innerHTML = `<div class="round-wrapper loser">
+        <p class="winner-title">Winner:
+        <span class="winner-name">${game[opponent].name}</span><br>
+        <p class="reaction">Reaction times</p>
+        <span class="player-name">${game[player].name}: </span>
+        <span class="player-time">${Math.floor(game[player].latestTime)/1000}</span>
+        <span class="opponent-name">${game[opponent].name}: </span>
+        <span class="opponent-time">${Math.floor(game[opponent].latestTime)/1000}s</span>
+        </div>`;
+
+        scoreboardEl.appendChild(liEl);
+    }
 
 
 	// time spent on cllick

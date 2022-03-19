@@ -130,9 +130,5 @@ body:after {
 .main-window__back-button-1:hover, .main-window__back-button-2:hover {
 	border: none;
 	color: white;
-	background: #009a4b;
-	width: 80px;
-	border-radius: 200px;
-	padding: 10px
+	text-align: center;
 }
-
