@@ -140,7 +140,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd
-			if (activeMatches[room].rounds.length < 10) {
+			if (activeMatches[room].rounds.length < 2) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -150,6 +150,9 @@ const handleClickedVirus = async function (room, callback) {
 				//Send match results, and allow the players to retry or return to home screen
 				io.to(room).emit("game:end", activeMatches[room]);
 				delete activeMatches[room];
+
+				debug(activeMatches);
+				debug(lookingForMatch);
 
 				console.log(room);
 				io.in(room).socketsLeave(room);

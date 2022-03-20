@@ -145,6 +145,7 @@ socket.on("game:newround", (randomNumber) => {
 socket.on("game:roundresult", (game) => {
 	//opponent for your opponent, use game[player] to get your own name,id,wins,fastestTime, game[opponent] for same but the enemy
 	const player = opponent === "player1" ? "player2" : "player1";
+	console.log(game, player, opponent);
 
 	// create new li element
 	const liEl = document.createElement("div");
@@ -306,13 +307,18 @@ socket.on("game:end", (game) => {
 	gameBoardTitle.style.display = "none";
 	gameBoardTitle.style.color = "white";
 
+	//reset vars
+	activeRoom = null;
+	isSearching = false;
+	username = null;
+	opponent = "player2";
+
 	// Return to Lobby
 	gameOverBtnReturnToLobby.addEventListener("click", () => {
 		// Reset
 		game.player1.wins = 0;
 		game.player2.wins = 0;
 		roundCounter = 0;
-		isSearching = false;
 
 		// Styling
 		gameOver.classList.add("hide");
@@ -329,7 +335,7 @@ socket.on("game:end", (game) => {
 			"Start Searching";
 		document.querySelector(".start-page__title").textContent =
 			"Enter your Name to play";
-		roundsEl.textContent = 'Round:0/10'
+		roundsEl.textContent = "Round:0/10";
 		clock.resetTimerForLobby();
 
 		document
@@ -343,8 +349,7 @@ socket.on("game:end", (game) => {
 		inputBtn.appendChild(loadingIcon);
 	});
 	//	!TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {
-	});
+	gameOverBtnGoAgain.addEventListener("click", () => {});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
