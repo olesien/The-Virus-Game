@@ -11,6 +11,7 @@ const scoreboardEl2 = document.querySelector("#scoreboard-list-2");
 const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 const loadingIcon = document.querySelector(".loading");
 const inputBtn = document.querySelector(".start-page__input-btn");
+const gameOverTitle = document.querySelector(".game-over__title");
 
 const startSearchingEl = document.querySelector(".start-page__input-btn"),
 	startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
@@ -192,13 +193,14 @@ socket.on("game:roundresult", (game) => {
 	// check which person won and lose
 	if (game.rounds[game.rounds.length - 1].winner === player) {
 		gameBoardTitle.style.color = "#00BE5F";
-		gameBoardTitle.textContent = `Win: +${
-			Math.floor(player_opponent - player_you) / 1000
-		} Seconds`;
+		gameBoardTitle.textContent = `Win: +${Math.floor(player_opponent - player_you) / 1000} Seconds`;
 		setTimeout(() => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
 		}, 900);
+		if (game.player1.wins > game.player2.wins) gameOverTitle.textContent = "Congrats on your Win";
+		else gameOverTitle.textContent = "Try better next time";
+
 	} else if (game.rounds[game.rounds.length - 1].loser === player) {
 		gameBoardTitle.style.color = "#BE3900";
 		gameBoardTitle.textContent = `Lose: -${
@@ -208,14 +210,14 @@ socket.on("game:roundresult", (game) => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
 		}, 900);
+
 	}
 
 	// Game Over screen Statistic
 	const gameOverRoundBreakdownCircleBox = document.querySelector(
 			".game-over__round-breakdown-circle-box"
 		),
-		gameOverRoundBreakdownCircle = document.createElement("div"),
-		gameOverTitle = document.querySelector(".game-over__title");
+		gameOverRoundBreakdownCircle = document.createElement("div");
 	gameOverRoundBreakdownCircle.classList.add(
 		"game-over__round-breakdown-circle"
 	);
@@ -235,12 +237,10 @@ socket.on("game:roundresult", (game) => {
 		el.appendChild(gameOverPlayerStatsText);
 	};
 
+
 	if (game[player].latestTime < game[opponent].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("winner");
-		gameOverRoundBreakdownCircleBox.appendChild(
-			gameOverRoundBreakdownCircle
-		);
-		gameOverTitle.textContent = "Congrats on your Win";
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
 		if (roundCounter < 5)
 			timeRecords(
 				Math.floor(game[player].latestTime) / 1000,
@@ -253,10 +253,7 @@ socket.on("game:roundresult", (game) => {
 			);
 	} else if (game[opponent].latestTime < game[player].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("loser");
-		gameOverRoundBreakdownCircleBox.appendChild(
-			gameOverRoundBreakdownCircle
-		);
-		gameOverTitle.textContent = "Try better next time";
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
 		if (roundCounter < 5)
 			timeRecords(
 				Math.floor(game[player].latestTime) / 1000,
@@ -268,9 +265,9 @@ socket.on("game:roundresult", (game) => {
 				gameOverTimeRecordsBox2
 			);
 	}
-
-	if (game.player1.wins === game.player2.wins)
-		gameOverTitle.textContent = "TIE";
+	if (game[player].wins > game[opponent].wins )gameOverTitle.textContent = "Congrats on your Win";
+	else gameOverTitle.textContent = "Try Better Next Time";
+	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
 });
 
 //All 10 rounds done, end game
@@ -340,7 +337,8 @@ socket.on("game:end", (game) => {
 		inputBtn.appendChild(loadingIcon);
 	});
 	//	!TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {});
+	gameOverBtnGoAgain.addEventListener("click", () => {
+	});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
