@@ -169,7 +169,7 @@ const handleClickedVirus = async function (room, callback) {
 };
 
 // Handle when a user entered name and started to matchamke
-const handleUserJoined = async function (username, callback) {
+const handleFindMatch = async function (username, callback) {
 	debug(
 		`User ${username} with socket id ${this.id} wants to find a game. People looking for match: ${lookingForMatch}`
 	);
@@ -225,14 +225,43 @@ const handleUserJoined = async function (username, callback) {
 	//this.broadcast.to(room.id).emit("user:list", room.users);
 };
 
-const handleDisconnect = function () {
-	debug(`Client ${this.id} disconnected :(`);
-	lookingForMatch.forEach((person, index) => {
-		if (person.userId == this.id) {
-			//remove this index
-			lookingForMatch.splice(index, 1);
-		}
-	});
+//Cancel matching
+const cancelMatchmaking = async function (id) {
+	try {
+		debug(`Client ${id} will be removed from match`);
+		let hasRemoved = false;
+		lookingForMatch.forEach((person, index) => {
+			if (person.userId == id) {
+				//remove this index
+				lookingForMatch.splice(index, 1);
+				hasRemoved = true;
+			}
+		});
+		debug(lookingForMatch);
+
+		return {
+			success: true,
+			hasRemoved,
+		};
+	} catch (error) {
+		debug(error);
+
+		return {
+			success: false,
+			error,
+		};
+	}
+};
+
+//Received when disconnected, cancel match!
+const handleDisconnect = async function () {
+	cancelMatchmaking(this.id);
+};
+
+//Received when user decides to cancel searching. result is the return with success true/false and hasRemoved or error
+const handleCancelMatchmaking = async function (callback) {
+	const result = await cancelMatchmaking(this.id);
+	callback(result);
 };
 
 module.exports = function (socket, _io) {
@@ -244,8 +273,11 @@ module.exports = function (socket, _io) {
 	socket.on("game:clicked-virus", handleClickedVirus);
 
 	// handle user joined
-	socket.on("user:joined", handleUserJoined);
+	socket.on("user:findmatch", handleFindMatch);
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
+
+	//handle cancel matchmaking
+	socket.on("user:cancelmatching", handleCancelMatchmaking);
 };
