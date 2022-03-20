@@ -286,6 +286,7 @@ socket.on("game:roundresult", (game) => {
 //All 10 rounds done, end game
 socket.on("game:end", (game) => {
 	console.log(game);
+
 	const gameOver = document.querySelector(".game-over"),
 		gameOverBtnReturnToLobby = document.querySelector(".game-over__btn-return-to-lobby"),
 		gameOverBtnGoAgain = document.querySelector(".game-over__btn-go-again");
@@ -302,17 +303,17 @@ socket.on("game:end", (game) => {
 	username = null;
 	opponent = "player2";
 
-
-
-// Create chart based on data
-	setTimeout(new Chart(document.getElementById('myChart'), config), 1)
+	// Create chart based on data
+	const ChartData = new Chart(document.getElementById('myChart'), config)
 	// Return to Lobby
 	gameOverBtnReturnToLobby.addEventListener("click", () => {
 		// Reset
 		game.player1.wins = 0;
 		game.player2.wins = 0;
 		roundCounter = 0;
+		config.data.datasets[0].data.length = 0;
 
+		ChartData.destroy();
 		// Styling
 		gameOver.classList.add("hide");
 		startPageEl.classList.remove("hide");
@@ -324,19 +325,14 @@ socket.on("game:end", (game) => {
 		gameBoardTitle.style.display = "block";
 		gameBoardTitle.textContent = "https://thevirusgame.com";
 
-		document.querySelector(".start-page__input-btn").textContent =
-			"Start Searching";
-		document.querySelector(".start-page__title").textContent =
-			"Enter your Name to play";
+		document.querySelector(".start-page__input-btn").textContent = "Start Searching";
+		document.querySelector(".start-page__title").textContent = "Enter your Name to play";
+
 		roundsEl.textContent = "Round:0/10";
 		clock.resetTimerForLobby();
 
-		document
-			.querySelectorAll(".game-over__round-breakdown-circle")
-			.forEach((e) => e.remove());
-		document
-			.querySelectorAll(".game-over__player-stats-text")
-			.forEach((e) => e.remove());
+		document.querySelectorAll(".game-over__round-breakdown-circle").forEach((e) => e.remove());
+		document.querySelectorAll(".game-over__player-stats-text").forEach((e) => e.remove());
 		document.querySelectorAll(".scoreinfo").forEach((e) => e.remove());
 
 		inputBtn.appendChild(loadingIcon);
