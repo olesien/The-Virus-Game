@@ -150,6 +150,9 @@ const handleClickedVirus = async function (room, callback) {
 				//Send match results, and allow the players to retry or return to home screen
 				io.to(room).emit("game:end", activeMatches[room]);
 				delete activeMatches[room];
+
+				console.log(room);
+				io.in(room).socketsLeave(room);
 			}
 		}
 

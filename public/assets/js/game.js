@@ -193,14 +193,16 @@ socket.on("game:roundresult", (game) => {
 	// check which person won and lose
 	if (game.rounds[game.rounds.length - 1].winner === player) {
 		gameBoardTitle.style.color = "#00BE5F";
-		gameBoardTitle.textContent = `Win: +${Math.floor(player_opponent - player_you) / 1000} Seconds`;
+		gameBoardTitle.textContent = `Win: +${
+			Math.floor(player_opponent - player_you) / 1000
+		} Seconds`;
 		setTimeout(() => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
 		}, 900);
-		if (game.player1.wins > game.player2.wins) gameOverTitle.textContent = "Congrats on your Win";
+		if (game.player1.wins > game.player2.wins)
+			gameOverTitle.textContent = "Congrats on your Win";
 		else gameOverTitle.textContent = "Try better next time";
-
 	} else if (game.rounds[game.rounds.length - 1].loser === player) {
 		gameBoardTitle.style.color = "#BE3900";
 		gameBoardTitle.textContent = `Lose: -${
@@ -210,7 +212,6 @@ socket.on("game:roundresult", (game) => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
 		}, 900);
-
 	}
 
 	// Game Over screen Statistic
@@ -237,10 +238,11 @@ socket.on("game:roundresult", (game) => {
 		el.appendChild(gameOverPlayerStatsText);
 	};
 
-
 	if (game[player].latestTime < game[opponent].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("winner");
-		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		gameOverRoundBreakdownCircleBox.appendChild(
+			gameOverRoundBreakdownCircle
+		);
 		if (roundCounter < 5)
 			timeRecords(
 				Math.floor(game[player].latestTime) / 1000,
@@ -253,7 +255,9 @@ socket.on("game:roundresult", (game) => {
 			);
 	} else if (game[opponent].latestTime < game[player].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("loser");
-		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		gameOverRoundBreakdownCircleBox.appendChild(
+			gameOverRoundBreakdownCircle
+		);
 		if (roundCounter < 5)
 			timeRecords(
 				Math.floor(game[player].latestTime) / 1000,
@@ -265,9 +269,11 @@ socket.on("game:roundresult", (game) => {
 				gameOverTimeRecordsBox2
 			);
 	}
-	if (game[player].wins > game[opponent].wins )gameOverTitle.textContent = "Congrats on your Win";
+	if (game[player].wins > game[opponent].wins)
+		gameOverTitle.textContent = "Congrats on your Win";
 	else gameOverTitle.textContent = "Try Better Next Time";
-	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
+	if (game.player1.wins === game.player2.wins)
+		gameOverTitle.textContent = "TIE";
 });
 
 //All 10 rounds done, end game
@@ -337,8 +343,7 @@ socket.on("game:end", (game) => {
 		inputBtn.appendChild(loadingIcon);
 	});
 	//	!TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {
-	});
+	gameOverBtnGoAgain.addEventListener("click", () => {});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
@@ -370,6 +375,7 @@ messageForm.addEventListener("submit", (e) => {
 
 	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
 	if (!isSearching) {
+		console.log("Start searching");
 		socket.emit("user:findmatch", username, (status) => {
 			// we've received acknowledgement from the server
 			console.log("Server acknowledged that user joined", status);
@@ -401,7 +407,7 @@ messageForm.addEventListener("submit", (e) => {
 		});
 	} else {
 		//Is currently searching and wants to cancel matchmaking!
-
+		console.log("Cancel matchmaking");
 		socket.emit("user:cancelmatching", (status) => {
 			//No errors and has been removed successfully
 			if (status.success && status.hasRemoved) {
