@@ -7,7 +7,7 @@
 @import url('./leaderboard.css');
 @import url('./animation.css');
 @import url('./game.css');
-
+@import url('./gameover.css');
 
 /*------------MAIN SETTINGS------------*/
 
@@ -68,7 +68,6 @@ body:after {
 
 /*BROWSER LIKE WINDOW*/
 .main-window {
-	margin: auto;
 	background-color: #F3F4F5;
 	border-radius: 10px;
 	border: 10px solid #353D44;
@@ -115,6 +114,7 @@ body:after {
 	border-radius: 100px;
 	width: 780px;
 	background-color: #3F4952;
+	height: 36px;
 }
 
 .main-window__back-button-1, .main-window__back-button-2 {

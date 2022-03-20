@@ -7,7 +7,6 @@ const previousGamesPage = document.querySelector('.previous-games-page'),
 	mainWindowBackButton2 = document.querySelector('.main-window__back-button-2'),
 	startPageBtnFastestReaction = document.querySelector('.start-page__btn-fastest-reaction'),
 	fastestReactionPage = document.querySelector('.fastest-reaction-page');
-
 // show Prev Games window
 const showPrevGames = () => {
 	mainWindowBarLink.textContent = 'https://thevirusgame.com/previousgames';
@@ -32,6 +31,7 @@ const backButton = (btn, page) => {
 		mainWindowBarLink.textContent = 'https://thevirusgame.com';
 		page.classList.toggle('hide');
 		startPage.classList.toggle('hide');
+
 	})
 }
 
@@ -42,5 +42,5 @@ backButton(mainWindowBackButton2, fastestReactionPage);
 
 
 // Event Listeners
-startPageBtnFastestReaction.addEventListener('click', () => showLeaderboard())
+startPageBtnFastestReaction.addEventListener('click', () => showLeaderboard());
 btnPreviousGames.addEventListener('click', () => showPrevGames());

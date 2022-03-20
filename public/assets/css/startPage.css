@@ -55,3 +55,7 @@
 .start-page__btn-fastest-reaction:hover, .start-page__btn-previous-games:hover {
 	background: #2e343b;
 }
+.loading {
+	margin-right: 10px;
+	width: 24px;
+}
