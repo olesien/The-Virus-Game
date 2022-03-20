@@ -332,7 +332,7 @@ socket.on("game:end", (game) => {
 		document
 			.querySelectorAll(".game-over__player-stats-text")
 			.forEach((e) => e.remove());
-		document.querySelectorAll(".round-wrapper").forEach((e) => e.remove());
+		document.querySelectorAll(".scoreinfo").forEach((e) => e.remove());
 
 		inputBtn.appendChild(loadingIcon);
 	});
