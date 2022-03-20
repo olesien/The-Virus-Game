@@ -5,16 +5,13 @@ const appEl = document.querySelector("#app");
 const gridBoxes = document.querySelectorAll(".grid-box");
 const gameBoardTitle = document.querySelector(".main-window__bar-link");
 const roundsEl = document.querySelector(".rounds");
-const scoreboardEl = document.querySelector(".scoreboard-list");
 const scoreboardEl1 = document.querySelector("#scoreboard-list-1");
 const scoreboardEl2 = document.querySelector("#scoreboard-list-2");
-const scoreboardWrapperEl = document.querySelector(".scoreboard-wrapper");
 const loadingIcon = document.querySelector(".loading");
 const inputBtn = document.querySelector(".start-page__input-btn");
 const gameOverTitle = document.querySelector(".game-over__title");
-
-const startSearchingEl = document.querySelector(".start-page__input-btn"),
-	startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
+const startSearchingEl = document.querySelector(".start-page__input-btn")
+const startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
 
 let activeRoom = null;
 let username = null;
@@ -23,6 +20,57 @@ let isSearching = false;
 
 let roundCounter = 0;
 let opponent = "player2";
+
+// Chart
+
+const labels = [
+	'1st',
+	'2nd',
+	'3rd',
+	'4th',
+	'5th',
+	'6th',
+	'7th',
+	'8th',
+	'9th',
+	'10th',
+];
+const data = {
+	labels: labels,
+	datasets: [{
+		label: 'Your Time records',
+		borderColor: '#5447FF',
+		data: [],
+	}]
+};
+const config = {
+	type: 'line',
+	data: data,
+	options: {
+		plugins: {
+			labels: {
+				fontColor: '#fff'
+			},
+			legend: {
+				labels: {
+					boxWidth: 0,
+					color: '#fff',
+					font: {
+						family: "'Signika', sans-serif",
+						weight: 'bold',
+						size: 28,
+					}
+				}
+			}
+		}
+	}
+}
+// Push reaction data to data > datasets > data
+const yourTimeRecodsChart = (time) => {
+
+	config.data.datasets[0].data.push(time)
+	console.log(config.data.datasets[0].data);
+}
 
 // add virus to random grid box
 const addVirus = (randomNumber) => {
@@ -124,13 +172,6 @@ const startGame = (match, friend, foe) => {
 	// add class of scoreinfo to li
 	liEl.classList.add("scoreinfo", "scoreboard-list");
 
-	// set content of li
-	// liEl.innerHTML = `<span class="friend">${friend}</span>
-	// <span class="foe">${foe}</span>`;
-
-	// append li to ul
-	// scoreboardEl.appendChild(liEl);
-
 	// Round Timer
 	clock.roundTimer();
 };
@@ -201,14 +242,11 @@ socket.on("game:roundresult", (game) => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
 		}, 900);
-		if (game.player1.wins > game.player2.wins)
-			gameOverTitle.textContent = "Congrats on your Win";
+		if (game.player1.wins > game.player2.wins) gameOverTitle.textContent = "Congrats on your Win";
 		else gameOverTitle.textContent = "Try better next time";
 	} else if (game.rounds[game.rounds.length - 1].loser === player) {
 		gameBoardTitle.style.color = "#BE3900";
-		gameBoardTitle.textContent = `Lose: -${
-			Math.floor(player_you - player_opponent) / 1000
-		} Seconds`;
+		gameBoardTitle.textContent = `Lose: -${Math.floor(player_you - player_opponent) / 1000} Seconds`;
 		setTimeout(() => {
 			gameBoardTitle.style.color = "white";
 			clock.roundTimer();
@@ -216,89 +254,40 @@ socket.on("game:roundresult", (game) => {
 	}
 
 	// Game Over screen Statistic
-	const gameOverRoundBreakdownCircleBox = document.querySelector(
-			".game-over__round-breakdown-circle-box"
-		),
+	const gameOverRoundBreakdownCircleBox = document.querySelector(".game-over__round-breakdown-circle-box"),
 		gameOverRoundBreakdownCircle = document.createElement("div");
 	gameOverRoundBreakdownCircle.classList.add(
 		"game-over__round-breakdown-circle"
 	);
 
-	const gameOverTimeRecordsBox1 = document.querySelector(
-		".game-over__time-records-box-1"
-	);
-	const gameOverTimeRecordsBox2 = document.querySelector(
-		".game-over__time-records-box-2"
-	);
-	const timeRecords = (speed, el) => {
+	const timeRecords = () => {
 		roundCounter++;
 		roundsEl.textContent = `Round:${roundCounter}/10`;
-		let gameOverPlayerStatsText = document.createElement("span");
-		gameOverPlayerStatsText.classList.add("game-over__player-stats-text");
-		gameOverPlayerStatsText.textContent = `Round ${roundCounter}: ${speed}`;
-		el.appendChild(gameOverPlayerStatsText);
 	};
 
 	if (game[player].latestTime < game[opponent].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("winner");
-		gameOverRoundBreakdownCircleBox.appendChild(
-			gameOverRoundBreakdownCircle
-		);
-		if (roundCounter < 5)
-			timeRecords(
-				Math.floor(game[player].latestTime) / 1000,
-				gameOverTimeRecordsBox1
-			);
-		else
-			timeRecords(
-				Math.floor(game[player].latestTime) / 1000,
-				gameOverTimeRecordsBox2
-			);
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		if (roundCounter < 5) timeRecords();
+		else timeRecords();
 	} else if (game[opponent].latestTime < game[player].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("loser");
-		gameOverRoundBreakdownCircleBox.appendChild(
-			gameOverRoundBreakdownCircle
-		);
-		if (roundCounter < 5)
-			timeRecords(
-				Math.floor(game[player].latestTime) / 1000,
-				gameOverTimeRecordsBox1
-			);
-		else
-			timeRecords(
-				Math.floor(game[player].latestTime) / 1000,
-				gameOverTimeRecordsBox2
-			);
+		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
+		if (roundCounter < 5) timeRecords();
+		else timeRecords();
 	}
 	if (game[player].wins > game[opponent].wins)
 		gameOverTitle.textContent = "Congrats on your Win";
 	else gameOverTitle.textContent = "Try Better Next Time";
-	if (game.player1.wins === game.player2.wins)
-		gameOverTitle.textContent = "TIE";
+	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
+	const timerRecordsChartCounter = Math.floor(game[player].latestTime) / 1000;
+	yourTimeRecodsChart(timerRecordsChartCounter)
 });
-
 //All 10 rounds done, end game
 socket.on("game:end", (game) => {
 	console.log(game);
-
-	/*
-		const rematchEl = document.createElement('button');
-		const lobbyEl = document.createElement('button');
-
-		rematchEl.classList.add('rematch');
-		lobbyEl.classList.add('lobby');
-
-		rematchEl.innerHTML = "Rematch"
-		lobbyEl.innerHTML = "Go To Lobby"
-
-		scoreboardWrapperEl.append(rematchEl);
-		scoreboardWrapperEl.append(lobbyEl);
-	*/
-
 	const gameOver = document.querySelector(".game-over"),
-		gameOverBtnReturnToLobby = document.querySelector(
-			".game-over__btn-return-to-lobby"
-		),
+		gameOverBtnReturnToLobby = document.querySelector(".game-over__btn-return-to-lobby"),
 		gameOverBtnGoAgain = document.querySelector(".game-over__btn-go-again");
 
 	//	show Game over screen
@@ -313,6 +302,10 @@ socket.on("game:end", (game) => {
 	username = null;
 	opponent = "player2";
 
+
+
+// Create chart based on data
+	setTimeout(new Chart(document.getElementById('myChart'), config), 1)
 	// Return to Lobby
 	gameOverBtnReturnToLobby.addEventListener("click", () => {
 		// Reset
@@ -348,8 +341,10 @@ socket.on("game:end", (game) => {
 
 		inputBtn.appendChild(loadingIcon);
 	});
-	//	!TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {});
+
+	//	TODO GO AGAIN BUTTON
+	gameOverBtnGoAgain.addEventListener("click", () => {
+	});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details

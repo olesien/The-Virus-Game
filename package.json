@@ -10,6 +10,7 @@
     "dependencies": {
         "bcrypt": "^5.0.1",
         "bookshelf": "^1.2.0",
+        "chart.js": "^3.7.1",
         "cors": "^2.8.5",
         "debug": "~2.6.9",
         "dotenv": "^16.0.0",

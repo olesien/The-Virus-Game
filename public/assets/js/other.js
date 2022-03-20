@@ -1,4 +1,4 @@
-"use strict";
+
 const previousGamesPage = document.querySelector('.previous-games-page'),
 	btnPreviousGames = document.querySelector('.start-page__btn-previous-games'),
 	startPage = document.querySelector('.start-page'),
@@ -44,3 +44,4 @@ backButton(mainWindowBackButton2, fastestReactionPage);
 // Event Listeners
 startPageBtnFastestReaction.addEventListener('click', () => showLeaderboard());
 btnPreviousGames.addEventListener('click', () => showPrevGames());
+

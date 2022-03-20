@@ -229,25 +229,19 @@
 		<section class="game-over hide ">
 			<h2 class="game-over__title">Congrats on your Win</h2>
 			<div class="d-flex justify-content-around">
-				<div class="game-over__time-records-box">
-					<h3 class="game-over__player-stats-title">Your Time records:</h3>
-					<div class="d-flex justify-content-between mt-2">
-						<div class="game-over__time-records-box-1 "></div>
-						<div class="game-over__time-records-box-2"></div>
-					</div>
-
+				<div>
+					<canvas id="myChart"></canvas>
 				</div>
 				<div class="game-over__round-breakdown-box ">
 					<h3 class="game-over__round-breakdown-title ">Round Breakdown</h3>
 					<div class="d-flex game-over__round-breakdown-circle-box flex-wrap   justify-content-center"></div>
 				</div>
 			</div>
+
 			<div class='d-flex mt-5 justify-content-evenly'>
 				<button class="game-over__btn-return-to-lobby">Return to lobby</button>
 				<button class="game-over__btn-go-again">Go Again</button>
 			</div>
-
-			<!--		Confetti-->
 		</section>
 
 
@@ -265,6 +259,8 @@
 		<div class="wave"></div>
 	</div>
 </footer>
+<!--Chart.JS-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Bootstrap 5 script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -273,6 +269,7 @@
 
 <!-- Socket.IO -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+
 
 <!-- Chat script -->
 <script src="./assets/js/game.js"></script>

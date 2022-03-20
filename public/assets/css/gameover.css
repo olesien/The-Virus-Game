@@ -64,7 +64,7 @@
 /*Buttons*/
 
 .game-over__btn-return-to-lobby , .game-over__btn-go-again {
-	margin-top: 60px;
+	margin-top: 20px;
 	color: white;
 	border-radius: 10px;
 	padding: 24px 16px;
@@ -75,4 +75,7 @@
 }
 .game-over__btn-return-to-lobby {
 	margin-right: 10px;
+}
+#myChart {
+	height: 200px;
 }
