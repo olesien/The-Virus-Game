@@ -149,6 +149,7 @@ const handleClickedVirus = async function (room, callback) {
 				//This is round 10 or somehow round 11+
 				//Send match results, and allow the players to retry or return to home screen
 				io.to(room).emit("game:end", activeMatches[room]);
+				delete activeMatches[room];
 			}
 		}
 
