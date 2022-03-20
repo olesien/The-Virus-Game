@@ -274,6 +274,7 @@ socket.on("game:end", (game) => {
 		game.player1.wins = 0;
 		game.player2.wins = 0;
 		roundCounter = 0;
+		isSearching = false;
 
 		// Styling
 		gameOver.classList.add('hide');
