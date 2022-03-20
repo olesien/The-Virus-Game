@@ -1,6 +1,4 @@
-
 .app {
-
 	height: 532px;
 	display: flex;
 	align-items: center;
@@ -8,11 +6,11 @@
 }
 
 .grid-box {
-	border: 1px solid #FEE501;
+	border: 1px solid #fee501;
 }
 #gameboard-title {
 	padding: 10px;
-	background-color: #00BE5F;
+	background-color: #00be5f;
 	color: white;
 	text-align: center;
 	margin: 0;
@@ -27,11 +25,8 @@
 	grid-template-columns: 9.1% 9.1% 9.1% 9.1% 9.1% 9.1% 9.1% 9.1% 9.1% 9.1% 9.1%;
 }
 
-
-
 .virus {
-
-	background-color: #292f34 ;
+	background-color: #292f34;
 	background-image: url("../icons/SARS-CoV-2_without_background.png");
 	background-repeat: no-repeat;
 	background-position: center;
@@ -52,15 +47,15 @@
 .scoreboard-title {
 	border-radius: 5px 5px 0 0;
 	padding: 10px;
-	background-color: #5447FF;
+	background-color: #5447ff;
 	color: white;
 	text-align: center;
 }
 .scoreinfo {
-	padding-top: 10px;
+	padding-top: 15px;
 }
 .scoreboard-list {
-	border: 10px solid  #353D44;
+	border: 10px solid #353d44;
 	border-radius: 10px;
 	background-color: #2e343b;
 	height: 600px;
@@ -71,26 +66,22 @@
 	text-align: center;
 	display: inline-block;
 }
-.scoreboard-list > span{
+.scoreboard-list > span {
 	color: white;
 	font-size: 36px;
 }
 
-
-
 #scoreboard-list {
-
 	list-style-type: none;
 	padding: 0;
-	text-align: center;;
+	text-align: center;
 }
 
 .rounds {
 	font-weight: bold;
 	font-size: 18px;
-	color:#00BE5F;
+	color: #00be5f;
 }
-
 
 .friend,
 .foe {
@@ -106,7 +97,7 @@
 	color: white;
 	width: 100%;
 	border-radius: 5px;
-	border:none;
+	border: none;
 }
 
 .lobby {
@@ -122,14 +113,15 @@
 
 	padding: 5px 0;
 	width: 90%;
-	margin:auto;
+	margin: auto;
 	color: rgb(255, 255, 255);
 	border-radius: 5px;
 }
 
 .winner-title,
 .winner-name {
-	font-size: 16px;
+	font-size: 18px;
+	padding-bottom: 5px;
 	font-weight: bold;
 }
 
@@ -139,7 +131,7 @@
 	padding: 5px 0;
 	border-bottom: 1px solid rgb(255, 255, 255);
 	width: 50%;
-	margin:auto;
+	margin: auto;
 }
 
 .player-time,
@@ -148,7 +140,6 @@
 .opponent-name {
 	font-size: 12px;
 	font-weight: bold;
-
 }
 
 .scoreboard-list-text {
@@ -156,5 +147,3 @@
 	padding: 10px;
 	font-size: 16px;
 }
-
-
