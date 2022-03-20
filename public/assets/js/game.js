@@ -329,7 +329,7 @@ socket.on("game:end", (game) => {
 			"Start Searching";
 		document.querySelector(".start-page__title").textContent =
 			"Enter your Name to play";
-
+		roundsEl.textContent = 'Round:0/10'
 		clock.resetTimerForLobby();
 
 		document
@@ -343,7 +343,8 @@ socket.on("game:end", (game) => {
 		inputBtn.appendChild(loadingIcon);
 	});
 	//	!TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {});
+	gameOverBtnGoAgain.addEventListener("click", () => {
+	});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
