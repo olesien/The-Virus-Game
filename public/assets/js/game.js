@@ -13,7 +13,7 @@ const gameOverTitle = document.querySelector(".game-over__title");
 const startSearchingEl = document.querySelector(".start-page__input-btn")
 const startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
 const gameOverScoreEl = document.querySelector('#game-over-score');
-
+const winnerConfetti = document.querySelector('#winnerConfetti');
 let activeRoom = null;
 let username = null;
 
@@ -23,21 +23,19 @@ let roundCounter = 0;
 let opponent = "player2";
 
 // Chart
-
-const labels = [
-	'1st',
-	'2nd',
-	'3rd',
-	'4th',
-	'5th',
-	'6th',
-	'7th',
-	'8th',
-	'9th',
-	'10th',
-];
 const data = {
-	labels: labels,
+	labels: [
+		'1st',
+		'2nd',
+		'3rd',
+		'4th',
+		'5th',
+		'6th',
+		'7th',
+		'8th',
+		'9th',
+		'10th',
+	],
 	datasets: [{
 		label: 'Your Time records',
 		borderColor: '#5447FF',
@@ -65,13 +63,14 @@ const config = {
 			}
 		}
 	}
-}
+};
 // Push reaction data to data > datasets > data
-const yourTimeRecodsChart = (time) => {
+const yourTimeRecordsChart = (time) => config.data.datasets[0].data.push(time);
 
-	config.data.datasets[0].data.push(time)
-	console.log(config.data.datasets[0].data);
-}
+
+
+
+
 
 // add virus to random grid box
 const addVirus = (randomNumber) => {
@@ -253,10 +252,9 @@ socket.on("game:roundresult", (game) => {
 			clock.roundTimer();
 		}, 900);
 	}
-
 	// Game Over screen Statistic
-    gameOverScoreEl.innerHTML = `${game[player].name} ${game[player].wins} -
-    ${game[opponent].wins} ${game[opponent].name} `; 
+	gameOverScoreEl.innerHTML = `${game[player].name} ${game[player].wins} -
+    ${game[opponent].wins} ${game[opponent].name} `;
 
 	const gameOverRoundBreakdownCircleBox = document.querySelector(".game-over__round-breakdown-circle-box"),
 		gameOverRoundBreakdownCircle = document.createElement("div");
@@ -280,12 +278,19 @@ socket.on("game:roundresult", (game) => {
 		if (roundCounter < 5) timeRecords();
 		else timeRecords();
 	}
-	if (game[player].wins > game[opponent].wins)
+	if (game[player].wins > game[opponent].wins) {
 		gameOverTitle.textContent = "Congrats on your Win";
+		// Confetti
+		new JSConfetti({winnerConfetti}).addConfetti({
+			emojis: ['🦠'],
+			emojiSize: 50,
+			confettiNumber: 20
+		});
+	}
 	else gameOverTitle.textContent = "Try Better Next Time";
 	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
 	const timerRecordsChartCounter = Math.floor(game[player].latestTime) / 1000;
-	yourTimeRecodsChart(timerRecordsChartCounter)
+	yourTimeRecordsChart(timerRecordsChartCounter)
 });
 //All 10 rounds done, end game
 socket.on("game:end", (game) => {
