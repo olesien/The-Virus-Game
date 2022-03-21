@@ -12,6 +12,7 @@ const inputBtn = document.querySelector(".start-page__input-btn");
 const gameOverTitle = document.querySelector(".game-over__title");
 const startSearchingEl = document.querySelector(".start-page__input-btn")
 const startPageLobbyTimerEl = document.querySelector(".start-page__lobby-timer");
+const gameOverScoreEl = document.querySelector('#game-over-score');
 
 let activeRoom = null;
 let username = null;
@@ -254,6 +255,9 @@ socket.on("game:roundresult", (game) => {
 	}
 
 	// Game Over screen Statistic
+    gameOverScoreEl.innerHTML = `${game[player].name} ${game[player].wins} -
+    ${game[opponent].wins} ${game[opponent].name} `; 
+
 	const gameOverRoundBreakdownCircleBox = document.querySelector(".game-over__round-breakdown-circle-box"),
 		gameOverRoundBreakdownCircle = document.createElement("div");
 	gameOverRoundBreakdownCircle.classList.add(
