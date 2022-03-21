@@ -280,6 +280,17 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
+const handlePrevGames = async function (callback) {
+	try {
+		const prevgames = await models.Game.find().limit(10);
+		debug(prevgames);
+		callback({ success: true, prevgames });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
+};
+
 module.exports = function (socket, _io) {
 	io = _io;
 	//Log when user connects
@@ -290,6 +301,9 @@ module.exports = function (socket, _io) {
 
 	// handle user joined
 	socket.on("user:findmatch", handleFindMatch);
+
+	//Get games for -> recent games
+	socket.on("user:prevgames", handlePrevGames);
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
