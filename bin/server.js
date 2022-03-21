@@ -11,6 +11,7 @@ const debug = require("debug")("game:server");
 const http = require("http");
 const socketio = require("socket.io");
 const socket_controller = require("../controllers/socket_controller");
+const models = require('../models');
 
 /**
  * Get port from environment and store in Express.
@@ -31,12 +32,23 @@ io.on("connection", (socket) => {
 });
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Connect to database
  */
+models.connect()
+    .then(() => {
+        /**
+         * Listen on provided port, on all network interfaces.
+         */
+        server.listen(port);
+        server.on("error", onError);
+        server.on("listening", onListening);
+    })
+    .catch(e => {
+        debug('failed to connect to database:', e);
+        process.exit(1);
+    })
 
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
