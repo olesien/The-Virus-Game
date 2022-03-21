@@ -282,7 +282,9 @@ const handleCancelMatchmaking = async function (callback) {
 
 const handlePrevGames = async function (callback) {
 	try {
-		const prevgames = await models.Game.find().limit(10);
+		const prevgames = await models.Game.find()
+			.sort("field -Timestamp")
+			.limit(10);
 		debug(prevgames);
 		callback({ success: true, prevgames });
 	} catch (error) {
