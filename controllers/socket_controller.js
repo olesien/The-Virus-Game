@@ -3,7 +3,7 @@
  */
 
 const debug = require("debug")("game:socket_controller");
-const models = require('../models');
+const models = require("../models");
 
 let io = null; // socket.io server instance
 
@@ -140,7 +140,7 @@ const handleClickedVirus = async function (room, callback) {
 			debug("Sending round result to room: " + room);
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
-			//Is it NOT round 10 or above? If so issue a new rounnd
+			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
 			if (activeMatches[room].rounds.length < 10) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
@@ -150,17 +150,25 @@ const handleClickedVirus = async function (room, callback) {
 				//This is round 10 or somehow round 11+
 				//Send match results, and allow the players to retry or return to home screen
 				io.to(room).emit("game:end", activeMatches[room]);
+
+				//Add to database this match
+				const doc = models.Game({
+					gameId: room,
+					player1: activeMatches[room][player].name,
+					player2: activeMatches[room][opponent].name,
+					winner: opponent,
+					loser: player,
+					Timestamp: Date.now(),
+					rounds: activeMatches[room].rounds,
+				});
+
+				doc.save();
+
+				//Cleanup
 				delete activeMatches[room];
-
-				debug(activeMatches);
-				debug(lookingForMatch);
-
-				console.log(room);
 				io.in(room).socketsLeave(room);
 			}
 		}
-
-		//Next round
 
 		// confirm success
 		callback({
@@ -272,6 +280,19 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
+const handlePrevGames = async function (callback) {
+	try {
+		const prevgames = await models.Game.find()
+			.sort("field -Timestamp")
+			.limit(10);
+		debug(prevgames);
+		callback({ success: true, prevgames });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
+};
+
 module.exports = function (socket, _io) {
 	io = _io;
 	//Log when user connects
@@ -282,6 +303,9 @@ module.exports = function (socket, _io) {
 
 	// handle user joined
 	socket.on("user:findmatch", handleFindMatch);
+
+	//Get games for -> recent games
+	socket.on("user:prevgames", handlePrevGames);
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
