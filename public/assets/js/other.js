@@ -16,7 +16,56 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 	fastestReactionPage = document.querySelector(".fastest-reaction-page");
 
 const buildGameFeed = (prevgames, livegames) => {
-	console.log(prevgames, livegames);
+	//The idea here is to use previous games (last 10 from db) alongside livegames to build a feed.
+	//This feed updates every time a round is completed and whenever the user loads in recent games
+	//prevgames
+	// [{gameId: "game-2341412213",
+	// player1: "somename",
+	// player2: "othername",
+	// winner: "player1",
+	// loser: "player2",
+	// Timestamp: 53252351, <- this is Date.now()
+	// rounds: [
+	// 	{
+	// 		winner: "player1",
+	// 		winnerTime: 0.7,
+	// 		loser: "player2",
+	// 		loserTime: 0.5,
+	// 	},
+	// ]}]
+	console.log(prevgames);
+
+	//livegames
+	// {"game-2341412213": {
+	//     startRoundTime: 213131
+	//     player1: {
+	//         name: "somename",
+	//         id: "23414122131",
+	//         wins: 1,
+	//         fastestTime: 1
+	//     },
+	//     player2: {
+	//         name: "othername",
+	//         id: "424214114",
+	//         wins: 2,
+	//         fastestTime: 0.9
+	//     },
+	//     rounds: [
+	//         {
+	//             winner: "player1",
+	//             winnerTime: 1.2,
+	//             loser: "player2",
+	//             loserTime: 1.3,
+	//         },
+	//         {
+	//             winner: "player1",
+	//             winnerTime: 1.3,
+	//             loser: "player2",
+	//             loserTime: 1.5,
+	//         }
+	//     ]
+	// }}
+	console.log(livegames);
 };
 // show Prev Games window
 const showPrevGames = () => {
