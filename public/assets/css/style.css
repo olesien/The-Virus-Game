@@ -8,7 +8,6 @@
 @import url('./animation.css');
 @import url('./game.css');
 @import url('./gameover.css');
-
 /*------------MAIN SETTINGS------------*/
 
 /*MAIN FONT*/
@@ -132,17 +131,24 @@ body:after {
 	text-align: center;
 }
 
-.grid-box {
-	border: 1px solid #FEE501;
-}
+/*MEDIA*/
 
 @media only screen and (max-width: 1600px) {
 	.start-page__input {
 		width: 400px;
 	}
+
 	.start-page__input-btn {
+		top: 5px;
 		right: 40px;
+		font-size: 18px;
 	}
+
+	.loading {
+		width: 18px;
+		margin-left: 10px;
+	}
+
 	.main-window {
 		width: 600px;
 		height: 500px;
@@ -151,14 +157,57 @@ body:after {
 	#scoreboard-list-1, #scoreboard-list-2 {
 		height: 500px;
 	}
+
 	.main-window__bar-link-box {
 		width: 400px;
 	}
-	.app {
+
+	.app, .game-over {
 		height: 432px;
 	}
+
 	.gameboard {
-		height: 400px;
+		height: 432px;
+	}
+
+	#myChart {
+		height: 150px;
+	}
+
+	.start-page__btn-group {
+		justify-content: space-evenly !important;
+	}
+
+	.game-over__btn-return-to-lobby, .game-over__btn-go-again, .start-page__btn-fastest-reaction, .start-page__btn-previous-games {
+		padding: 16px 8px;
+		font-size: 18px;
+	}
+
+	.game-over__btn-return-go-group {
+		margin-top: 20px !important;
+	}
+
+	.game-over__round-breakdown-circle {
+		height: 18px;
+		width: 18px;
+	}
+
+	.game-over__round-breakdown-circle-box {
+		width: 150px;
+	}
+
+	.scoreinfo {
+		padding-top: 10px;
+	}
+
+	.previous-games-page-live-players, .previous-games-page-live-score {
+		font-size: 18px;
+
+
+	}
+
+	.previous-games-page-live-card, .previous-games-page-completed-card {
+		width: auto;
+		padding: 5px;
 	}
 }
-
