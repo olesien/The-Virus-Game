@@ -131,3 +131,34 @@ body:after {
 	color: white;
 	text-align: center;
 }
+
+.grid-box {
+	border: 1px solid #FEE501;
+}
+
+@media only screen and (max-width: 1600px) {
+	.start-page__input {
+		width: 400px;
+	}
+	.start-page__input-btn {
+		right: 40px;
+	}
+	.main-window {
+		width: 600px;
+		height: 500px;
+	}
+
+	#scoreboard-list-1, #scoreboard-list-2 {
+		height: 500px;
+	}
+	.main-window__bar-link-box {
+		width: 400px;
+	}
+	.app {
+		height: 432px;
+	}
+	.gameboard {
+		height: 400px;
+	}
+}
+
