@@ -144,6 +144,8 @@ main {
 	/*Main Window*/
 	.main-window {
 		width: 700px;
+		height: 500px;
+		max-height: 100%;
 	}
 
 	.main-window__bar-link-box {
@@ -187,16 +189,17 @@ main {
 	}
 
 	/*Game Screen Page*/
-	.app {
+	.app, .gameboard {
 		width: 100%;
-	}
-
-	.gameboard-wrapper {
-		width: 100%;
-
+		height: 432px;
 	}
 
 	/*Game Over Page*/
+	.game-over {
+		height: 432px;
+		max-height: 100%;
+	}
+
 	.game-over__round-breakdown-circle-box {
 		width: 150px;
 	}
@@ -207,7 +210,7 @@ main {
 	}
 
 	.game-over__btn-return-go-group {
-		margin-top: 20px;
+		margin-top: 0 !important;
 	}
 
 	.game-over__btn-go-again, .game-over__btn-return-to-lobby {
@@ -246,5 +249,13 @@ main {
 
 	.fastest-reaction-seconds-box {
 		margin: 5px;
+	}
+
+	.scoreboard-list {
+		height: 500px;
+	}
+
+	.round-wrapper {
+		padding: 4px 0;
 	}
 }

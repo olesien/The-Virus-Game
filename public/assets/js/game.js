@@ -278,15 +278,12 @@ socket.on("game:roundresult", (game) => {
 		if (roundCounter < 5) timeRecords();
 		else timeRecords();
 	}
-	if (game[player].wins > game[opponent].wins) {
-		gameOverTitle.textContent = "Congrats on your Win";
-		// Confetti
-		new JSConfetti({winnerConfetti}).addConfetti({
-			emojis: ['🦠'],
-			emojiSize: 50,
-			confettiNumber: 20
-		});
-	}
+	if (game[player].wins > game[opponent].wins) gameOverTitle.textContent = "Congrats on your Win";
+	if (game[player].wins > game[opponent].wins && roundCounter === 10) new JSConfetti({winnerConfetti}).addConfetti({
+		emojis: ['🦠'],
+		emojiSize: 50,
+		confettiNumber: 20
+	});
 	else gameOverTitle.textContent = "Try Better Next Time";
 	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
 	const timerRecordsChartCounter = Math.floor(game[player].latestTime) / 1000;
@@ -295,6 +292,8 @@ socket.on("game:roundresult", (game) => {
 //All 10 rounds done, end game
 socket.on("game:end", (game) => {
 	console.log(game);
+	// Confetti
+
 
 	const gameOver = document.querySelector(".game-over"),
 		gameOverBtnReturnToLobby = document.querySelector(".game-over__btn-return-to-lobby"),
