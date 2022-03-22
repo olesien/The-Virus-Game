@@ -24,12 +24,19 @@ const showPrevGames = () => {
 	//Here I want to select last 10 games from db
 	socket.emit("user:prevgames", (status) => {
 		if (status.success) {
+			//Last 10 games played
 			console.log(status.prevgames);
+			//All currently active games. Iterate through but cap at 10?
+			console.log(status.livegames);
 		} else {
 			console.log(status.error);
 		}
 	});
 };
+
+socket.on("game:updatePrevGames", (status) => {
+	console.log(status);
+});
 
 // show Leaderboard/Fastest Reaction window
 const showLeaderboard = () => {

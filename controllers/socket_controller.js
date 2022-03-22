@@ -50,6 +50,20 @@ const getRandomNumber = (num) => {
 	return Math.ceil(Math.random() * num);
 };
 
+//Show previous games
+const handlePrevGames = async function (callback) {
+	try {
+		const prevgames = await models.Game.find()
+			.sort("field -Timestamp")
+			.limit(10);
+		debug(prevgames);
+		callback({ success: true, prevgames, livegames: activeMatches });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
+};
+
 //New round
 const newRound = async (room, max, offset) => {
 	setTimeout(() => {
@@ -170,6 +184,11 @@ const handleClickedVirus = async function (room, callback) {
 			}
 		}
 
+		//Update live feed in show previous games
+		await handlePrevGames((status) => {
+			io.to(room).emit("game:updatePrevGames", status);
+		});
+
 		// confirm success
 		callback({
 			success: true,
@@ -280,18 +299,10 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
-const handlePrevGames = async function (callback) {
-	try {
-		const prevgames = await models.Game.find()
-			.sort("field -Timestamp")
-			.limit(10);
-		debug(prevgames);
-		callback({ success: true, prevgames });
-	} catch (error) {
-		callback({ success: false, error });
-		debug(error);
-	}
-};
+// const handleLiveGames = async function (callback)
+// {
+// 	callback({ success: true, livegames: activeMatches});
+// }
 
 module.exports = function (socket, _io) {
 	io = _io;
@@ -306,6 +317,9 @@ module.exports = function (socket, _io) {
 
 	//Get games for -> recent games
 	socket.on("user:prevgames", handlePrevGames);
+
+	//Get games for -> live games
+	// socket.on("user:livegames", handleLiveGames)
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
