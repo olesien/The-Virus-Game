@@ -68,10 +68,6 @@ const config = {
 const yourTimeRecordsChart = (time) => config.data.datasets[0].data.push(time);
 
 
-
-
-
-
 // add virus to random grid box
 const addVirus = (randomNumber) => {
 	const virusEl = gridBoxes[randomNumber];
@@ -375,7 +371,7 @@ messageForm.addEventListener("submit", (e) => {
 	e.preventDefault();
 
 	username = messageForm.message.value;
-
+	if (username === '') username = 'Anonymous';
 	console.log(`User ${username} wants to connect`);
 
 	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
