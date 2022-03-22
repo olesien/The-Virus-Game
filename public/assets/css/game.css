@@ -61,6 +61,7 @@
 	margin-right: 40px;
 	padding: 0;
 	text-align: center;
+	z-index: 2;
 	display: inline-block;
 }
 .scoreboard-list > span {

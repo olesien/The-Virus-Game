@@ -16,7 +16,8 @@ body {
 	background-color: #5447FF;
 }
 
-body:after {
+main {
+	margin: 10px;
 }
 
 /*HIDE */
@@ -70,10 +71,13 @@ body:after {
 	background-color: #F3F4F5;
 	border-radius: 10px;
 	border: 10px solid #353D44;
-	width: 1000px;
+	width: 900px;
+	max-width: 100%;
 	height: 600px;
+	max-height: 100%;
 	position: relative;
 	box-shadow: 0 4px 4px 0 #00000040;
+	z-index: 2;
 }
 
 .main-window__bar-circle-red, .main-window__bar-circle-yellow, .main-window__bar-circle-green {
@@ -131,83 +135,116 @@ body:after {
 	text-align: center;
 }
 
-/*MEDIA*/
+
+.app-full-width {
+	width: 100%;
+}
 
 @media only screen and (max-width: 1600px) {
+	/*Main Window*/
+	.main-window {
+		width: 700px;
+	}
+
+	.main-window__bar-link-box {
+		width: 450px;
+		max-width: 100%;
+	}
+
+	/*Start Page*/
+	.start-page__from-group {
+		margin: 5px;
+	}
+
 	.start-page__input {
-		width: 400px;
+		width: 350px;
+		max-width: 100%;
+	}
+
+	#message-form {
+		margin-top: 60px;
 	}
 
 	.start-page__input-btn {
 		top: 5px;
-		right: 40px;
 		font-size: 18px;
+		padding: 16px 8px;
 	}
 
 	.loading {
 		width: 18px;
-		margin-left: 10px;
-	}
-
-	.main-window {
-		width: 600px;
-		height: 500px;
-	}
-
-	#scoreboard-list-1, #scoreboard-list-2 {
-		height: 500px;
-	}
-
-	.main-window__bar-link-box {
-		width: 400px;
-	}
-
-	.app, .game-over {
-		height: 432px;
-	}
-
-	.gameboard {
-		height: 432px;
-	}
-
-	#myChart {
-		height: 150px;
+		height: 18px;
 	}
 
 	.start-page__btn-group {
-		justify-content: space-evenly !important;
+		max-width: 100%;
+		justify-content: space-around !important;
 	}
 
-	.game-over__btn-return-to-lobby, .game-over__btn-go-again, .start-page__btn-fastest-reaction, .start-page__btn-previous-games {
-		padding: 16px 8px;
+	.start-page__btn-fastest-reaction, .start-page__btn-previous-games {
 		font-size: 18px;
+		padding: 16px 8px;
 	}
 
-	.game-over__btn-return-go-group {
-		margin-top: 20px !important;
+	/*Game Screen Page*/
+	.app {
+		width: 100%;
 	}
 
-	.game-over__round-breakdown-circle {
-		height: 18px;
-		width: 18px;
+	.gameboard-wrapper {
+		width: 100%;
+
 	}
 
+	/*Game Over Page*/
 	.game-over__round-breakdown-circle-box {
 		width: 150px;
 	}
 
-	.scoreinfo {
-		padding-top: 10px;
+	.game-over__round-breakdown-circle {
+		width: 18px;
+		height: 18px;
+	}
+
+	.game-over__btn-return-go-group {
+		margin-top: 20px;
+	}
+
+	.game-over__btn-go-again, .game-over__btn-return-to-lobby {
+		font-size: 18px;
+		padding: 16px 8px;
+	}
+
+	#myChart {
+		width: 300px;
+	}
+
+	/*Previous Game Page*/
+	.previous-games-page-completed-card, .previous-games-page-live-card {
+		max-width: 100%;
+		width: auto;
 	}
 
 	.previous-games-page-live-players, .previous-games-page-live-score {
 		font-size: 18px;
+	}
 
+	.previous-games-page-completed-title, .previous-games-page-live-title {
+		text-align: center;
+	}
+
+	.previous-games-page-completed-card-group, .previous-games-page-live-card-group {
+		align-items: center !important;
+		justify-content: center !important;
+	}
+
+	/*Fastest Reaction Page*/
+	.fastest-reaction-place-box {
+		max-width: 100%;
 
 	}
 
-	.previous-games-page-live-card, .previous-games-page-completed-card {
-		width: auto;
-		padding: 5px;
+	.fastest-reaction-seconds-box {
+		margin: 5px;
 	}
 }
