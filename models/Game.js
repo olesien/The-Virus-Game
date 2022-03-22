@@ -13,7 +13,12 @@ const gameSchema = new mongoose.Schema({
 		wins: Number,
 		fastestTime: Number,
 	},
-	player2: String,
+	player2: {
+		name: String,
+		id: String,
+		wins: Number,
+		fastestTime: Number,
+	},
 	winner: "player1" | "player2",
 	loser: "player1" | "player2",
 	Timestamp: Number,
