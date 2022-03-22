@@ -20,8 +20,18 @@ const buildGameFeed = (prevgames, livegames) => {
 	//This feed updates every time a round is completed and whenever the user loads in recent games
 	//prevgames
 	// [{gameId: "game-2341412213",
-	// player1: "somename",
-	// player2: "othername",
+	//     player1: {
+	//         name: "somename",
+	//         id: "23414122131",
+	//         wins: 1,
+	//         fastestTime: 1
+	//     },
+	//     player2: {
+	//         name: "othername",
+	//         id: "424214114",
+	//         wins: 2,
+	//         fastestTime: 0.9
+	//     },
 	// winner: "player1",
 	// loser: "player2",
 	// Timestamp: 53252351, <- this is Date.now()

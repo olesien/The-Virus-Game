@@ -7,7 +7,12 @@ const mongoose = require("mongoose");
 // Declare Model Schema
 const gameSchema = new mongoose.Schema({
 	gameId: String,
-	player1: String,
+	player1: {
+		name: String,
+		id: String,
+		wins: Number,
+		fastestTime: Number,
+	},
 	player2: String,
 	winner: "player1" | "player2",
 	loser: "player1" | "player2",

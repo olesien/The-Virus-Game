@@ -168,8 +168,8 @@ const handleClickedVirus = async function (room, callback) {
 				//Add to database this match
 				const doc = models.Game({
 					gameId: room,
-					player1: activeMatches[room][player].name,
-					player2: activeMatches[room][opponent].name,
+					player1: activeMatches[room][player],
+					player2: activeMatches[room][opponent],
 					winner: opponent,
 					loser: player,
 					Timestamp: Date.now(),
