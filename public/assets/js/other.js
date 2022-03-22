@@ -14,6 +14,8 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 		".start-page__btn-fastest-reaction"
 	),
 	fastestReactionPage = document.querySelector(".fastest-reaction-page");
+
+const buildGameFeed = (prevgames, livegames) => {};
 // show Prev Games window
 const showPrevGames = () => {
 	mainWindowBarLink.textContent = "https://thevirusgame.com/previousgames";
@@ -28,7 +30,11 @@ const showPrevGames = () => {
 			console.log(status.prevgames);
 			//All currently active games. Iterate through but cap at 10?
 			console.log(status.livegames);
+
+			//Send to build function
+			buildGameFeed(status.prevgames, status.livegames);
 		} else {
+			alert("Error when fetching data. See console for details");
 			console.log(status.error);
 		}
 	});
@@ -36,6 +42,13 @@ const showPrevGames = () => {
 
 socket.on("game:updatePrevGames", (status) => {
 	console.log(status);
+	if (status.success) {
+		//Send to build function
+		buildGameFeed(status.prevgames, status.livegames);
+	} else {
+		alert("Error when fetching data. See console for details");
+		console.log(status.error);
+	}
 });
 
 // show Leaderboard/Fastest Reaction window
