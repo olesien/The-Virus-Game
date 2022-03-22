@@ -15,7 +15,9 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 	),
 	fastestReactionPage = document.querySelector(".fastest-reaction-page");
 
-const buildGameFeed = (prevgames, livegames) => {};
+const buildGameFeed = (prevgames, livegames) => {
+	console.log(prevgames, livegames);
+};
 // show Prev Games window
 const showPrevGames = () => {
 	mainWindowBarLink.textContent = "https://thevirusgame.com/previousgames";
