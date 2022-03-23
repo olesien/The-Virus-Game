@@ -159,7 +159,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
-			if (activeMatches[room].rounds.length < 2) {
+			if (activeMatches[room].rounds.length < 4) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -182,19 +182,43 @@ const handleClickedVirus = async function (room, callback) {
 
 				doc.save();
 
-                const high = models.Highscore({
+                const rounds = activeMatches[room].rounds;
+
+                const playerName = activeMatches[room][player].name;
+                const playerScore = rounds.reduce(
+                    (partialSum, round) =>
+                        round.winner === playerName
+                            ? partialSum + round.winnerTime
+                            : partialSum + round.loserTime,
+                    0
+                );
+
+                debug(playerScore);
+
+                const opponentName = activeMatches[room][player].name;
+                const opponentScore = rounds.reduce(
+                    (partialSum, round) =>
+                        round.winner === opponentName
+                            ? partialSum + round.loserTime
+                            : partialSum + round.winnerTime,
+                    0
+                );
+
+                debug(opponentScore);
+
+                const playerHighscore = models.Highscore({
                     player: activeMatches[room][player].name,
-                    fastestTime: activeMatches[room][player].fastestTime
+                    averageTime: playerScore / activeMatches[room].rounds.length
                 })
 
-                high.save()
+                playerHighscore.save()
 
-                const high2 = models.Highscore({
+                const opponentHighscore = models.Highscore({
                     player: activeMatches[room][opponent].name,
-                    fastestTime: activeMatches[room][opponent].fastestTime
+                    averageTime: opponentScore / activeMatches[room].rounds.length
                 })
 
-                high2.save()
+                opponentHighscore.save()
 
                 //Update live feed in highscore
 			    await handleHighScore((status) => {
@@ -329,7 +353,7 @@ const handleLiveGames = async function (callback) {
 
 const handleHighScore = async function (callback) {
     try {
-        const highscores = await models.Highscore.find().sort("field fastestTime").limit(10);
+        const highscores = await models.Highscore.find().sort("field averageTime").limit(10);
         debug(highscores);
         callback({success: true, highscores});
     } catch (error) {

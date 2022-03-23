@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 // Declare Model Schema
 const highScoreSchema = new mongoose.Schema({
     player: String,
-    fastestTime: Number
+    averageTime: Number
 });
 
 // Declare Model
