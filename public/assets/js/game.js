@@ -275,7 +275,7 @@ socket.on("game:roundresult", (game) => {
 		else timeRecords();
 	}
 	if (game[player].wins > game[opponent].wins) gameOverTitle.textContent = "Congrats on your Win";
-	else gameOverTitle.textContent = "Try Better Next Time";  // this one
+	else gameOverTitle.textContent = "Try Better Next Time";
 	if (game[player].wins > game[opponent].wins && roundCounter === 11) {
 		roundsEl.textContent = "Round:10/10";
 		new JSConfetti({winnerConfetti}).addConfetti({
@@ -329,6 +329,7 @@ socket.on("game:end", (game) => {
 		scoreboardEl2.classList.add("hide");
 
 		gameBoardTitle.style.display = "block";
+		gameBoardTitle.style.textAlign = "left";
 		gameBoardTitle.textContent = "https://thevirusgame.com";
 
 		document.querySelector(".start-page__input-btn").textContent = "Start Searching";
