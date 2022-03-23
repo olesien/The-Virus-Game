@@ -1,6 +1,0 @@
-/00-sourcefiles/
-/**/node_modules/
-*-nogit
-/**/*.env
-/.idea/*
-/03-db/uploads/
