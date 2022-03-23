@@ -174,6 +174,17 @@ socket.on("game:updatePrevGames", (status) => {
 	}
 });
 
+socket.on("user:updateHighscore", (status) => {
+	console.log(status);
+	if (status.success) {
+		//Send to build function
+		displayHighscore(status.highscores);
+	} else {
+		alert("Error when fetching data. See console for details");
+		console.log(status.error);
+	}
+});
+
 // show Leaderboard/Fastest Reaction window
 const showLeaderboard = () => {
 	mainWindowBarLink.textContent = "https://thevirusgame.com/leaderboard";

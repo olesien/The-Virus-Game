@@ -80,7 +80,7 @@ const updateHighscore = async (activeMatch, player) => {
 			averageTime: playerScore / activeMatch.rounds.length,
 		});
 
-		playerHighscore.save();
+		await playerHighscore.save();
 	} else if (
 		playerHighest[0].averageTime >
 		playerScore / activeMatch.rounds.length
@@ -96,6 +96,8 @@ const updateHighscore = async (activeMatch, player) => {
 		//updatePlayerHighScore.save();
 		debug(updatePlayerHighScore);
 	}
+
+	return;
 };
 
 //Show previous games
@@ -105,6 +107,19 @@ const handlePrevGames = async function (callback) {
 			.sort("field -Timestamp")
 			.limit(10);
 		callback({ success: true, prevgames, livegames: activeMatches });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
+};
+//handle high score
+const handleHighScore = async function (callback) {
+	try {
+		const highscores = await models.Highscore.find()
+			.sort("field averageTime")
+			.limit(10);
+		debug(highscores);
+		callback({ success: true, highscores });
 	} catch (error) {
 		callback({ success: false, error });
 		debug(error);
@@ -207,7 +222,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
-			if (activeMatches[room].rounds.length < 10) {
+			if (activeMatches[room].rounds.length < 4) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -230,12 +245,12 @@ const handleClickedVirus = async function (room, callback) {
 
 				doc.save();
 
-				updateHighscore(activeMatches[room], player);
-				updateHighscore(activeMatches[room], opponent);
+				await updateHighscore(activeMatches[room], player);
+				await updateHighscore(activeMatches[room], opponent);
 
 				//Update live feed in highscore
 				await handleHighScore((status) => {
-					io.emit("user:gethighscore", status);
+					io.emit("user:updateHighscore", status);
 				});
 
 				//Cleanup
@@ -361,19 +376,6 @@ const handleCancelMatchmaking = async function (callback) {
 
 const handleLiveGames = async function (callback) {
 	callback({ success: true, livegames: activeMatches });
-};
-
-const handleHighScore = async function (callback) {
-	try {
-		const highscores = await models.Highscore.find()
-			.sort("field averageTime")
-			.limit(10);
-		debug(highscores);
-		callback({ success: true, highscores });
-	} catch (error) {
-		callback({ success: false, error });
-		debug(error);
-	}
 };
 
 module.exports = function (socket, _io) {
