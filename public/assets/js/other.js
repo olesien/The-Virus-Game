@@ -1,22 +1,15 @@
 const previousGamesEl = document.querySelector(".previous-games-wrapper");
 const livegamesEl = document.querySelector(".live-games-wrapper");
-
 const previousGamesPage = document.querySelector(".previous-games-page"),
-	btnPreviousGames = document.querySelector(
-		".start-page__btn-previous-games"
-	),
+	btnPreviousGames = document.querySelector(".start-page__btn-previous-games"),
 	startPage = document.querySelector(".start-page"),
 	mainWindowBarLink = document.querySelector(".main-window__bar-link"),
-	mainWindowBackButton1 = document.querySelector(
-		".main-window__back-button-1"
-	),
-	mainWindowBackButton2 = document.querySelector(
-		".main-window__back-button-2"
-	),
-	startPageBtnFastestReaction = document.querySelector(
-		".start-page__btn-fastest-reaction"
-	),
-	fastestReactionPage = document.querySelector(".fastest-reaction-page");
+	mainWindowBackButton1 = document.querySelector(".main-window__back-button-1"),
+	mainWindowBackButton2 = document.querySelector(".main-window__back-button-2"),
+	startPageBtnFastestReaction = document.querySelector(".start-page__btn-fastest-reaction"),
+	fastestReactionPage = document.querySelector(".fastest-reaction-page"),
+	scrollbar = document.querySelector('.scrollbar');
+
 
 const buildGameFeed = (prevgames, livegames) => {
 	previousGamesEl.innerHTML = "";
@@ -40,9 +33,9 @@ const buildGameFeed = (prevgames, livegames) => {
 		liveliEL.classList.add("previous-games-page-live-card");
 
 		liveliEL.innerHTML += `
-        <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span> 
+        <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span>
         <span class="previous-games-page-live-players">${livegames[property].player2.name}</span><br>
-        <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span> 
+        <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span>
         <span class="previous-games-page-live-score">${livegames[property].player2.wins}</span>`;
 		livegamesEl.append(liveliEL);
 	}
@@ -115,7 +108,7 @@ const showPrevGames = () => {
 	previousGamesPage.classList.toggle("hide");
 	startPage.classList.toggle("hide");
 	mainWindowBackButton1.classList.toggle("hide");
-
+	scrollbar.style.overflowY = 'scroll'
 	//Here I want to select last 10 games from db
 	socket.emit("user:prevgames", (status) => {
 		if (status.success) {
@@ -150,6 +143,7 @@ const showLeaderboard = () => {
 	fastestReactionPage.classList.toggle("hide");
 	startPage.classList.toggle("hide");
 	mainWindowBackButton2.classList.toggle("hide");
+	scrollbar.style.overflowY = 'scroll'
 };
 
 // Back to Start page function
@@ -159,6 +153,7 @@ const backButton = (btn, page) => {
 		mainWindowBarLink.textContent = "https://thevirusgame.com";
 		page.classList.toggle("hide");
 		startPage.classList.toggle("hide");
+		scrollbar.style.overflowY = 'hidden'
 	});
 };
 

@@ -8,22 +8,23 @@
 	font-style: normal;
 	font-weight: 400;
 	line-height: 44px;
-	text-align: left;
+	text-align: center;
 	color: #3F4952;
 }
 
 .previous-games-page-live-card, .previous-games-page-completed-card {
 	margin-left: 10px;
-	margin-top: 10px;
+	margin-bottom: 10px;
 	padding: 10px;
 	background: #5447FF;
-	width: 260px;
+	width: 230px;
+	max-width: 100%;
 	box-shadow: 0 4px 4px 0 #00000040;
 	border-radius: 5px;
 }
 
 .previous-games-page-live-players, .previous-games-page-live-score {
 	color: #fff;
-	font-size: 24px;
+	font-size: 18px;
 
 }
