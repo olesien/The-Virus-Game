@@ -1,6 +1,6 @@
 const previousGamesEl = document.querySelector(".previous-games-wrapper");
 const livegamesEl = document.querySelector(".live-games-wrapper");
-
+const fastestReactionBox = document.querySelector('.fastest-reaction-box');
 const previousGamesPage = document.querySelector(".previous-games-page"),
 	btnPreviousGames = document.querySelector(
 		".start-page__btn-previous-games"
@@ -40,9 +40,9 @@ const buildGameFeed = (prevgames, livegames) => {
 		liveliEL.classList.add("previous-games-page-live-card");
 
 		liveliEL.innerHTML += `
-        <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span> 
+        <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span>
         <span class="previous-games-page-live-players">${livegames[property].player2.name}</span><br>
-        <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span> 
+        <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span>
         <span class="previous-games-page-live-score">${livegames[property].player2.wins}</span>`;
 		livegamesEl.append(liveliEL);
 	}
@@ -110,7 +110,27 @@ const buildGameFeed = (prevgames, livegames) => {
 	console.log(livegames);
 };
 const displayHighscore = (highscores) => {
-    console.log(highscores);
+	const createDivEl = document.createElement('div');
+	fastestReactionBox.innerHTML = '';
+	createDivEl.classList.add('d-flex', 'flex-column', 'align-items-center', 'justify-content-center')
+	highscores.forEach(e => {
+		createDivEl.innerHTML += `
+			<div class='fastest-reaction-places-box d-flex align-items-center'>
+					<!--Name-->
+					<div class="fastest-reaction-title-box ">
+						<p class="fastest-reaction-title ">${e.player}</p>
+					</div>
+					<!--Seconds-->
+					<div class="fastest-reaction-seconds-box">
+						<p class="fastest-reaction-seconds">${(Math.round(e.averageTime ) / 1000).toFixed(2)}s</p>
+					</div>
+			</div>
+			`
+
+		fastestReactionBox.appendChild(createDivEl);
+	});
+
+
 }
 
 // show Prev Games window
@@ -155,19 +175,19 @@ const showLeaderboard = () => {
 	startPage.classList.toggle("hide");
 	mainWindowBackButton2.classList.toggle("hide");
 
-    socket.emit("user:gethighscore", (status) => {
-        if (status.success) {
-    
-            console.log(status.highscores);
-    
-            //Send to build function
-            displayHighscore(status.highscores);
-        } else {
-            alert("Error when fetching data. See console for details");
-            console.log(status.error);
-        }
-    });
-    
+	socket.emit("user:gethighscore", (status) => {
+		if (status.success) {
+
+			console.log(status.highscores);
+
+			//Send to build function
+			displayHighscore(status.highscores);
+		} else {
+			alert("Error when fetching data. See console for details");
+			console.log(status.error);
+		}
+	});
+
 };
 
 // Back to Start page function
