@@ -200,15 +200,37 @@ const handleClickedVirus = async function (room, callback) {
 				debug(playerScore);
 
 				//Verify here so that if the player has previously added an average time, this new time is better
-
-				//Create the object with the data
-				const playerHighscore = models.Highscore({
+				const playerHighest = await models.Highscore.find({
 					player: activeMatches[room][player].name,
-					averageTime:
-						playerScore / activeMatches[room].rounds.length,
 				});
+				debug(playerHighest);
+				if (playerHighest.length < 1) {
+					//Create the object with the data
+					const playerHighscore = models.Highscore({
+						player: activeMatches[room][player].name,
+						averageTime:
+							playerScore / activeMatches[room].rounds.length,
+					});
 
-				playerHighscore.save();
+					playerHighscore.save();
+				} else if (
+					playerHighest[0].averageTime >
+					playerScore / activeMatches[room].rounds.length
+				) {
+					//I want to update the current row!
+					const updatePlayerHighScore =
+						await models.Highscore.replaceOne(
+							{ player: activeMatches[room][player].name },
+							{
+								player: activeMatches[room][player].name,
+								averageTime:
+									playerScore /
+									activeMatches[room].rounds.length,
+							}
+						);
+					//updatePlayerHighScore.save();
+					debug(updatePlayerHighScore);
+				}
 
 				//Store the potential highscore of the opponent (which will be the person who won)
 				const opponentName = activeMatches[room][player].name;
@@ -225,15 +247,37 @@ const handleClickedVirus = async function (room, callback) {
 				debug(opponentScore);
 
 				//Verify here so that if the opponent has previously added an average time, this new time is better
-
-				//Create the object with the data
-				const opponentHighscore = models.Highscore({
+				const opponentHighest = await models.Highscore.find({
 					player: activeMatches[room][opponent].name,
-					averageTime:
-						opponentScore / activeMatches[room].rounds.length,
 				});
+				debug(playerHighest);
+				if (playerHighest.length < 1) {
+					//Create the object with the data
+					const opponentHighscore = models.Highscore({
+						player: activeMatches[room][opponent].name,
+						averageTime:
+							opponentScore / activeMatches[room].rounds.length,
+					});
 
-				opponentHighscore.save();
+					opponentHighscore.save();
+				} else if (
+					opponentHighest[0].averageTime >
+					opponentScore / activeMatches[room].rounds.length
+				) {
+					//I want to update the current row!
+					const updateOpponentHighScore =
+						await models.Highscore.replaceOne(
+							{ player: activeMatches[room][opponent].name },
+							{
+								player: activeMatches[room][opponent].name,
+								averageTime:
+									opponentScore /
+									activeMatches[room].rounds.length,
+							}
+						);
+					//updateOpponentHighScore.save();
+					debug(updateOpponentHighScore);
+				}
 
 				//Update live feed in highscore
 				await handleHighScore((status) => {
