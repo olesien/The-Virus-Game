@@ -372,6 +372,11 @@ messageForm.addEventListener("submit", (e) => {
 
 	username = messageForm.message.value;
 	if (username === '') username = 'Anonymous';
+	if (username.length > 10) {
+		messageForm.message.value = '';
+		return
+	}
+
 	console.log(`User ${username} wants to connect`);
 
 	// emit `user:joined` event and when we get acknowledgement, THEN show the chat
