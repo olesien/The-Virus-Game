@@ -19,7 +19,7 @@ let username = null;
 
 let isSearching = false;
 
-let roundCounter = 0;
+let roundCounter = 1;
 let opponent = "player2";
 
 // Chart
@@ -203,7 +203,7 @@ socket.on("game:roundresult", (game) => {
 			Math.floor(game[opponent].latestTime) / 1000
 		}</span>
         </div>`;
-		if (roundCounter < 5) scoreboardEl1.appendChild(liEl);
+		if (roundCounter < 6) scoreboardEl1.appendChild(liEl);
 		else scoreboardEl2.appendChild(liEl);
 	} else if (game[opponent].latestTime < game[player].latestTime) {
 		liEl.innerHTML = `<div class="round-wrapper loser">
@@ -220,7 +220,7 @@ socket.on("game:roundresult", (game) => {
 		}s</span>
         </div>`;
 
-		if (roundCounter < 5) scoreboardEl1.appendChild(liEl);
+		if (roundCounter < 6) scoreboardEl1.appendChild(liEl);
 		else scoreboardEl2.appendChild(liEl);
 	}
 
@@ -266,21 +266,24 @@ socket.on("game:roundresult", (game) => {
 	if (game[player].latestTime < game[opponent].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("winner");
 		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
-		if (roundCounter < 5) timeRecords();
+		if (roundCounter < 6) timeRecords();
 		else timeRecords();
 	} else if (game[opponent].latestTime < game[player].latestTime) {
 		gameOverRoundBreakdownCircle.classList.add("loser");
 		gameOverRoundBreakdownCircleBox.appendChild(gameOverRoundBreakdownCircle);
-		if (roundCounter < 5) timeRecords();
+		if (roundCounter < 6) timeRecords();
 		else timeRecords();
 	}
 	if (game[player].wins > game[opponent].wins) gameOverTitle.textContent = "Congrats on your Win";
-	if (game[player].wins > game[opponent].wins && roundCounter === 10) new JSConfetti({winnerConfetti}).addConfetti({
-		emojis: ['🦠'],
-		emojiSize: 50,
-		confettiNumber: 20
-	});
-	else gameOverTitle.textContent = "Try Better Next Time";
+	else gameOverTitle.textContent = "Try Better Next Time";  // this one
+	if (game[player].wins > game[opponent].wins && roundCounter === 11) {
+		roundsEl.textContent = "Round:10/10";
+		new JSConfetti({winnerConfetti}).addConfetti({
+			emojis: ['🦠'],
+			emojiSize: 50,
+			confettiNumber: 20
+		})
+	};
 	if (game.player1.wins === game.player2.wins) gameOverTitle.textContent = "TIE";
 	const timerRecordsChartCounter = Math.floor(game[player].latestTime) / 1000;
 	yourTimeRecordsChart(timerRecordsChartCounter)
@@ -313,7 +316,7 @@ socket.on("game:end", (game) => {
 		// Reset
 		game.player1.wins = 0;
 		game.player2.wins = 0;
-		roundCounter = 0;
+		roundCounter = 1;
 		config.data.datasets[0].data.length = 0;
 
 		ChartData.destroy();

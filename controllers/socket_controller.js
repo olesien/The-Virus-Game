@@ -207,7 +207,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
-			if (activeMatches[room].rounds.length < 4) {
+			if (activeMatches[room].rounds.length < 10) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
