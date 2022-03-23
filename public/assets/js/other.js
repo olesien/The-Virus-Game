@@ -1,3 +1,5 @@
+const previousGamesEl = document.querySelector('.previous-games-wrapper');
+
 const previousGamesPage = document.querySelector(".previous-games-page"),
 	btnPreviousGames = document.querySelector(
 		".start-page__btn-previous-games"
@@ -16,6 +18,22 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 	fastestReactionPage = document.querySelector(".fastest-reaction-page");
 
 const buildGameFeed = (prevgames, livegames) => {
+
+    previousGamesEl.innerHTML = "";
+
+    for (i = 0; i < prevgames.length; i++) {
+        const previousliEL = document.createElement('div');
+        previousliEL.classList.add('previous-games-page-completed-card');
+
+        previousliEL.innerHTML += `
+        <span class="previous-games-page-live-players">${prevgames[i].player1.name} - </span>
+        <span class="previous-games-page-live-players">${prevgames[i].player2.name}</span><br>
+        <span class="previous-games-page-live-score">${prevgames[i].player1.wins} - </span>
+        <span class="previous-games-page-live-score">${prevgames[i].player2.wins}</span>`;
+        previousGamesEl.append(previousliEL);
+    }
+
+    // }
 	//The idea here is to use previous games (last 10 from db) alongside livegames to build a feed.
 	//This feed updates every time a round is completed and whenever the user loads in recent games
 	//prevgames
@@ -43,7 +61,7 @@ const buildGameFeed = (prevgames, livegames) => {
 	// 		loserTime: 0.5,
 	// 	},
 	// ]}]
-	console.log(prevgames);
+    console.log(prevgames);
 
 	//livegames
 	// {"game-2341412213": {
