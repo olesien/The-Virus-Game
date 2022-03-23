@@ -57,9 +57,9 @@ const handlePrevGames = async function (callback) {
 			.sort("field -Timestamp")
 			.limit(10);
 		debug(prevgames);
-		callback({ success: true, prevgames, livegames: activeMatches });
+		callback({success: true, prevgames, livegames: activeMatches});
 	} catch (error) {
-		callback({ success: false, error });
+		callback({success: false, error});
 		debug(error);
 	}
 };
