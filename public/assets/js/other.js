@@ -1,6 +1,6 @@
 const previousGamesEl = document.querySelector(".previous-games-wrapper");
 const livegamesEl = document.querySelector(".live-games-wrapper");
-const fastestReactionBox = document.querySelector('.fastest-reaction-box');
+const fastestReactionBox = document.querySelector(".fastest-reaction-box");
 const previousGamesPage = document.querySelector(".previous-games-page"),
 	btnPreviousGames = document.querySelector(
 		".start-page__btn-previous-games"
@@ -16,7 +16,8 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 	startPageBtnFastestReaction = document.querySelector(
 		".start-page__btn-fastest-reaction"
 	),
-	fastestReactionPage = document.querySelector(".fastest-reaction-page");
+	fastestReactionPage = document.querySelector(".fastest-reaction-page"),
+	scrollbar = document.querySelector(".scrollbar");
 
 const buildGameFeed = (prevgames, livegames) => {
 	previousGamesEl.innerHTML = "";
@@ -110,10 +111,15 @@ const buildGameFeed = (prevgames, livegames) => {
 	console.log(livegames);
 };
 const displayHighscore = (highscores) => {
-	const createDivEl = document.createElement('div');
-	fastestReactionBox.innerHTML = '';
-	createDivEl.classList.add('d-flex', 'flex-column', 'align-items-center', 'justify-content-center')
-	highscores.forEach(e => {
+	const createDivEl = document.createElement("div");
+	fastestReactionBox.innerHTML = "";
+	createDivEl.classList.add(
+		"d-flex",
+		"flex-column",
+		"align-items-center",
+		"justify-content-center"
+	);
+	highscores.forEach((e) => {
 		createDivEl.innerHTML += `
 			<div class='fastest-reaction-places-box d-flex align-items-center'>
 					<!--Name-->
@@ -122,16 +128,16 @@ const displayHighscore = (highscores) => {
 					</div>
 					<!--Seconds-->
 					<div class="fastest-reaction-seconds-box">
-						<p class="fastest-reaction-seconds">${(Math.round(e.averageTime ) / 1000).toFixed(2)}s</p>
+						<p class="fastest-reaction-seconds">${(
+							Math.round(e.averageTime) / 1000
+						).toFixed(2)}s</p>
 					</div>
 			</div>
-			`
+			`;
 
 		fastestReactionBox.appendChild(createDivEl);
 	});
-
-
-}
+};
 
 // show Prev Games window
 const showPrevGames = () => {
@@ -139,7 +145,7 @@ const showPrevGames = () => {
 	previousGamesPage.classList.toggle("hide");
 	startPage.classList.toggle("hide");
 	mainWindowBackButton1.classList.toggle("hide");
-
+	scrollbar.style.overflowY = "scroll";
 	//Here I want to select last 10 games from db
 	socket.emit("user:prevgames", (status) => {
 		if (status.success) {
@@ -177,7 +183,6 @@ const showLeaderboard = () => {
 
 	socket.emit("user:gethighscore", (status) => {
 		if (status.success) {
-
 			console.log(status.highscores);
 
 			//Send to build function
@@ -188,6 +193,7 @@ const showLeaderboard = () => {
 		}
 	});
 
+	scrollbar.style.overflowY = "scroll";
 };
 
 // Back to Start page function
@@ -197,6 +203,7 @@ const backButton = (btn, page) => {
 		mainWindowBarLink.textContent = "https://thevirusgame.com";
 		page.classList.toggle("hide");
 		startPage.classList.toggle("hide");
+		scrollbar.style.overflowY = "hidden";
 	});
 };
 

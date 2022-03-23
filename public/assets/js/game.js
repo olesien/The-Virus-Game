@@ -292,8 +292,7 @@ socket.on("game:end", (game) => {
 
 
 	const gameOver = document.querySelector(".game-over"),
-		gameOverBtnReturnToLobby = document.querySelector(".game-over__btn-return-to-lobby"),
-		gameOverBtnGoAgain = document.querySelector(".game-over__btn-go-again");
+		gameOverBtnReturnToLobby = document.querySelector(".game-over__btn-return-to-lobby");
 
 	//	show Game over screen
 	appEl.classList.toggle("hide");
@@ -342,9 +341,6 @@ socket.on("game:end", (game) => {
 		inputBtn.appendChild(loadingIcon);
 	});
 
-	//	TODO GO AGAIN BUTTON
-	gameOverBtnGoAgain.addEventListener("click", () => {
-	});
 });
 
 //Game now has the match info including opponent etc, and will start setting up all required details
