@@ -182,15 +182,35 @@ const handleClickedVirus = async function (room, callback) {
 
 				doc.save();
 
+                const high = models.Highscore({
+                    player: activeMatches[room][player].name,
+                    fastestTime: activeMatches[room][player].fastestTime
+                })
+
+                high.save()
+
+                const high2 = models.Highscore({
+                    player: activeMatches[room][opponent].name,
+                    fastestTime: activeMatches[room][opponent].fastestTime
+                })
+
+                high2.save()
+
+                //Update live feed in highscore
+			    await handleHighScore((status) => {
+				io.emit("user:gethighscore", status);
+		    	});
+
 				//Cleanup
 				delete activeMatches[room];
 				io.in(room).socketsLeave(room);
 			}
 
-			//Update live feed in show previous games
-			await handlePrevGames((status) => {
-				io.emit("game:updatePrevGames", status);
-			});
+            //Update live feed in show previous games
+	        await handlePrevGames((status) => {
+		    io.emit("game:updatePrevGames", status);
+	        });
+
 		}
 
 		// confirm success
@@ -307,6 +327,17 @@ const handleLiveGames = async function (callback) {
 	callback({ success: true, livegames: activeMatches });
 };
 
+const handleHighScore = async function (callback) {
+    try {
+        const highscores = await models.Highscore.find().sort("field fastestTime").limit(10);
+        debug(highscores);
+        callback({success: true, highscores});
+    } catch (error) {
+        callback({success: false, error});
+        debug(error);
+    }
+};
+
 module.exports = function (socket, _io) {
 	io = _io;
 	//Log when user connects
@@ -329,4 +360,7 @@ module.exports = function (socket, _io) {
 
 	//handle cancel matchmaking
 	socket.on("user:cancelmatching", handleCancelMatchmaking);
+
+    // handle get highscore
+    socket.on('user:gethighscore', handleHighScore);
 };

@@ -109,6 +109,10 @@ const buildGameFeed = (prevgames, livegames) => {
 	// }}
 	console.log(livegames);
 };
+const displayHighscore = (highscores) => {
+    console.log(highscores);
+}
+
 // show Prev Games window
 const showPrevGames = () => {
 	mainWindowBarLink.textContent = "https://thevirusgame.com/previousgames";
@@ -150,6 +154,20 @@ const showLeaderboard = () => {
 	fastestReactionPage.classList.toggle("hide");
 	startPage.classList.toggle("hide");
 	mainWindowBackButton2.classList.toggle("hide");
+
+    socket.emit("user:gethighscore", (status) => {
+        if (status.success) {
+    
+            console.log(status.highscores);
+    
+            //Send to build function
+            displayHighscore(status.highscores);
+        } else {
+            alert("Error when fetching data. See console for details");
+            console.log(status.error);
+        }
+    });
+    
 };
 
 // Back to Start page function
