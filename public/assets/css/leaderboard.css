@@ -1,0 +1,52 @@
+.fastest-reaction-page-title {
+	margin-top: 50px;
+	font-size: 36px;
+	font-style: normal;
+	text-align: center;
+
+
+}
+
+
+.fastest-reaction-title-box {
+	width: 350px;
+	max-width: 100%;
+	background-color: #353D44;
+	margin: 10px;
+	border-radius: 5px;
+}
+
+.fastest-reaction-seconds-box {
+	display: inline;
+	border: 1px solid white;
+	background-color: #353D44;
+	max-width: 100%;
+	text-align: center;
+	border-radius: 10px;
+	padding: 16px 8px;
+	width: 100px;
+}
+
+.fastest-reaction-seconds {
+	font-size: 24px;
+	font-weight: bold;
+	color: white;
+}
+
+.fastest-reaction-title {
+	padding: 10px;
+	text-align: center;
+	font-size: 35px;
+	border: none !important;
+	font-weight: 800;
+	color: white;
+}
+.fastest-reaction-places-box:nth-child(1) > div > p{
+	color: #FEE501;
+}
+.fastest-reaction-places-box:nth-child(2) > div > p{
+	color: #c0cad0;
+}
+.fastest-reaction-places-box:nth-child(3) > div > p{
+	color: #BE3900;
+}
