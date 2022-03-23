@@ -366,6 +366,16 @@ const cancelMatchmaking = async function (id) {
 //Received when disconnected, cancel match!
 const handleDisconnect = async function () {
 	cancelMatchmaking(this.id);
+	const gameId = "game-" + this.id;
+	if (gameId in activeMatches) {
+		//user forfeited match
+		delete activeMatches["game-" + this.id];
+
+		//Update live feed in show previous games
+		await handlePrevGames((status) => {
+			io.emit("game:updatePrevGames", status);
+		});
+	}
 };
 
 //Received when user decides to cancel searching. result is the return with success true/false and hasRemoved or error
