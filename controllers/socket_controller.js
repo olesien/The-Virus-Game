@@ -299,10 +299,10 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
-// const handleLiveGames = async function (callback)
-// {
-// 	callback({ success: true, livegames: activeMatches});
-// }
+const handleLiveGames = async function (callback)
+{
+	callback({ success: true, livegames: activeMatches});
+}
 
 module.exports = function (socket, _io) {
 	io = _io;
@@ -319,7 +319,7 @@ module.exports = function (socket, _io) {
 	socket.on("user:prevgames", handlePrevGames);
 
 	//Get games for -> live games
-	// socket.on("user:livegames", handleLiveGames)
+	socket.on("user:livegames", handleLiveGames)
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);

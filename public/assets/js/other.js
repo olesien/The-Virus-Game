@@ -1,4 +1,5 @@
 const previousGamesEl = document.querySelector('.previous-games-wrapper');
+const livegamesEl = document.querySelector('.live-games-wrapper');
 
 const previousGamesPage = document.querySelector(".previous-games-page"),
 	btnPreviousGames = document.querySelector(
@@ -32,6 +33,21 @@ const buildGameFeed = (prevgames, livegames) => {
         <span class="previous-games-page-live-score">${prevgames[i].player2.wins}</span>`;
         previousGamesEl.append(previousliEL);
     }
+
+    livegamesEl.innerHTML = "";
+
+    for (const property in livegames) {
+        const liveliEL = document.createElement('div');
+        liveliEL.classList.add('previous-games-page-live-card');
+
+        liveliEL.innerHTML += `
+        <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span> 
+        <span class="previous-games-page-live-players">${livegames[property].player2.name}</span><br>
+        <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span> 
+        <span class="previous-games-page-live-score">${livegames[property].player2.wins}</span>`;
+        livegamesEl.append(liveliEL);
+    }
+
 
     // }
 	//The idea here is to use previous games (last 10 from db) alongside livegames to build a feed.
