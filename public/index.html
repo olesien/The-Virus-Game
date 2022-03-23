@@ -51,7 +51,7 @@
 		<!--    Game App-->
 		<section class="hide" id="app">
 			<div class="app ">
-				<div class="container">
+				<div class="app-full-width">
 					<div class="row">
 						<div class="gameboard-wrapper">
 							<div class="gameboard">
@@ -132,38 +132,12 @@
 		<!--Previous Games Page-->
 		<section class="previous-games-page hide ">
 			<h2 class="previous-games-page-live-title">Live</h2>
-			<div class="d-flex flex-wrap">
-				<div class="previous-games-page-live-card">
-					<p class="previous-games-page-live-players">Linus - Maxim</p>
-					<p class="previous-games-page-live-score">1 - 2</p>
-				</div>
-			</div>
+            <div class="d-flex flex-wrap live-games-wrapper">
+                <!--Here be live games-->
+            </div>
 			<h2 class="previous-games-page-completed-title">Completed</h2>
-			<div class="d-flex flex-wrap">
-				<div class="previous-games-page-completed-card winner">
-					<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
-					<p class="previous-games-page-live-score">2 - 1</p>
-				</div>
-				<div class="previous-games-page-completed-card loser">
-					<p class="previous-games-page-live-players">Linus - Maxim (winner)</p>
-					<p class="previous-games-page-live-score">1 - 2</p>
-				</div>
-				<div class="previous-games-page-completed-card winner">
-					<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
-					<p class="previous-games-page-live-score">2 - 1</p>
-				</div>
-				<div class="previous-games-page-completed-card winner">
-					<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
-					<p class="previous-games-page-live-score">2 - 1</p>
-				</div>
-				<div class="previous-games-page-completed-card winner">
-					<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
-					<p class="previous-games-page-live-score">2 - 1</p>
-				</div>
-				<div class="previous-games-page-completed-card winner">
-					<p class="previous-games-page-live-players">Linus (winner)- Maxim</p>
-					<p class="previous-games-page-live-score">2 - 1</p>
-				</div>
+			<div class="d-flex flex-wrap previous-games-wrapper">
+				<!--Here be previous games-->
 			</div>
 		</section>
 		<!--Fastest Reaction-->
@@ -210,7 +184,7 @@
 			<!--Start Page : FORM-->
 			<form id="message-form">
 				<div class="start-page__from-group">
-					<input type="text" id="message" class="start-page__input" placeholder="Username...">
+					<input type="text" id="message" class="start-page__input" placeholder="Enter username (max 10 characters)">
 					<button type="submit" class="start-page__input-btn d-flex align-items-center">
 						<span class="mr-5">Start Searching</span>
 						<img class='loading hide' src="./assets/icons/spinner.gif" alt="">
@@ -235,13 +209,16 @@
 				<div class="game-over__round-breakdown-box ">
 					<h3 class="game-over__round-breakdown-title ">Round Breakdown</h3>
 					<div class="d-flex game-over__round-breakdown-circle-box flex-wrap   justify-content-center"></div>
+					<h4 id="game-over-score"></h4>
 				</div>
 			</div>
 
-			<div class='d-flex mt-5 justify-content-evenly'>
+			<div class='d-flex mt-5 justify-content-evenly game-over__btn-return-go-group'>
 				<button class="game-over__btn-return-to-lobby">Return to lobby</button>
 				<button class="game-over__btn-go-again">Go Again</button>
 			</div>
+
+			<canvas id="winnerConfetti"></canvas>
 		</section>
 
 
@@ -261,7 +238,8 @@
 </footer>
 <!--Chart.JS-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<!--Js Confetti-->
+<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 <!-- Bootstrap 5 script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

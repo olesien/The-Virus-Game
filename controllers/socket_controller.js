@@ -3,6 +3,7 @@
  */
 
 const debug = require("debug")("game:socket_controller");
+const models = require("../models");
 
 let io = null; // socket.io server instance
 
@@ -49,6 +50,19 @@ const getRandomNumber = (num) => {
 	return Math.ceil(Math.random() * num);
 };
 
+//Show previous games
+const handlePrevGames = async function (callback) {
+	try {
+		const prevgames = await models.Game.find()
+			.sort("field -Timestamp")
+			.limit(10);
+		callback({ success: true, prevgames, livegames: activeMatches });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
+};
+
 //New round
 const newRound = async (room, max, offset) => {
 	setTimeout(() => {
@@ -83,6 +97,11 @@ const startGame = async (room, player1, player2) => {
 	debug("Sent to room", room);
 	//start first round
 	newRound(room, 10, 5);
+
+	//Update live feed in show previous games
+	await handlePrevGames((status) => {
+		io.emit("game:updatePrevGames", status);
+	});
 };
 
 // Handle when a user clicks virus!
@@ -139,8 +158,8 @@ const handleClickedVirus = async function (room, callback) {
 			debug("Sending round result to room: " + room);
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
-			//Is it NOT round 10 or above? If so issue a new rounnd
-			if (activeMatches[room].rounds.length < 10) {
+			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
+			if (activeMatches[room].rounds.length < 2) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -149,17 +168,30 @@ const handleClickedVirus = async function (room, callback) {
 				//This is round 10 or somehow round 11+
 				//Send match results, and allow the players to retry or return to home screen
 				io.to(room).emit("game:end", activeMatches[room]);
+
+				//Add to database this match
+				const doc = models.Game({
+					gameId: room,
+					player1: activeMatches[room][player],
+					player2: activeMatches[room][opponent],
+					winner: opponent,
+					loser: player,
+					Timestamp: Date.now(),
+					rounds: activeMatches[room].rounds,
+				});
+
+				doc.save();
+
+				//Cleanup
 				delete activeMatches[room];
-
-				debug(activeMatches);
-				debug(lookingForMatch);
-
-				console.log(room);
 				io.in(room).socketsLeave(room);
 			}
-		}
 
-		//Next round
+			//Update live feed in show previous games
+			await handlePrevGames((status) => {
+				io.emit("game:updatePrevGames", status);
+			});
+		}
 
 		// confirm success
 		callback({
@@ -271,6 +303,10 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
+const handleLiveGames = async function (callback) {
+	callback({ success: true, livegames: activeMatches });
+};
+
 module.exports = function (socket, _io) {
 	io = _io;
 	//Log when user connects
@@ -281,6 +317,12 @@ module.exports = function (socket, _io) {
 
 	// handle user joined
 	socket.on("user:findmatch", handleFindMatch);
+
+	//Get games for -> recent games
+	socket.on("user:prevgames", handlePrevGames);
+
+	//Get games for -> live games
+	socket.on("user:livegames", handleLiveGames);
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
