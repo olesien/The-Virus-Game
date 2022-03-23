@@ -1,5 +1,5 @@
-const previousGamesEl = document.querySelector('.previous-games-wrapper');
-const livegamesEl = document.querySelector('.live-games-wrapper');
+const previousGamesEl = document.querySelector(".previous-games-wrapper");
+const livegamesEl = document.querySelector(".live-games-wrapper");
 
 const previousGamesPage = document.querySelector(".previous-games-page"),
 	btnPreviousGames = document.querySelector(
@@ -19,37 +19,35 @@ const previousGamesPage = document.querySelector(".previous-games-page"),
 	fastestReactionPage = document.querySelector(".fastest-reaction-page");
 
 const buildGameFeed = (prevgames, livegames) => {
+	previousGamesEl.innerHTML = "";
 
-    previousGamesEl.innerHTML = "";
+	for (i = 0; i < prevgames.length; i++) {
+		const previousliEL = document.createElement("div");
+		previousliEL.classList.add("previous-games-page-completed-card");
 
-    for (i = 0; i < prevgames.length; i++) {
-        const previousliEL = document.createElement('div');
-        previousliEL.classList.add('previous-games-page-completed-card');
-
-        previousliEL.innerHTML += `
+		previousliEL.innerHTML += `
         <span class="previous-games-page-live-players">${prevgames[i].player1.name} - </span>
         <span class="previous-games-page-live-players">${prevgames[i].player2.name}</span><br>
         <span class="previous-games-page-live-score">${prevgames[i].player1.wins} - </span>
         <span class="previous-games-page-live-score">${prevgames[i].player2.wins}</span>`;
-        previousGamesEl.append(previousliEL);
-    }
+		previousGamesEl.append(previousliEL);
+	}
 
-    livegamesEl.innerHTML = "";
+	livegamesEl.innerHTML = "";
 
-    for (const property in livegames) {
-        const liveliEL = document.createElement('div');
-        liveliEL.classList.add('previous-games-page-live-card');
+	for (const property in livegames) {
+		const liveliEL = document.createElement("div");
+		liveliEL.classList.add("previous-games-page-live-card");
 
-        liveliEL.innerHTML += `
+		liveliEL.innerHTML += `
         <span class="previous-games-page-live-players">${livegames[property].player1.name} - </span> 
         <span class="previous-games-page-live-players">${livegames[property].player2.name}</span><br>
         <span class="previous-games-page-live-score">${livegames[property].player1.wins} - </span> 
         <span class="previous-games-page-live-score">${livegames[property].player2.wins}</span>`;
-        livegamesEl.append(liveliEL);
-    }
+		livegamesEl.append(liveliEL);
+	}
 
-
-    // }
+	// }
 	//The idea here is to use previous games (last 10 from db) alongside livegames to build a feed.
 	//This feed updates every time a round is completed and whenever the user loads in recent games
 	//prevgames
@@ -77,7 +75,7 @@ const buildGameFeed = (prevgames, livegames) => {
 	// 		loserTime: 0.5,
 	// 	},
 	// ]}]
-    console.log(prevgames);
+	console.log(prevgames);
 
 	//livegames
 	// {"game-2341412213": {

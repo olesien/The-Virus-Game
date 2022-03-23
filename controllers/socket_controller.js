@@ -56,7 +56,6 @@ const handlePrevGames = async function (callback) {
 		const prevgames = await models.Game.find()
 			.sort("field -Timestamp")
 			.limit(10);
-		debug(prevgames);
 		callback({ success: true, prevgames, livegames: activeMatches });
 	} catch (error) {
 		callback({ success: false, error });
@@ -98,6 +97,11 @@ const startGame = async (room, player1, player2) => {
 	debug("Sent to room", room);
 	//start first round
 	newRound(room, 10, 5);
+
+	//Update live feed in show previous games
+	await handlePrevGames((status) => {
+		io.emit("game:updatePrevGames", status);
+	});
 };
 
 // Handle when a user clicks virus!
@@ -155,7 +159,7 @@ const handleClickedVirus = async function (room, callback) {
 			io.to(room).emit("game:roundresult", activeMatches[room]);
 
 			//Is it NOT round 10 or above? If so issue a new rounnd <--- Change here for shorter matches
-			if (activeMatches[room].rounds.length < 10) {
+			if (activeMatches[room].rounds.length < 2) {
 				//Start new round here
 				activeMatches[room][player].latestTime = -1;
 				activeMatches[room][opponent].latestTime = -1;
@@ -182,12 +186,12 @@ const handleClickedVirus = async function (room, callback) {
 				delete activeMatches[room];
 				io.in(room).socketsLeave(room);
 			}
-		}
 
-		//Update live feed in show previous games
-		await handlePrevGames((status) => {
-			io.to(room).emit("game:updatePrevGames", status);
-		});
+			//Update live feed in show previous games
+			await handlePrevGames((status) => {
+				io.emit("game:updatePrevGames", status);
+			});
+		}
 
 		// confirm success
 		callback({
@@ -299,10 +303,9 @@ const handleCancelMatchmaking = async function (callback) {
 	callback(result);
 };
 
-const handleLiveGames = async function (callback)
-{
-	callback({ success: true, livegames: activeMatches});
-}
+const handleLiveGames = async function (callback) {
+	callback({ success: true, livegames: activeMatches });
+};
 
 module.exports = function (socket, _io) {
 	io = _io;
@@ -319,7 +322,7 @@ module.exports = function (socket, _io) {
 	socket.on("user:prevgames", handlePrevGames);
 
 	//Get games for -> live games
-	socket.on("user:livegames", handleLiveGames)
+	socket.on("user:livegames", handleLiveGames);
 
 	// handle user disconnect
 	socket.on("disconnect", handleDisconnect);
