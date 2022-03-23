@@ -182,59 +182,73 @@ const handleClickedVirus = async function (room, callback) {
 
 				doc.save();
 
-                const rounds = activeMatches[room].rounds;
+				//get rounds
+				const rounds = activeMatches[room].rounds;
 
-                const playerName = activeMatches[room][player].name;
-                const playerScore = rounds.reduce(
-                    (partialSum, round) =>
-                        round.winner === playerName
-                            ? partialSum + round.winnerTime
-                            : partialSum + round.loserTime,
-                    0
-                );
+				//Store the potential highscore of the player (which will be the person who lost)
+				const playerName = activeMatches[room][player].name;
 
-                debug(playerScore);
+				//Reduce the array to a sum of all the player round times
+				const playerScore = rounds.reduce(
+					(partialSum, round) =>
+						round.winner === playerName
+							? partialSum + round.winnerTime
+							: partialSum + round.loserTime,
+					0
+				);
 
-                const opponentName = activeMatches[room][player].name;
-                const opponentScore = rounds.reduce(
-                    (partialSum, round) =>
-                        round.winner === opponentName
-                            ? partialSum + round.loserTime
-                            : partialSum + round.winnerTime,
-                    0
-                );
+				debug(playerScore);
 
-                debug(opponentScore);
+				//Verify here so that if the player has previously added an average time, this new time is better
 
-                const playerHighscore = models.Highscore({
-                    player: activeMatches[room][player].name,
-                    averageTime: playerScore / activeMatches[room].rounds.length
-                })
+				//Create the object with the data
+				const playerHighscore = models.Highscore({
+					player: activeMatches[room][player].name,
+					averageTime:
+						playerScore / activeMatches[room].rounds.length,
+				});
 
-                playerHighscore.save()
+				playerHighscore.save();
 
-                const opponentHighscore = models.Highscore({
-                    player: activeMatches[room][opponent].name,
-                    averageTime: opponentScore / activeMatches[room].rounds.length
-                })
+				//Store the potential highscore of the opponent (which will be the person who won)
+				const opponentName = activeMatches[room][player].name;
 
-                opponentHighscore.save()
+				//Reduce the array to a sum of all the opponent round times
+				const opponentScore = rounds.reduce(
+					(partialSum, round) =>
+						round.winner === opponentName
+							? partialSum + round.loserTime
+							: partialSum + round.winnerTime,
+					0
+				);
 
-                //Update live feed in highscore
-			    await handleHighScore((status) => {
-				io.emit("user:gethighscore", status);
-		    	});
+				debug(opponentScore);
+
+				//Verify here so that if the opponent has previously added an average time, this new time is better
+
+				//Create the object with the data
+				const opponentHighscore = models.Highscore({
+					player: activeMatches[room][opponent].name,
+					averageTime:
+						opponentScore / activeMatches[room].rounds.length,
+				});
+
+				opponentHighscore.save();
+
+				//Update live feed in highscore
+				await handleHighScore((status) => {
+					io.emit("user:gethighscore", status);
+				});
 
 				//Cleanup
 				delete activeMatches[room];
 				io.in(room).socketsLeave(room);
 			}
 
-            //Update live feed in show previous games
-	        await handlePrevGames((status) => {
-		    io.emit("game:updatePrevGames", status);
-	        });
-
+			//Update live feed in show previous games
+			await handlePrevGames((status) => {
+				io.emit("game:updatePrevGames", status);
+			});
 		}
 
 		// confirm success
@@ -352,14 +366,16 @@ const handleLiveGames = async function (callback) {
 };
 
 const handleHighScore = async function (callback) {
-    try {
-        const highscores = await models.Highscore.find().sort("field averageTime").limit(10);
-        debug(highscores);
-        callback({success: true, highscores});
-    } catch (error) {
-        callback({success: false, error});
-        debug(error);
-    }
+	try {
+		const highscores = await models.Highscore.find()
+			.sort("field averageTime")
+			.limit(10);
+		debug(highscores);
+		callback({ success: true, highscores });
+	} catch (error) {
+		callback({ success: false, error });
+		debug(error);
+	}
 };
 
 module.exports = function (socket, _io) {
@@ -385,6 +401,6 @@ module.exports = function (socket, _io) {
 	//handle cancel matchmaking
 	socket.on("user:cancelmatching", handleCancelMatchmaking);
 
-    // handle get highscore
-    socket.on('user:gethighscore', handleHighScore);
+	// handle get highscore
+	socket.on("user:gethighscore", handleHighScore);
 };
